@@ -8,7 +8,7 @@ import json
 
 def clean_up_victim_data():
 
-    file = open("NCVS_2013_PERSONAL.json")
+    file = open("../Data/NCVS_2013_PERSONAL.json")
     text = file.read()
     text_read = json.loads(text)
 

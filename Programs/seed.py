@@ -3,8 +3,7 @@
 from model import Crime_Stat, Victim_Data, connect_to_db, db
 from server import app
 import csv
-import requests
-import json
+import datetime
 
 
 def load_crime_stats():
@@ -15,10 +14,11 @@ def load_crime_stats():
     with open('../Data/Map__Crime_Incidents_-_from_1_Jan_2003.csv', 'rb') as f:
         reader = csv.reader(f)
     
-        for row in reader:
+        for i,row in enumerate(reader):
             category = row[1]
             day_of_week = row[3]
-            date = row[4]
+            date_input = row[4]
+            date = datetime.datetime.strptime(date_input, "%m/%d/%Y %I:%M")
             time = row[5]
             district = row[6]
             x_cord = row[9]
@@ -26,6 +26,8 @@ def load_crime_stats():
             
             incident = Crime_Stat(category=category,day_of_week=day_of_week,date=date,time=time,district=district,x_cord=x_cord,y_cord=y_cord)
             db.session.add(incident)
+            if i % 1000 == 0:
+                db.session.commit()
 
         db.session.commit()
 
@@ -60,4 +62,4 @@ if __name__ == "__main__":
     connect_to_db(app)
 
     load_crime_stats()
-    load_victim_data()
+    # load_victim_data()

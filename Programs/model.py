@@ -1,6 +1,7 @@
 """Models and database functions for final project."""
 
 from flask_sqlalchemy import SQLAlchemy
+import decimal
 
 # This is the connection to the SQLite database; we're getting this through
 # the Flask-SQLAlchemy helper library. On this, we can find the `session`
@@ -24,8 +25,15 @@ class Crime_Stat(db.Model):
     date = db.Column(db.Date, nullable=False)
     time = db.Column(db.Time, nullable=False)
     district = db.Column(db.String(60), nullable=False)
+    # address = db.Column(db.String(100), nullable=False)
     x_cord = db.Column(db.Numeric, nullable=False)
     y_cord = db.Column(db.Numeric, nullable=False)
+    
+           
+    def decimal_default(self):
+        if isinstance(self, decimal.Decimal):
+            return float(self)
+        raise TypeError
     
     
 class Victim_Data(db.Model):

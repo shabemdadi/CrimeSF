@@ -11,11 +11,53 @@
 </style>
 </head>
 <body>
-<div id='map'></div>
-<script>
-L.mapbox.accessToken = 'pk.eyJ1Ijoic2hhYmVtZGFkaSIsImEiOiIwckNSMkpvIn0.MeYrWfZexYn1AwdiasXbsg';
-var map = L.mapbox.map('map', 'shabemdadi.fab5eb0c')
-    .setView([40, -74.50], 9);
-</script>
+    <style>
+    </style>
+    <div id='map'></div>
+    <script>
+        // Provide your access token
+        L.mapbox.accessToken = 'pk.eyJ1Ijoic2hhYmVtZGFkaSIsImEiOiIwckNSMkpvIn0.MeYrWfZexYn1AwdiasXbsg';
+        
+        
+        var locations = {{crime_locations}};
+            
+            console.log(locations);
+        
+        for (var key in locations){
+            var geojson = [{
+            "type":"Feature",
+            "geometry":{
+            "type":"Point",
+            "coordinates": [locations[key]['lat'],locations[key]['long']]
+            },
+            "properties":{
+            "title":"Mapbox SF",
+            "description":"something",
+            "marker-color":"#fc4353",
+            "marker-size": "large",
+            "marker-symbol": "monument"
+                        }
+            },]
+        }
+          
+        var geocoder = L.mapbox.geocoder('mapbox.places'),
+             map = L.mapbox.map('map', 'shabemdadi.fab5eb0c');
+<!--             .addLayer(L.mapbox.tileLayer('shabemdadi.fab5eb0c'))
+<!--             .addControl(L.mapbox.geocoderControl('mapbox.places')) -->
+<!--             .featureLayer.setGeoJSON(geojson); --> -->
+
+        geocoder.query('San Francisco, CA', showMap);
+
+        function showMap(err, data) {
+            // The geocoder can return an area, like a city, or a
+            // point, like an address. Here we handle both cases,
+            // by fitting the map bounds to an area or zooming to a point.
+            if (data.lbounds) {
+                map.fitBounds(data.lbounds);
+            } else if (data.latlng) {
+                map.setView([data.latlng[0], data.latlng[1]], 13);
+            }
+        }
+    </script>
 </body>
 </html>

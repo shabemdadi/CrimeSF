@@ -24,10 +24,11 @@ def load_crime_stats():
                 time_input = row[5]
                 time = datetime.strptime(time_input,"%H:%M").time()
                 district = row[6]
+                address = row[8]
                 x_cord = row[9]
                 y_cord = row[10]
                 
-                incident = Crime_Stat(category=category,day_of_week=day_of_week,date=date,time=time,district=district,x_cord=x_cord,y_cord=y_cord)
+                incident = Crime_Stat(category=category,day_of_week=day_of_week,date=date,time=time,address=address,district=district,x_cord=x_cord,y_cord=y_cord)
                 db.session.add(incident)
                 if i % 1000 == 0:
                     db.session.commit()

@@ -12,41 +12,18 @@
 </style>
 </head>
 <body>
-    <style>
-    </style>
     <div id='map'></div>
     <script>
-        // Provide your access token
+        // Provide access token
         L.mapbox.accessToken = 'pk.eyJ1Ijoic2hhYmVtZGFkaSIsImEiOiIwckNSMkpvIn0.MeYrWfZexYn1AwdiasXbsg';
         
-        $.get("/crime",function(result){
-            for(var key in result){
-                    evt.preventDefault();
-                    console.log("loop is running");
-                    var geojson = [
-                      {
-                        "type": "Feature",
-                        "geometry": {
-                          "type": "Point",
-                          "coordinates": [result['lat'],result['long']]
-                        },
-                        "properties": {
-                          "title": "Mapbox DC",
-                          "description": "1714 14th St NW, Washington DC",
-                          "marker-color": "#fc4353",
-                          "marker-size": "large",
-                          "marker-symbol": "monument"
-                        }
-                      },
-                    ];}})
-
-          
+        // Set up map characteristics
         var geocoder = L.mapbox.geocoder('mapbox.places'),
-             map = L.mapbox.map('map', 'shabemdadi.fab5eb0c')
-             .addLayer(L.mapbox.tileLayer('shabemdadi.fab5eb0c'))
-             .addControl(L.mapbox.geocoderControl('mapbox.places'))
-            .featureLayer.setGeoJSON(geojson);
-
+        map = L.mapbox.map('map', 'shabemdadi.fab5eb0c')
+            .addLayer(L.mapbox.tileLayer('shabemdadi.fab5eb0c'))
+            .addControl(L.mapbox.geocoderControl('mapbox.places'));
+        
+        // Set location to be San Francisco
         geocoder.query('San Francisco, CA', showMap);
 
         function showMap(err, data) {
@@ -59,6 +36,29 @@
                 map.setView([data.latlng[0], data.latlng[1]], 13);
             }
         }
+        
+        // Assign markers to locations of crime incidents 
+        $.get("/crime",function(result){
+            var geojson = [];
+            for(item in result){
+                var item_loc = 
+                      {
+                        "type": "Feature",
+                        "geometry": {
+                          "type": "Point",
+                          "coordinates": [result[item]['lat'], result[item]['long']]
+                        },
+                        "properties": {
+                          "title": "Mapbox DC",
+                          "description": "1714 14th St NW, Washington DC", // need to add in address
+                          "marker-color": "#fc4353",
+                          "marker-size": "large",
+                          "marker-symbol": "monument"
+                        }
+                      };
+                geojson.push(item_loc);};
+                map.featureLayer.setGeoJSON(geojson);});
+                
     </script>
 </body>
 </html>

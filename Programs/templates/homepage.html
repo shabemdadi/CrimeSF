@@ -4,6 +4,7 @@
 <title>A simple map</title>
 <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js'></script>
+<script src="https://code.jquery.com/jquery.js"></script>
 <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
 <style>
   body { margin:0; padding:0; }
@@ -18,33 +19,33 @@
         // Provide your access token
         L.mapbox.accessToken = 'pk.eyJ1Ijoic2hhYmVtZGFkaSIsImEiOiIwckNSMkpvIn0.MeYrWfZexYn1AwdiasXbsg';
         
-        
-        var locations = {{crime_locations}};
-            
-            console.log(locations);
-        
-        for (var key in locations){
-            var geojson = [{
-            "type":"Feature",
-            "geometry":{
-            "type":"Point",
-            "coordinates": [locations[key]['lat'],locations[key]['long']]
-            },
-            "properties":{
-            "title":"Mapbox SF",
-            "description":"something",
-            "marker-color":"#fc4353",
-            "marker-size": "large",
-            "marker-symbol": "monument"
+        $.get("/crime",function(result){
+            for(var key in result){
+                    evt.preventDefault();
+                    console.log("loop is running");
+                    var geojson = [
+                      {
+                        "type": "Feature",
+                        "geometry": {
+                          "type": "Point",
+                          "coordinates": [result['lat'],result['long']]
+                        },
+                        "properties": {
+                          "title": "Mapbox DC",
+                          "description": "1714 14th St NW, Washington DC",
+                          "marker-color": "#fc4353",
+                          "marker-size": "large",
+                          "marker-symbol": "monument"
                         }
-            },]
-        }
+                      },
+                    ];}})
+
           
         var geocoder = L.mapbox.geocoder('mapbox.places'),
-             map = L.mapbox.map('map', 'shabemdadi.fab5eb0c');
-<!--             .addLayer(L.mapbox.tileLayer('shabemdadi.fab5eb0c'))
-<!--             .addControl(L.mapbox.geocoderControl('mapbox.places')) -->
-<!--             .featureLayer.setGeoJSON(geojson); --> -->
+             map = L.mapbox.map('map', 'shabemdadi.fab5eb0c')
+             .addLayer(L.mapbox.tileLayer('shabemdadi.fab5eb0c'))
+             .addControl(L.mapbox.geocoderControl('mapbox.places'))
+            .featureLayer.setGeoJSON(geojson);
 
         geocoder.query('San Francisco, CA', showMap);
 

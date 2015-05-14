@@ -1,5 +1,5 @@
 from jinja2 import StrictUndefined
-from flask import Flask, render_template, redirect, request, flash, session, jsonify
+from flask import Flask, render_template, redirect, request, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
 from model import Crime_Stat,connect_to_db, db
 import json
@@ -16,7 +16,12 @@ app.jinja_env.undefined = StrictUndefined
 @app.route('/')
 def index():
     """Homepage."""
+   
+    return render_template("homepage.html") 
     
+@app.route('/crime')
+def get_crime_stats():
+
     crime_stats = Crime_Stat.query.limit(10).all()
     geoJSON_compiled = {}
     
@@ -26,10 +31,8 @@ def index():
         geoJSON_compiled[crime.incident_id]['long'] = str(decimal.Decimal(crime.y_cord))
         geoJSON_compiled[crime.incident_id]['id'] = crime.incident_id
         # geoJSON_compiled[crime.incident_id]['address'] = crime.address
-        
-        
-    locations = jsonify(geoJSON_compiled)
-    return render_template("homepage.html",crime_locations=locations) 
+    
+    return jsonify(geoJSON_compiled)
     
 @app.route('/users')
 def get_user_profile():

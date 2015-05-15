@@ -22,7 +22,8 @@
         var geocoder = L.mapbox.geocoder('mapbox.places'),
         map = L.mapbox.map('map', 'shabemdadi.fab5eb0c')
             .addLayer(L.mapbox.tileLayer('shabemdadi.fab5eb0c'))
-            .addControl(L.mapbox.geocoderControl('mapbox.places'));
+            .addControl(L.mapbox.geocoderControl('mapbox.places')),
+            heat = L.heatLayer([], { maxZoom: 12 }).addTo(map);
         
         // Set location to be San Francisco
         geocoder.query('San Francisco, CA', showMap);
@@ -36,29 +37,35 @@
                 map.setView([data.latlng[0], data.latlng[1]], 13);
             }
         }
-        
-        // Assign markers to locations of crime incidents 
-        $.get("/crime",function(result){
-            var geojson = [];
+
+        var heat = L.heatLayer([], { maxZoom: 12 }).addTo(map);
+        $.get('/crime', function(result) {
             for(item in result){
                 var item_loc = 
                       {
-                        "type": "Feature",
-                        "geometry": {
-                          "type": "Point",
-                          "coordinates": [result[item]['lat'], result[item]['long']]
+                        type: "Feature",
+                        geometry: {
+                          type: "Point",
+                          coordinates: [result[item]['lat'], result[item]['long']]
                         },
-                        "properties": {
-                          "title": "Mapbox DC",
-                          "description": "1714 14th St NW, Washington DC", // need to add in address
+                        properties: {
+                          title: "Mapbox DC",
+                          description: "1714 14th St NW, Washington DC", // need to add in address
                           "marker-color": "#fc4353",
                           "marker-size": "large",
                           "marker-symbol": "monument"
                         }
                       };
-                geojson.push(item_loc);};
-                map.featureLayer.setGeoJSON(geojson);});
-       
+                console.log(item_loc.geometry.coordinates);
+                var geojson_new = L.geoJson(item_loc, {
+                    function(feature, layer) {
+                    console.log(feature.geometry.coordinates);
+                    console.log(typeof(feature.geometry.coordinates[0]));
+                    heat.addLatLng(L.latLng(parseFloat(feature.geometry.coordinates[0]), parseFloat(feature.geometry.coordinates[1])));
+                    console.log(heat);
+                    }
+                });}});
+                
     </script>
 </body>
 </html>

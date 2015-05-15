@@ -17,7 +17,7 @@ app.jinja_env.undefined = StrictUndefined
 def index():
     """Homepage."""
    
-    return render_template("homepage.html") 
+    return render_template("homepage2.html") 
     
 @app.route('/crime')
 def get_crime_stats():

@@ -29,12 +29,6 @@ class Crime_Stat(db.Model):
     x_cord = db.Column(db.Numeric, nullable=False)
     y_cord = db.Column(db.Numeric, nullable=False)
     
-           
-    def decimal_default(self):
-        if isinstance(self, decimal.Decimal):
-            return float(self)
-        raise TypeError
-    
     
 class Victim_Data(db.Model):
     """Table of victim data"""

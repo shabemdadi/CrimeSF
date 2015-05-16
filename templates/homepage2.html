@@ -15,15 +15,14 @@
     <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-heat/v0.1.3/leaflet-heat.js'></script>
     <div id='map'></div>
     <script>
-        // Provide access token
+            // Provide access token
         L.mapbox.accessToken = 'pk.eyJ1Ijoic2hhYmVtZGFkaSIsImEiOiIwckNSMkpvIn0.MeYrWfZexYn1AwdiasXbsg';
         
         // Set up map characteristics
         var geocoder = L.mapbox.geocoder('mapbox.places'),
-        map = L.mapbox.map('map', 'shabemdadi.fab5eb0c')
-            .addLayer(L.mapbox.tileLayer('shabemdadi.fab5eb0c'))
-            .addControl(L.mapbox.geocoderControl('mapbox.places')),
-            heat = L.heatLayer([], { maxZoom: 12 }).addTo(map);
+            map = L.mapbox.map('map', 'shabemdadi.fab5eb0c')
+                .addLayer(L.mapbox.tileLayer('shabemdadi.fab5eb0c'))
+                .addControl(L.mapbox.geocoderControl('mapbox.places'));
         
         // Set location to be San Francisco
         geocoder.query('San Francisco, CA', showMap);
@@ -38,34 +37,23 @@
             }
         }
 
-        var heat = L.heatLayer([], { maxZoom: 12 }).addTo(map);
-        $.get('/crime', function(result) {
-            for(item in result){
-                var item_loc = 
-                      {
-                        type: "Feature",
-                        geometry: {
-                          type: "Point",
-                          coordinates: [result[item]['lat'], result[item]['long']]
-                        },
-                        properties: {
-                          title: "Mapbox DC",
-                          description: "1714 14th St NW, Washington DC", // need to add in address
-                          "marker-color": "#fc4353",
-                          "marker-size": "large",
-                          "marker-symbol": "monument"
-                        }
-                      };
-                console.log(item_loc.geometry.coordinates);
-                var geojson_new = L.geoJson(item_loc, {
-                    function(feature, layer) {
-                    console.log(feature.geometry.coordinates);
-                    console.log(typeof(feature.geometry.coordinates[0]));
-                    heat.addLatLng(L.latLng(parseFloat(feature.geometry.coordinates[0]), parseFloat(feature.geometry.coordinates[1])));
-                    console.log(heat);
+        // var heat = L.heatLayer([], { maxZoom: 12 });
+
+        $.getJSON('/crime', function(data) {
+            var addressPoints = [];
+            var geojson = L.geoJson(data, {
+                onEachFeature: function(feature, layer) {
+                    // L.mapbox.featureLayer(feature).addTo(map);
+                    addressPoints.push([feature.geometry.coordinates[0], feature.geometry.coordinates[1]]);
+                    // heat.addLatLng(L.latLng(feature.geometry.coordinates[0], feature.geometry.coordinates[1]));
+                    // console.log(heat);
                     }
-                });}});
-                
-    </script>
+            });
+            var heat = L.heatLayer(addressPoints).addTo(map);
+            console.log(addressPoints);
+            console.log(heat);
+        });
+
+        </script>
 </body>
 </html>

@@ -23,16 +23,34 @@ def index():
 def get_crime_stats():
 
     crime_stats = Crime_Stat.query.limit(10).all()
-    crime_dict = {}
+    marker_list = ""
     
     for crime in crime_stats:           # need to add in address
-        crime_dict[crime.incident_id] = {}
-        crime_dict[crime.incident_id]['lat'] = str(decimal.Decimal(crime.x_cord))
-        crime_dict[crime.incident_id]['long'] = str(decimal.Decimal(crime.y_cord))
-        crime_dict[crime.incident_id]['id'] = crime.incident_id
-        
-    print jsonify(crime_dict)
-    return jsonify(crime_dict)
+        marker_object = """
+                        {
+                        "type": "Feature",
+                        "geometry": {
+                          "type": "Point",
+                          "coordinates": [%s, %s]
+                        },
+                        "properties": {
+                          "title": "Mapbox DC",
+                          "description": "1714 14th St NW, Washington DC",
+                          "marker-color": "#fc4353",
+                          "marker-size": "large",
+                          "marker-symbol": "monument"
+                        }
+                      }""" % (str(decimal.Decimal(crime.x_cord)), str(decimal.Decimal(crime.y_cord)))
+
+        if marker_list != "":
+            marker_list = marker_list + "," + marker_object
+        else:
+            marker_list = marker_list + marker_object
+
+    final_marker_list = """{ "type": "FeatureCollection","features": [""" + marker_list + "]}"
+    print str(final_marker_list)
+    return str(final_marker_list)
+
                 
     
 @app.route('/users')

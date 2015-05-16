@@ -48,8 +48,9 @@ def get_crime_stats():
             marker_list = marker_list + marker_object
 
     final_marker_list = """{ "type": "FeatureCollection","features": [""" + marker_list + "]}"
-    print str(final_marker_list)
-    return str(final_marker_list)
+
+    print final_marker_list
+    return final_marker_list
 
                 
     

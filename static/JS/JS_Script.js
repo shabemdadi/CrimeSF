@@ -1,21 +1,4 @@
-<html>
-<head>
-<meta charset=utf-8 />
-<title>A simple map</title>
-<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-<script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js'></script>
-<script src="https://code.jquery.com/jquery.js"></script>
-<link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
-<style>
-  body { margin:0; padding:0; }
-  #map { position:absolute; top:0; bottom:0; width:100%; }
-</style>
-</head>
-<body>
-    <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-heat/v0.1.3/leaflet-heat.js'></script>
-    <div id='map'></div>
-    <script>
-            // Provide access token
+        // Provide access token
         L.mapbox.accessToken = 'pk.eyJ1Ijoic2hhYmVtZGFkaSIsImEiOiIwckNSMkpvIn0.MeYrWfZexYn1AwdiasXbsg';
         
         // Set up map characteristics
@@ -36,17 +19,18 @@
                 map.setView([data.latlng[0], data.latlng[1]], 13);
             }
         }
+
         var heat = L.heatLayer([], { maxZoom: 12 }).addTo(map);
 
-        $.getJSON('/crime', function(data) {
-            var geojson = L.geoJson(data, {
+        $.get('/crime', function(data) {
+            console.log(JSON.parse(data));
+            console.log("this is running");
+            var geojson = L.geoJson(JSON.parse(data), {
                 onEachFeature: function(feature, layer) {
-                    L.mapbox.featureLayer(feature).addTo(map);
-                    heat.addLatLng(L.latLng(feature.geometry.coordinates[0], feature.geometry.coordinates[1]));
-                    }
+                    console.log("this is running");
+                    feature.geometry.coordinates.forEach(function(p) {
+                        heat.addLatLng(L.latLng(p[0], p[1]));
+                    });
+                }
             });
         });
-
-        </script>
-</body>
-</html>

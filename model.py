@@ -21,45 +21,26 @@ class Crime_Stat(db.Model):
     
     incident_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     category = db.Column(db.String(60), nullable=False)
+    map_category = db.Column(db.String(60), nullable=False)
+    description = db.Column(db.String(200), nullable=False)
     day_of_week = db.Column(db.String(10), nullable=False)
     date = db.Column(db.Date, nullable=False)
     time = db.Column(db.Time, nullable=False)
     district = db.Column(db.String(60), nullable=False)
-    # address = db.Column(db.String(100), nullable=False)
     x_cord = db.Column(db.Numeric, nullable=False)
     y_cord = db.Column(db.Numeric, nullable=False)
     
     
-class Victim_Data(db.Model):
+class Victim_Stats(db.Model):
     """Table of victim data"""
     
-    __tablename__ = "victim_data"
+    __tablename__ = "victim_stats"
     
     victim_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    age_start = db.Column(db.Integer, nullable=False)
-    age_end = db.Column(db.Integer, nullable=False)
+    age_range = db.Column(db.String(10), nullable=False)
     gender = db.Column(db.String(10), nullable=False)
     category = db.Column(db.String(60), nullable=False)
-    weight = db.Column(db.Numeric, nullable=False)
-
-class Crime_Category(db.Model):
-    """Table of standardized crime categories"""
-    
-    __tablename__ = "crime_categories"
-    
-    category_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    category_name = db.Column(db.String(60), nullable=False)
-    
-class User (db.Model):
-
-    """Table of User information"""
-    
-    __tablename__ = "users"
-    
-    user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    age = db.Column(db.Integer, nullable=False)
-    gender = db.Column(db.String(10), nullable=False)
-    
+    percent = db.Column(db.Numeric, nullable=False)
     
     
 ##############################################################################

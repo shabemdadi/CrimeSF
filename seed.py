@@ -12,7 +12,7 @@ def load_crime_stats():
     # variables in this dataset: 'IncidntNum','Category','Descript','DayOfWeek','Date','Time','PdDistrict','Resolution','Address','X','Y','Location'
 
 
-    map_category_dict = {'LARCENY/THEFT':'rape/sexual assault',
+    map_category_dict = {'LARCENY/THEFT':'personal theft/larceny',
                          'BURGLARY':'robbery',
                          'SEX OFFENSES, FORCIBLE':'rape/sexual assault',
                          'VEHICLE THEFT':'personal theft/larceny',
@@ -26,7 +26,7 @@ def load_crime_stats():
         reader = csv.reader(f)
     
         for i, row in enumerate(reader):
-            if i > 1:
+            if i > 0:
                 category = row[1]
                 description = row[2]
                 if category == "ASSAULT":
@@ -68,7 +68,7 @@ def load_victim_stats():
         reader = csv.reader(f)
                               
         for i, row in enumerate(reader):
-            if i > 1:
+            if i > 0:
                 category = row[0]
                 age_range = row[1]
                 gender = row[2]
@@ -83,5 +83,5 @@ def load_victim_stats():
 if __name__ == "__main__":
     connect_to_db(app)
 
-    #load_crime_stats()
+    load_crime_stats()
     load_victim_stats()

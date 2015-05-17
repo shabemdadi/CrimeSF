@@ -4,6 +4,9 @@ from flask_debugtoolbar import DebugToolbarExtension
 from model import Crime_Stat, Victim_Stats, connect_to_db, db
 import json
 import decimal
+import requests
+import time
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 
@@ -51,6 +54,17 @@ def get_crime_stats():
 
     print jsonify(marker_object_dict)
     return jsonify(marker_object_dict)
+
+def get_recent_crime():
+
+    current_datetime = datetime.now()
+    month_ago_date = current_datetime.strftime('%m/%d/%Y')
+    month_ago_time = current_datetime.strftime('%H:%M')
+
+
+    data = requests.get("https://data.sfgov.org/resource/ritf-b9ki.json$$app_token=RvFtAMemRY6per3vRmUEutOfM?date>%sANDtime>%s" % (month_ago_date, month_ago_time)
+
+
     
 
 if __name__ == "__main__":

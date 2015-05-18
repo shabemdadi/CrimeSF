@@ -27,45 +27,36 @@
     <nav id='filters' class='filter-ui'></nav>
     <div id='map'></div>
     <script>
-            // Provide access token
+        // Provide access token
         L.mapbox.accessToken = 'pk.eyJ1Ijoic2hhYmVtZGFkaSIsImEiOiIwckNSMkpvIn0.MeYrWfZexYn1AwdiasXbsg';
         
         // Set up map characteristics and layers
-        var geocoder = L.mapbox.geocoder('mapbox.places');
 
         var map = L.mapbox.map('map', 'shabemdadi.fab5eb0c')
                 .addLayer(L.mapbox.tileLayer('shabemdadi.fab5eb0c'))
-                .addControl(L.mapbox.geocoderControl('mapbox.places'));
+                .addControl(L.mapbox.geocoderControl('mapbox.places', {
+                autocomplete: true
+                    }));
+                // L.control.locate().addTo(map);
+
 
         var heat = L.heatLayer([], { maxZoom: 12 }).addTo(map);
 
         var feature_layer = L.mapbox.featureLayer();
 
         var filters = document.getElementById('filters');
-        
-        // Set location to be San Francisco
-        geocoder.query('San Francisco, CA', showMap);
-        function showMap(err, data) {
-            // The geocoder can return an area, like a city, or a
-            // point, like an address. Here we handle both cases,
-            // by fitting the map bounds to an area or zooming to a point.
-            if (data.lbounds) {
-                map.fitBounds(data.lbounds);
-            } else if (data.latlng) {
-                map.setView([data.latlng[0], data.latlng[1]], 13);
-            }
-        }
-
-        $.getJSON('/recent', function(data) {})
 
 
         $.getJSON('/crime', function(data) {
             feature_layer = L.mapbox.featureLayer(data).addTo(map);
+            feature_layer.on('click', function(e) {
+                map.panTo(e.layer.getLatLng());
+            });
             console.log(data);
-            var geojson = L.geoJson(data, {
-                onEachFeature: function(feature, layer) {
-                    heat.addLatLng(L.latLng(feature.geometry.coordinates[0], feature.geometry.coordinates[1]));
-                    }
+            map.fitBounds(feature_layer.getBounds());
+            // Add each marker point to the heatmap.
+            feature_layer.eachLayer(function(l) {
+                heat.addLatLng(l.getLatLng());
             });
 
 

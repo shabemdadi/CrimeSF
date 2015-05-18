@@ -54,6 +54,7 @@ def get_crime_stats():
     print jsonify(marker_object_dict)
     return jsonify(marker_object_dict)
 
+@app.route('/recent')
 def get_recent_crime():
 
     current_datetime = datetime.now()

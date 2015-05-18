@@ -12,14 +12,14 @@ def load_crime_stats():
     # variables in this dataset: 'IncidntNum','Category','Descript','DayOfWeek','Date','Time','PdDistrict','Resolution','Address','X','Y','Location'
 
 
-    map_category_dict = {'LARCENY/THEFT':'personal theft/larceny',
-                         'BURGLARY':'robbery',
-                         'SEX OFFENSES, FORCIBLE':'rape/sexual assault',
-                         'VEHICLE THEFT':'personal theft/larceny',
-                         'ROBBERY':'personal theft/larceny',
-                         'ARSON':'personal theft/larceny',
-                         'STOLEN PROPERTY':'personal theft/larceny',
-                         'SEX OFFENSES, NON FORCIBLE':'rape/sexual assault'
+    map_category_dict = {'LARCENY/THEFT':'Personal Theft/Larceny',
+                         'BURGLARY':'Robbery',
+                         'SEX OFFENSES, FORCIBLE':'Rape/Sexual Assault',
+                         'VEHICLE THEFT':'Personal Theft/Larceny',
+                         'ROBBERY':'Personal Theft/Larceny',
+                         'ARSON':'Personal Theft/Larceny',
+                         'STOLEN PROPERTY':'Personal Theft/Larceny',
+                         'SEX OFFENSES, NON FORCIBLE':'Rape/Sexual Assault'
                          }
 
     with open('Data\Map__Crime_Incidents_-_from_1_Jan_2003.csv', 'rb') as f:

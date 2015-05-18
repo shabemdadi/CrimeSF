@@ -50,7 +50,6 @@ def get_crime_stats():
         marker_object_list.append(marker_object)              
 
     marker_object_dict["features"] = marker_object_list    
-    # final_marker_list = """{ "type": "FeatureCollection","features": [""" + marker_list + "]}"
 
     print jsonify(marker_object_dict)
     return jsonify(marker_object_dict)
@@ -58,11 +57,13 @@ def get_crime_stats():
 def get_recent_crime():
 
     current_datetime = datetime.now()
-    month_ago_date = current_datetime.strftime('%m/%d/%Y')
-    month_ago_time = current_datetime.strftime('%H:%M')
+    current_datetime_formatted = current_datetime.strftime('%Y-%M-%dT%H:%M:%S')
+    month_ago_datetime = current_datetime - timedelta(days=30)
+    month_ago_datetime_formatted = month_ago_datetime.strftime('%Y-%M-%dT%H:%M:%S')
+    month_ago_time_formatted = month_ago_datetime.strftime('%H:%M')
 
 
-    data = requests.get("https://data.sfgov.org/resource/ritf-b9ki.json$$app_token=RvFtAMemRY6per3vRmUEutOfM?date>%sANDtime>%s" % (month_ago_date, month_ago_time)
+    data = requests.get("https://data.sfgov.org/resource/ritf-b9ki.json?$WHERE=dateBETWEEN%sAND%S" % (current_datetime_formatted, month_ago_time_formatted))
 
 
     

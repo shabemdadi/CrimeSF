@@ -1,17 +1,13 @@
-1.what year to show crimes
-2.map changes by year of crime (timeline?)
+1.user picks period to see heatmap crimes
+2.user picks period to see markers
 3.trend line graphs by month, time of day, day of week
-4.routing
-5.shaded by old crime
-6.markers with more recent crime
-7.select age and gender
-8.map changes shading due to age and gender
-9.database questions (import and save all crime stats or keep requesting? cache?
-10.show probabilites (only use recent year?)
-12.add locate yourself feature
-13.style filter menu
-14.save JS in separate file
-15.template inheritance
-16.click/hover over recent events
-17.marker icons
-18.heat opacity
+4.select age and gender and have crime map weighed accordingly
+5.cacheing
+6.angular
+7.show probabilites (only use recent year?)
+8.style filter menu
+9.save JS in separate file
+10.template inheritance
+11.click/hover over recent events and have info (address, district, description, time,date,weekday, category)
+12.marker icons
+13.heat opacity

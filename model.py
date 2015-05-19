@@ -20,6 +20,7 @@ class Crime_Stat(db.Model):
     __tablename__ = "crime_stats"
     
     incident_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    incident_num = db.Column(db.String(60), nullable=False)
     category = db.Column(db.String(60), nullable=False)
     map_category = db.Column(db.String(60), nullable=False)
     description = db.Column(db.String(200), nullable=False)
@@ -27,11 +28,12 @@ class Crime_Stat(db.Model):
     date = db.Column(db.Date, nullable=False)
     time = db.Column(db.Time, nullable=False)
     district = db.Column(db.String(60), nullable=False)
+    address = db.Column(db.String(60), nullable=True)
     x_cord = db.Column(db.Numeric, nullable=False)
     y_cord = db.Column(db.Numeric, nullable=False)
     
     
-class Victim_Stats(db.Model):
+class Victim_Stat(db.Model):
     """Table of victim data"""
     
     __tablename__ = "victim_stats"
@@ -41,8 +43,15 @@ class Victim_Stats(db.Model):
     gender = db.Column(db.String(10), nullable=False)
     category = db.Column(db.String(60), nullable=False)
     percent = db.Column(db.Numeric, nullable=False)
-    
-    
+
+class Data_Import(db.Model):
+    """Table showing info on last crime statictics import"""
+
+    __tablename__ = "data_imports"
+
+    import_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    max_date = db.Column(db.Date, nullable=False)
+
 ##############################################################################
 # Helper functions
 

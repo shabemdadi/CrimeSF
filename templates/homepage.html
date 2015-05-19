@@ -6,6 +6,7 @@
 <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js'></script>
 <script src="https://code.jquery.com/jquery.js"></script>
 <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
+<link href='https://www.mapbox.com/base/latest/base.css' rel='stylesheet' />
 <style>
   body { margin:0; padding:0; }
   #map { position:absolute; top:0; bottom:0; width:100%; }
@@ -24,6 +25,11 @@
       }
     </style>
     <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-heat/v0.1.3/leaflet-heat.js'></script>
+
+    <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.42.0/L.Control.Locate.min.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.42.0/L.Control.Locate.mapbox.css' rel='stylesheet' />
+
+
     <nav id='filters' class='filter-ui'></nav>
     <div id='map'></div>
     <script>
@@ -37,8 +43,9 @@
                 .addControl(L.mapbox.geocoderControl('mapbox.places', {
                 autocomplete: true
                     }));
-                // L.control.locate().addTo(map);
+                L.control.locate().addTo(map);
 
+        // new L.Control.Zoom({ position: 'topleft' }).addTo(map);
 
         var heat = L.heatLayer([], { maxZoom: 12 }).addTo(map);
 

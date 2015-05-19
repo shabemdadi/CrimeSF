@@ -28,7 +28,7 @@ class Crime_Stat(db.Model):
     date = db.Column(db.Date, nullable=False)
     time = db.Column(db.Time, nullable=False)
     district = db.Column(db.String(60), nullable=False)
-    address = db.Column(db.String(60), nullable=True)
+    address = db.Column(db.String(60), nullable=False)
     x_cord = db.Column(db.Numeric, nullable=False)
     y_cord = db.Column(db.Numeric, nullable=False)
     

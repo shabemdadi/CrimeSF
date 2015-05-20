@@ -7,6 +7,7 @@ import decimal
 import requests
 from sqlalchemy import desc
 import csv
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -22,7 +23,7 @@ def index():
    
     return render_template("homepage.html")
     
-@app.route('/crime')
+@app.route('/crime',methods=["GET","POST"])
 def get_crime_stats():
     """Update crime stats database with API call and make json object containing crime data"""
 
@@ -88,35 +89,75 @@ def get_crime_stats():
 
     db.session.commit()
 
-    crime_stats = Crime_Stat.query.limit(10).all()
-    marker_object_dict = { "type": "FeatureCollection"}
-    marker_object_list = []
+    start_date = request.form.get("daterangepicker_start") 
+    print start_date
+    end_date = request.form.get("daterangepicker_end")
 
-    marker_symbol_dict = {}
-    
-    for crime in crime_stats:           # need to add in address
-        marker_object = {
-                        "type": "Feature",
-                        "geometry": {
-                          "type": "Point",
-                          "coordinates": [str(decimal.Decimal(crime.x_cord)), str(decimal.Decimal(crime.y_cord))]
-                        },
-                        "properties": {
-                          "title": "Mapbox DC",
-                          "description": crime.map_category,
-                          "marker-color": "#fc4353",
-                          "marker-size": "large",
-                          "marker-symbol": "monument"
-                        }
-                      }
+    if start_date:
 
-        marker_object_list.append(marker_object)              
+        print "start_date has been posted"
 
-    marker_object_dict["features"] = marker_object_list    
+        start_date_formatted = datetime.strptime(start_date,"%m/%d/%Y")
+        end_date_formatted = datetime.strptime(end_date,"%m/%d/%Y")
 
-    print jsonify(marker_object_dict)
-    return jsonify(marker_object_dict)
-    
+        crime_stats = Crime_Stat.query.filter(Crime_Stat.Date >= start_date_formmatted, Crime_Stat.Date <= end_date_formatted).limit(10).all()
+        marker_object_dict = { "type": "FeatureCollection"}
+        marker_object_list = []
+
+        marker_symbol_dict = {}
+        
+        for crime in crime_stats:           # need to add in address
+            marker_object = {
+                            "type": "Feature",
+                            "geometry": {
+                              "type": "Point",
+                              "coordinates": [str(decimal.Decimal(crime.x_cord)), str(decimal.Decimal(crime.y_cord))]
+                            },
+                            "properties": {
+                              "title": "Mapbox DC",
+                              "description": crime.map_category,
+                              "marker-color": "#fc4353",
+                              "marker-size": "large",
+                              "marker-symbol": "monument"
+                            }
+                          }
+
+            marker_object_list.append(marker_object)              
+
+        marker_object_dict["features"] = marker_object_list    
+
+        return jsonify(marker_object_dict)
+
+    else:    
+
+        crime_stats = Crime_Stat.query.limit(10).all()
+        marker_object_dict = { "type": "FeatureCollection"}
+        marker_object_list = []
+
+        marker_symbol_dict = {}
+        
+        for crime in crime_stats:           # need to add in address
+            marker_object = {
+                            "type": "Feature",
+                            "geometry": {
+                              "type": "Point",
+                              "coordinates": [str(decimal.Decimal(crime.x_cord)), str(decimal.Decimal(crime.y_cord))]
+                            },
+                            "properties": {
+                              "title": "Mapbox DC",
+                              "description": crime.map_category,
+                              "marker-color": "#fc4353",
+                              "marker-size": "large",
+                              "marker-symbol": "monument"
+                            }
+                          }
+
+            marker_object_list.append(marker_object) 
+            print crime.date             
+
+        marker_object_dict["features"] = marker_object_list    
+
+        return jsonify(marker_object_dict)
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point

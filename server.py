@@ -100,7 +100,7 @@ def get_crime_stats():
         start_date_formatted = datetime.strptime(start_date,"%m/%d/%Y")
         end_date_formatted = datetime.strptime(end_date,"%m/%d/%Y")
 
-        crime_stats = Crime_Stat.query.filter(Crime_Stat.Date >= start_date_formmatted, Crime_Stat.Date <= end_date_formatted).limit(10).all()
+        crime_stats = Crime_Stat.query.filter(Crime_Stat.date >= start_date_formatted, Crime_Stat.date <= end_date_formatted).limit(10).all()
         marker_object_dict = { "type": "FeatureCollection"}
         marker_object_list = []
 

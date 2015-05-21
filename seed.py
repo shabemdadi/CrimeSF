@@ -64,6 +64,71 @@ def load_crime_stats():
 
         db.session.commit()
 
+def load_recent_stats():
+    """Check API to see if there are new crime stats, if so, import into database."""
+
+    map_category_dict = {'LARCENY/THEFT':'Personal Theft/Larceny',
+                 'BURGLARY':'Robbery',
+                 'SEX OFFENSES, FORCIBLE':'Rape/Sexual Assault',
+                 'VEHICLE THEFT':'Personal Theft/Larceny',
+                 'ROBBERY':'Personal Theft/Larceny',
+                 'ARSON':'Personal Theft/Larceny',
+                 'STOLEN PROPERTY':'Personal Theft/Larceny',
+                 'SEX OFFENSES, NON FORCIBLE':'Rape/Sexual Assault'
+                 }
+
+    recent_import_date = Data_Import.query.order_by(desc(Data_Import.max_date)).first().max_date
+
+    recent_import_date_formatted = recent_import_date.strftime('%Y-%m-%dT%H:%M:%S')
+
+    data = requests.get("https://data.sfgov.org/resource/gxxq-x39z.csv?$WHERE=date>='%s'&$$app_token=RvFtAMemRY6per3vRmUEutOfM" % recent_import_date_formatted)
+
+    data_text = data.text
+
+    reader = csv.reader(data_text.splitlines(), delimiter='\t')
+
+    for i, row in enumerate(reader):
+        newrow = row[0].strip("'")
+        newrow_split = newrow.split(",")
+        if i > 0:
+            try:
+                overlap = Crime_Stat.query.filter_by(incident_num=newrow_split[0]).one()
+            except:
+                incident_num = newrow_split[0]
+                category = newrow_split[1]
+                description = newrow_split[2]
+                if category == "ASSAULT":
+                    if "AGGRAVATED" in description:
+                        map_category = "Aggravated assault"
+                    else:
+                        map_category = "Simple assault"
+                else:
+                    if category in map_category_dict:
+                        map_category = map_category_dict[category]
+                    else:
+                        map_category = "Other"
+                day_of_week = newrow_split[3]
+                date_input = newrow_split[4]
+                date = datetime.strptime(date_input, "%m/%d/%Y %H:%M:%S %p")
+                time_input = newrow_split[5]
+                time = datetime.strptime(time_input,"%H:%M").time()
+                district = newrow_split[6]
+                address = newrow_split[8]
+                x_cord = newrow_split[9]
+                y_cord = newrow_split[10]
+                
+                incident = Crime_Stat(incident_num=incident_num,category=category,address=address,description=description,map_category=map_category,day_of_week=day_of_week,
+                    date=date,time=time,district=district,x_cord=x_cord,y_cord=y_cord)
+                db.session.add(incident)
+                if i % 1000 == 0:
+                    db.session.commit()
+
+    max_date = Crime_Stat.query.order_by(desc(Crime_Stat.date)).first().date
+    data_import = Data_Import(max_date=max_date)
+    db.session.add(data_import)
+
+    db.session.commit()
+
 def load_victim_stats():
     """Load victim stats from csv file into database"""
     
@@ -91,5 +156,6 @@ def load_victim_stats():
 if __name__ == "__main__":
     connect_to_db(app)
 
-    load_crime_stats()
+    #load_crime_stats()
     #load_victim_stats()
+    load_recent_stats()

@@ -57,6 +57,10 @@
                 <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
                 <span></span> <b class="caret"></b>
                 </div>
+                <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                <span></span> <b class="caret"></b>
+                </div>
             </div>    
         </div>
     </div>
@@ -126,32 +130,20 @@
 
         // new L.Control.Zoom({ position: 'topleft' }).addTo(map);
 
-        var heat = L.heatLayer([], { maxZoom: 12 }).addTo(map);
-
-        var feature_layer = L.mapbox.featureLayer();
-
         var filters = document.getElementById('filters');
 
+        function addMarkerLayer(data) {
+                feature_layer = L.mapbox.featureLayer(data).addTo(map);
+                feature_layer.on('click', function(e) {
+                    map.panTo(e.layer.getLatLng());
+                });
+                map.fitBounds(feature_layer.getBounds());
+                };
 
-        $.getJSON('/crime', function(data) {
-            feature_layer = L.mapbox.featureLayer(data).addTo(map);
-            feature_layer.on('click', function(e) {
-                map.panTo(e.layer.getLatLng());
-            });
-            map.fitBounds(feature_layer.getBounds());
-            // Add each marker point to the heatmap.
-            feature_layer.eachLayer(function(l) {
-                heat.addLatLng(l.getLatLng());
-            });
-
-
-        // Wait until the marker layer is loaded in order to build a list of possible
-        // types. If you are doing this with another featureLayer, you should change
-        // map.featureLayer to the variable you have assigned to your featureLayer
-        // feature_layer.on('ready', function() {
-          // Collect the types of symbols in this layer. you can also just
-          // hardcode an array of types if you know what you want to filter on,
-          // like var types = ['foo', 'bar'];
+        function addFilters() {
+        // Wait until the marker layer is loaded in order to build a list of possible types. If you are doing this with another featureLayer, you should change map.featureLayer to the variable you have assigned to your featureLayer
+            // feature_layer.on('ready', function() {
+        // Collect the types of symbols in this layer. you can also just hardcode an array of types if you know what you want to filter on, like var types = ['foo', 'bar'];
           var typesObj = {}, types = [];
           var features = feature_layer.getGeoJSON().features;
           for (var i = 0; i < features.length; i++) {
@@ -178,117 +170,61 @@
             checkboxes.push(checkbox);
           }
 
-          // This function is called whenever someone clicks on a checkbox and changes
-          // the selection of markers to be displayed.
+          // This function is called whenever someone clicks on a checkbox and changes the selection of markers to be displayed.
           function update() {
             var enabled = {};
-            // Run through each checkbox and record whether it is checked. If it is,
-            // add it to the object of types to display, otherwise do not.
+            // Run through each checkbox and record whether it is checked. If it is, add it to the object of types to display, otherwise do not.
             for (var i = 0; i < checkboxes.length; i++) {
               if (checkboxes[i].checked) enabled[checkboxes[i].id] = true;
             }
             feature_layer.setFilter(function(feature) {
-              // If this symbol is in the list, return true. if not, return false.
-              // The 'in' operator in javascript does exactly that: given a string
-              // or number, it says if that is in a object.
-              // 2 in { 2: true } // true
-              // 2 in { } // false
+              // If this symbol is in the list, return true. if not, return false. The 'in' operator in javascript does exactly that: given a string or number, it says if that is in 
+              // a object.
               return (feature.properties['description'] in enabled);
             });
-          }
-    });
+          };};
+
+    function addHeat(addressPoints) {
+        // Add each marker point to the heatmap.
+            var heat = L.heatLayer(addressPoints1, {
+            radius : 25, // default value
+            blur : 15, // default value
+            gradient : {1: 'blue'} // Values can be set for a scale of 0-1
+        }).addTo(map);
+            };
+    
+    $.getJSON('/markers', { start_date: [], end_date: [] } ).done(function(data){addMarkerLayer(data);addFilters();});
 
 
     $(document).ready(function () { 
-        $('.range_inputs').on('submit', function(e) {
+        $('#date_form_markers').on('submit', function(e) {
       //do something, like clearing an input
           e.preventDefault();
-          console.log("range applied");
+          debugger;
           var start_date = document.getElementsByName('daterangepicker_start')[0].value;
           var end_date = document.getElementsByName('daterangepicker_end')[0].value;
           map.removeLayer(feature_layer);
+          $.getJSON('/markers', { start_date: start_date, end_date: end_date } ).done(function(data){
+            console.log("get is running");
+            addMarkerLayer(data);
+            addFilters();
+        });
+          // $('#reportrange').val('');
+        });
+    });
+
+    $(document).ready(function () { 
+        $('#date_form_heat').on('submit', function(e) {
+      //do something, like clearing an input
+          e.preventDefault();
+          debugger;
+          var start_date = document.getElementsByName('daterangepicker_start')[0].value;
+          var end_date = document.getElementsByName('daterangepicker_end')[0].value;
           map.removeLayer(heat);
-          console.log(feature_layer);
-          console.log(heat); 
-        
-            // var heat = L.heatLayer([], { maxZoom: 12 }).addTo(map);
-
-            // var feature_layer = L.mapbox.featureLayer();
-
-            var filters = document.getElementById('filters');
-
-            $.getJSON('/crime', function(data) {
-                console.log("get is running");
-                feature_layer = L.mapbox.featureLayer(data).addTo(map);
-                console.log(feature_layer);
-                feature_layer.on('click', function(e) {
-                    map.panTo(e.layer.getLatLng());
-                });
-                console.log(data);
-                map.fitBounds(feature_layer.getBounds());
-                // Add each marker point to the heatmap.
-                feature_layer.eachLayer(function(l) {
-                    console.log("heat running")
-                    heat.addLatLng(l.getLatLng());
-                });
-                console.log(heat);
-
-
-            // Wait until the marker layer is loaded in order to build a list of possible
-            // types. If you are doing this with another featureLayer, you should change
-            // map.featureLayer to the variable you have assigned to your featureLayer
-            // feature_layer.on('ready', function() {
-              // Collect the types of symbols in this layer. you can also just
-              // hardcode an array of types if you know what you want to filter on,
-              // like var types = ['foo', 'bar'];
-              console.log("this is running");
-              var typesObj = {}, types = [];
-              var features = feature_layer.getGeoJSON().features;
-              console.log(features);
-              for (var i = 0; i < features.length; i++) {
-                typesObj[features[i].properties['description']] = true;
-                }
-          
-              for (var k in typesObj) types.push(k);
-
-              var checkboxes = [];
-              // Create a filter interface.
-              for (var i = 0; i < types.length; i++) {
-                // Create an an input checkbox and label inside.
-                var item = filters.appendChild(document.createElement('div'));
-                var checkbox = item.appendChild(document.createElement('input'));
-                var label = item.appendChild(document.createElement('label'));
-                checkbox.type = 'checkbox';
-                checkbox.id = types[i];
-                checkbox.checked = true;
-                // create a label to the right of the checkbox with explanatory text
-                label.innerHTML = types[i];
-                label.setAttribute('for', types[i]);
-                // Whenever a person clicks on this checkbox, call the update().
-                checkbox.addEventListener('change', update);
-                checkboxes.push(checkbox);
-              }
-
-              // This function is called whenever someone clicks on a checkbox and changes
-              // the selection of markers to be displayed.
-              function update() {
-                var enabled = {};
-                // Run through each checkbox and record whether it is checked. If it is,
-                // add it to the object of types to display, otherwise do not.
-                for (var i = 0; i < checkboxes.length; i++) {
-                  if (checkboxes[i].checked) enabled[checkboxes[i].id] = true;
-                }
-                feature_layer.setFilter(function(feature) {
-                  // If this symbol is in the list, return true. if not, return false.
-                  // The 'in' operator in javascript does exactly that: given a string
-                  // or number, it says if that is in a object.
-                  // 2 in { 2: true } // true
-                  // 2 in { } // false
-                  return (feature.properties['description'] in enabled);
-                });
-              }
-            });
-
+          $.getJSON('/heat', { start_date: start_date, end_date: end_date } ).done(function(data){
+            console.log("get is running");
+            addHeat(data);
+        });
           // $('#reportrange').val('');
         });
     });

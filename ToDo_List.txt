@@ -6,8 +6,9 @@
 6.angular
 7.show probabilites (only use recent year?)
 8.style filter menu
-9.save JS in separate file
+9.save JS in separate files
 10.template inheritance
 11.click/hover over recent events and have info (address, district, description, time,date,weekday, category)
 12.marker icons
 13.heat opacity
+14.don't have map pan to markers, if only one markers there it will zoom in too much

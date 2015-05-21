@@ -2,6 +2,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, request, flash, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from model import Crime_Stat, Victim_Stat, Data_Import, connect_to_db, db
+# from seed import load_recent_stats #FIX ME
 import json
 import decimal
 import requests
@@ -22,76 +23,47 @@ def index():
     """Homepage."""
    
     return render_template("homepage.html")
-    
-@app.route('/crime',methods=["GET","POST"])
-def get_crime_stats():
-    """Update crime stats database with API call and make json object containing crime data"""
 
-    map_category_dict = {'LARCENY/THEFT':'Personal Theft/Larceny',
-                     'BURGLARY':'Robbery',
-                     'SEX OFFENSES, FORCIBLE':'Rape/Sexual Assault',
-                     'VEHICLE THEFT':'Personal Theft/Larceny',
-                     'ROBBERY':'Personal Theft/Larceny',
-                     'ARSON':'Personal Theft/Larceny',
-                     'STOLEN PROPERTY':'Personal Theft/Larceny',
-                     'SEX OFFENSES, NON FORCIBLE':'Rape/Sexual Assault'
-                     }
+@app.route('/heat')
+def get_heat_points():
+    """Return JSON object of list with lists of crime coordinates"""
 
-    recent_import_date = Data_Import.query.order_by(desc(Data_Import.max_date)).first().max_date
-
-    recent_import_date_formatted = recent_import_date.strftime('%Y-%m-%dT%H:%M:%S')
-
-    data = requests.get("https://data.sfgov.org/resource/gxxq-x39z.csv?$WHERE=date>='%s'&$$app_token=RvFtAMemRY6per3vRmUEutOfM" % recent_import_date_formatted)
-
-    data_text = data.text
-
-    reader = csv.reader(data_text.splitlines(), delimiter='\t')
-
-    for i, row in enumerate(reader):
-        newrow = row[0].strip("'")
-        newrow_split = newrow.split(",")
-        if i > 0:
-            try:
-                overlap = Crime_Stat.query.filter_by(incident_num=newrow_split[0]).one()
-            except:
-                incident_num = newrow_split[0]
-                category = newrow_split[1]
-                description = newrow_split[2]
-                if category == "ASSAULT":
-                    if "AGGRAVATED" in description:
-                        map_category = "Aggravated assault"
-                    else:
-                        map_category = "Simple assault"
-                else:
-                    if category in map_category_dict:
-                        map_category = map_category_dict[category]
-                    else:
-                        map_category = "Other"
-                day_of_week = newrow_split[3]
-                date_input = newrow_split[4]
-                date = datetime.strptime(date_input, "%m/%d/%Y %H:%M:%S %p")
-                time_input = newrow_split[5]
-                time = datetime.strptime(time_input,"%H:%M").time()
-                district = newrow_split[6]
-                address = newrow_split[8]
-                x_cord = newrow_split[9]
-                y_cord = newrow_split[10]
-                
-                incident = Crime_Stat(incident_num=incident_num,category=category,address=address,description=description,map_category=map_category,day_of_week=day_of_week,
-                    date=date,time=time,district=district,x_cord=x_cord,y_cord=y_cord)
-                db.session.add(incident)
-                if i % 1000 == 0:
-                    db.session.commit()
-
-    max_date = Crime_Stat.query.order_by(desc(Crime_Stat.date)).first().date
-    data_import = Data_Import(max_date=max_date)
-    db.session.add(data_import)
-
-    db.session.commit()
-
-    start_date = request.form.get("daterangepicker_start") 
+    start_date = request.args.get("start_date") 
     print start_date
-    end_date = request.form.get("daterangepicker_end")
+    end_date = request.args.get("end_date")
+
+    if start_date:
+
+        print "start_date has been posted"
+
+        start_date_formatted = datetime.strptime(start_date,"%m/%d/%Y")
+        end_date_formatted = datetime.strptime(end_date,"%m/%d/%Y")
+
+        crime_stats = Crime_Stat.query.filter(Crime_Stat.date >= start_date_formatted, Crime_Stat.date <= end_date_formatted).limit(10).all()
+        heat_point_list = []
+        
+        for crime in crime_stats:           # need to add in address
+            heat_point_list.append([str(decimal.Decimal(crime.x_cord)), str(decimal.Decimal(crime.y_cord))])
+
+        return jsonify(heat_point_list)
+
+    else:    
+
+        crime_stats = Crime_Stat.query.limit(10).all()
+        heat_point_list = []
+        
+        for crime in crime_stats:           # need to add in address
+            heat_point_list.append([str(decimal.Decimal(crime.x_cord)), str(decimal.Decimal(crime.y_cord))])
+
+        return jsonify(heat_point_list)
+    
+@app.route('/markers')
+def get_crime_markers():
+    """Make json object containing crime data"""
+
+    start_date = request.args.get("start_date") 
+    print start_date
+    end_date = request.args.get("end_date")
 
     if start_date:
 
@@ -144,8 +116,12 @@ def get_crime_stats():
                               "coordinates": [str(decimal.Decimal(crime.x_cord)), str(decimal.Decimal(crime.y_cord))]
                             },
                             "properties": {
-                              "title": "Mapbox DC",
-                              "description": crime.map_category,
+                              "title": crime.description,
+                              "description": crime.map_category, 
+                              "address": crime.address, 
+                               "date": datetime.strftime(crime.date, "%m/%d/%Y"), 
+                               "time": "time placeholder", #FIX ME 
+                               "day-of-week": crime.day_of_week,
                               "marker-color": "#fc4353",
                               "marker-size": "large",
                               "marker-symbol": "monument"

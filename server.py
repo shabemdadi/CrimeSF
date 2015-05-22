@@ -23,41 +23,8 @@ def index():
     """Homepage."""
    
     return render_template("homepage.html")
-
-@app.route('/heat')
-def get_heat_points():
-    """Return JSON object of list with lists of crime coordinates"""
-
-    start_date = request.args.get("start_date") 
-    print start_date
-    end_date = request.args.get("end_date")
-
-    if start_date:
-
-        print "start_date has been posted"
-
-        start_date_formatted = datetime.strptime(start_date,"%m/%d/%Y")
-        end_date_formatted = datetime.strptime(end_date,"%m/%d/%Y")
-
-        crime_stats = Crime_Stat.query.filter(Crime_Stat.date >= start_date_formatted, Crime_Stat.date <= end_date_formatted).limit(10).all()
-        heat_point_list = []
-        
-        for crime in crime_stats:           # need to add in address
-            heat_point_list.append([str(decimal.Decimal(crime.x_cord)), str(decimal.Decimal(crime.y_cord))])
-
-        return jsonify(heat_point_list)
-
-    else:    
-
-        crime_stats = Crime_Stat.query.limit(10).all()
-        heat_point_list = []
-        
-        for crime in crime_stats:           # need to add in address
-            heat_point_list.append([str(decimal.Decimal(crime.x_cord)), str(decimal.Decimal(crime.y_cord))])
-
-        return jsonify(heat_point_list)
     
-@app.route('/markers')
+@app.route('/crime')
 def get_crime_markers():
     """Make json object containing crime data"""
 
@@ -128,8 +95,7 @@ def get_crime_markers():
                             }
                           }
 
-            marker_object_list.append(marker_object) 
-            print crime.date             
+            marker_object_list.append(marker_object)            
 
         marker_object_dict["features"] = marker_object_list    
 

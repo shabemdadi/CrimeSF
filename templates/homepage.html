@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset=utf-8 />
@@ -9,15 +10,6 @@
 
 <link href='https://www.mapbox.com/base/latest/base.css' rel='stylesheet' />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-
-<!-- Include Required Prerequisites -->
-<script type="text/javascript" src="//cdn.jsdelivr.net/jquery/2.1.3/jquery.min.js"></script>
-<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/2.9.0/moment.min.js"></script>
-<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap/3.3.2/css/bootstrap.css" />
- 
-<!-- Include Date Range Picker -->
-<script type="text/javascript" src="/static/js/date_range.js"></script>
-<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/1/daterangepicker-bs3.css" />
 
 <style>
   body { margin:0; padding:0; }
@@ -41,9 +33,11 @@
       border-radius:3px;
       }
     </style>
+
     <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-heat/v0.1.3/leaflet-heat.js'></script>
 
     <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.42.0/L.Control.Locate.min.js'></script>
+
     <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.42.0/L.Control.Locate.mapbox.css' rel='stylesheet' />
 
     <div class="container-fluid">
@@ -53,67 +47,27 @@
                 <nav id='filters' class='filter-ui'></nav>
             </div>
             <div class="col-md-3">
-                <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                <span></span> <b class="caret"></b>
+                <div class="input-daterange input-group" id="datepicker_markers">
+                    <input type="text" class="input-sm form-control" name="start_marker" />
+                    <br>
+                    <span class="input-group-addon">to</span>
+                    <br>
+                    <input type="text" class="input-sm form-control" name="end_marker" />
+                    <br>
+                    <button type="submit" id="marker_button" class="btn btn-primary">Submit</button>
                 </div>
-                <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                <span></span> <b class="caret"></b>
+                    <div class="input-daterange input-group" id="datepicker_heat">
+                    <input type="text" class="input-sm form-control" name="start_heat" />
+                    <br>
+                    <span class="input-group-addon">to</span>
+                    <br>
+                    <input type="text" class="input-sm form-control" name="end_heat" />
+                    <br>
+                    <button type="submit" id="heat_button" class="btn btn-primary">Submit</button>
                 </div>
             </div>    
         </div>
     </div>
-<!--     <div id='map'></div>
-    <nav id='filters' class='filter-ui'></nav> -->
-    <script type="text/javascript">
-
-        $(function() {
-         
-            $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().subtract(14, 'days').format('MMMM D, YYYY'));
-         
-            $('#reportrange').daterangepicker({
-                format: 'MM/DD/YYYY',
-                startDate: moment().subtract(29, 'days'),
-                endDate: moment().subtract(14, 'days'),
-                minDate: '01/01/2003',
-                maxDate: moment().subtract(14, 'days'),
-                dateLimit: { days: 60 },
-                showDropdowns: true,
-                showWeekNumbers: true,
-                timePicker: false,
-                timePickerIncrement: 1,
-                timePicker12Hour: true,
-                ranges: {
-                   'This Year': [moment().startOf('year'), moment()],
-                   'This Month': [moment().startOf('month'), moment().endOf('month')],
-                   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                },
-                opens: 'down',
-                drops: 'down',
-                buttonClasses: ['btn', 'btn-sm'],
-                applyClass: 'btn-primary',
-                cancelClass: 'btn-default',
-                separator: ' to ',
-                locale: {
-                    applyLabel: 'Submit',
-                    cancelLabel: 'Cancel',
-                    fromLabel: 'From',
-                    toLabel: 'To',
-                    customRangeLabel: 'Custom',
-                    daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
-                    monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                    firstDay: 1
-                }
-            }, function(start, end, label) {
-                console.log(start.toISOString(), end.toISOString(), label);
-                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-            });
-         
-        });
-
-
-    </script>
 
     <script>
         // Provide access token
@@ -129,6 +83,9 @@
                 L.control.locate().addTo(map);
 
         // new L.Control.Zoom({ position: 'topleft' }).addTo(map);
+
+        var heat = L.heatLayer([], { maxZoom: 12 }).addTo(map);
+        var feature_layer;
 
         var filters = document.getElementById('filters');
 
@@ -184,50 +141,43 @@
             });
           };};
 
-    function addHeat(addressPoints) {
+    function addHeat(data) {
         // Add each marker point to the heatmap.
-            var heat = L.heatLayer(addressPoints1, {
-            radius : 25, // default value
-            blur : 15, // default value
-            gradient : {1: 'blue'} // Values can be set for a scale of 0-1
-        }).addTo(map);
-            };
+        feature_layer = L.mapbox.featureLayer(data);
+        feature_layer.on('click', function(e) {
+            map.panTo(e.layer.getLatLng());
+        });
+        map.fitBounds(feature_layer.getBounds());
+        // Add each marker point to the heatmap.
+        feature_layer.eachLayer(function(l) {
+            heat.addLatLng(l.getLatLng());
+        });
+    };
     
-    $.getJSON('/markers', { start_date: [], end_date: [] } ).done(function(data){addMarkerLayer(data);addFilters();});
-
-
-    $(document).ready(function () { 
-        $('#date_form_markers').on('submit', function(e) {
-      //do something, like clearing an input
-          e.preventDefault();
-          debugger;
-          var start_date = document.getElementsByName('daterangepicker_start')[0].value;
-          var end_date = document.getElementsByName('daterangepicker_end')[0].value;
-          map.removeLayer(feature_layer);
-          $.getJSON('/markers', { start_date: start_date, end_date: end_date } ).done(function(data){
-            console.log("get is running");
-            addMarkerLayer(data);
-            addFilters();
-        });
-          // $('#reportrange').val('');
-        });
+    $("#marker_button").on("click", function() {
+        var start_date = $("input[name='start_marker']").val();
+        var end_date = $("input[name='end_marker']").val();
+        console.log("submitted");
+        $.getJSON('/crime', { start_date: start_date, end_date: end_date } ).done(function(data){console.log("markers is running");addMarkerLayer(data);addFilters();});
     });
 
-    $(document).ready(function () { 
-        $('#date_form_heat').on('submit', function(e) {
-      //do something, like clearing an input
-          e.preventDefault();
-          debugger;
-          var start_date = document.getElementsByName('daterangepicker_start')[0].value;
-          var end_date = document.getElementsByName('daterangepicker_end')[0].value;
-          map.removeLayer(heat);
-          $.getJSON('/heat', { start_date: start_date, end_date: end_date } ).done(function(data){
-            console.log("get is running");
-            addHeat(data);
-        });
-          // $('#reportrange').val('');
-        });
+
+    $("#heat_button").on("click", function() {
+        var start_date = $("input[name='start_heat']").val();
+        var end_date = $("input[name='end_heat']").val();
+        console.log("submitted");
+        $.getJSON('/crime', { start_date: start_date, end_date: end_date } ).done(function(data){console.log("heat is running");addHeat(data);});
     });
+
+
+
+    // $.getJSON('/crime', { start_date: [], end_date: [] } ).done(function(data){console.log("markers is running");addMarkerLayer(data);addFilters();});
+
+    // $.getJSON('/crime', { start_date: [], end_date: [] } ).done(function(data){console.log("heat is running");addHeat(data);});
+
+
+
+    //map.removeLayer(feature_layer);
 
         </script>
 </body>

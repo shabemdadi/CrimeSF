@@ -1,5 +1,5 @@
-1.user picks period to see heatmap crimes
-2.user picks period to see markers
+1.style date input fields (calendar drop down, have min and max dates, etc.)
+2.have crime marker info in modal window when click on marker
 3.trend line graphs by month, time of day, day of week
 4.select age and gender and have crime map weighed accordingly
 5.cacheing
@@ -10,5 +10,5 @@
 10.template inheritance
 11.click/hover over recent events and have info (address, district, description, time,date,weekday, category)
 12.marker icons
-13.heat opacity
+13.heat layer opacity/colors
 14.don't have map pan to markers, if only one markers there it will zoom in too much

@@ -147,7 +147,7 @@ def load_victim_stats():
                 gender = row[2]
                 percent = row[3]
 
-                victim = Victim_Stats(age_range=age_range,gender=gender,category=category,percent=percent)
+                victim = Victim_Stat(age_range=age_range,gender=gender,category=category,percent=percent)
                 db.session.add(victim)
         
         db.session.commit()
@@ -157,5 +157,5 @@ if __name__ == "__main__":
     connect_to_db(app)
 
     #load_crime_stats()
-    #load_victim_stats()
-    load_recent_stats()
+    load_victim_stats()
+    #load_recent_stats()

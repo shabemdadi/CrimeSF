@@ -50,7 +50,7 @@ def get_crime_markers():
                             "type": "Feature",
                             "geometry": {
                               "type": "Point",
-                              "coordinates": [str(decimal.Decimal(crime.x_cord)), str(decimal.Decimal(crime.y_cord))]
+                              "coordinates": [str(decimal.Decimal(crime.x_cord)), str(decimal.Decimal(crime.y_cord))] #FIX ME
                             },
                             "properties": {
                               "title": "Mapbox DC",
@@ -100,6 +100,27 @@ def get_crime_markers():
         marker_object_dict["features"] = marker_object_list    
 
         return jsonify(marker_object_dict)
+
+@app.route('/probability')
+def get_probability_stats():
+    """Get probability stats based on gender and age."""
+
+    age = request.args.get("age") 
+    print age
+    gender = request.args.get("gender")
+    print gender
+
+
+    victim_stats = Victim_Stat.query.filter_by(age_range=age, gender=gender).all()
+
+    victim_dict = {}
+
+    for victim in victim_stats:
+        victim_dict[victim.category] = str(decimal.Decimal(victim.percent))
+
+    print victim_dict
+
+    return jsonify(victim_dict)
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point

@@ -10,6 +10,10 @@
 
 <link href='https://www.mapbox.com/base/latest/base.css' rel='stylesheet' />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.js"></script>
+
+<link href="../static/css/datepicker.css" rel="stylesheet">
+<script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
 
 <style>
   body { margin:0; padding:0; }
@@ -40,6 +44,8 @@
 
     <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.42.0/L.Control.Locate.mapbox.css' rel='stylesheet' />
 
+    <script src="../static/js/bootstrap-datepicker.js"></script>
+
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-9">
@@ -47,27 +53,53 @@
                 <nav id='filters' class='filter-ui'></nav>
             </div>
             <div class="col-md-3">
-                <div class="input-daterange input-group" id="datepicker_markers">
-                    <input type="text" class="input-sm form-control" name="start_marker" />
-                    <br>
+                <div class="input-daterange input-group" id="datepicker">
+                    <input type="date" class="input-sm form-control" name="start_marker" />
                     <span class="input-group-addon">to</span>
-                    <br>
-                    <input type="text" class="input-sm form-control" name="end_marker" />
+                    <input type="date" class="input-sm form-control" name="end_marker" />
                     <br>
                     <button type="submit" id="marker_button" class="btn btn-primary">Submit</button>
                 </div>
-                    <div class="input-daterange input-group" id="datepicker_heat">
-                    <input type="text" class="input-sm form-control" name="start_heat" />
-                    <br>
+                <div class="input-daterange input-group" id="datepicker">
+                    <input type="date" class="input-sm form-control" name="start_heat" />
                     <span class="input-group-addon">to</span>
-                    <br>
-                    <input type="text" class="input-sm form-control" name="end_heat" />
+                    <input type="date" class="input-sm form-control" name="end_heat" />
                     <br>
                     <button type="submit" id="heat_button" class="btn btn-primary">Submit</button>
                 </div>
+                <div>
+                    <label>Select your gender:
+                        <input type ="radio" name="gender" value="Male">Male
+                        <input type ="radio" name="gender" value="Female">Female
+                    </label>
+
+                    <label> Select your age range: <select name="age">
+                        <option value="12 to 14">12 to 14</option>
+                        <option value="15 to 17">15 to 17</option>
+                        <option value="18 to 20">18 to 20</option>
+                        <option value="21 to 24">21 to 24</option>
+                        <option value="25 to 34">25 to 34</option>
+                        <option value="35 to 49">35 to 49</option>
+                        <option value="50 to 64">50 to 64</option>
+                        <option value="65 or older">65 or older</option>
+                    </select>
+                    </label>
+
+                    <button type="submit" id="probability_button" class="btn btn-primary">Submit</button>
+                </div>
+
+                <div id="probability">
+                    <table id="probs_table"></table>
+                </div>
+                <div id="date-container">
+                    <div class="input-daterange input-group" id="datepicker">
+                        <input type="text" class="input-sm form-control" name="start" />
+                        <span class="input-group-addon">to</span>
+                        <input type="text" class="input-sm form-control" name="end" />
+                    </div>
+                </div>
             </div>    
         </div>
-    </div>
 
     <script>
         // Provide access token
@@ -84,7 +116,12 @@
 
         // new L.Control.Zoom({ position: 'topleft' }).addTo(map);
 
-        var heat = L.heatLayer([], { maxZoom: 12 }).addTo(map);
+        var heat = L.heatLayer([], {
+            radius: 100,
+            blur: 15, 
+            maxZoom: 17,
+            gradient : {1: 'blue'}
+        }).addTo(map);
         var feature_layer;
 
         var filters = document.getElementById('filters');
@@ -95,7 +132,13 @@
                     map.panTo(e.layer.getLatLng());
                 });
                 map.fitBounds(feature_layer.getBounds());
-                };
+                // var features = feature_layer.getGeoJSON().features;
+                // for (var i = 0; i < features.length; i++) {
+                //    var content = '<p>' + features[i].properties["title"] + '</p>' + // # FIX ME
+                //     '<p>' + features[i].properties["description"] + '</p>';
+                //     features[i].bindPopup(content);
+                // };
+        };
 
         function addFilters() {
         // Wait until the marker layer is loaded in order to build a list of possible types. If you are doing this with another featureLayer, you should change map.featureLayer to the variable you have assigned to your featureLayer
@@ -169,15 +212,41 @@
         $.getJSON('/crime', { start_date: start_date, end_date: end_date } ).done(function(data){console.log("heat is running");addHeat(data);});
     });
 
+     $("#probability_button").on("click", function() {
+        var gender = $("input[name='gender']").val();
+        var age = $("select[name='age']").val();
+        console.log("submitted");
+        $("#probs_table").empty();
+        $.getJSON('/probability', { age: age, gender: gender } ).done(function(data){
+            console.log("probability is running");
+            console.log(data);
+            $("#probs_table").append("<tr><th>Crime Category</th><th>Probability</th></tr>");
+            var appendString = "";
+            for (var item in data){
+                appendString = appendString + "<tr><td>" + item + "</td><td>" + data[item] + "</td></tr>";
+            };
+            console.log(appendString);
+            $("#probs_table").append(appendString);
+        });
+    });
 
 
     // $.getJSON('/crime', { start_date: [], end_date: [] } ).done(function(data){console.log("markers is running");addMarkerLayer(data);addFilters();});
 
     // $.getJSON('/crime', { start_date: [], end_date: [] } ).done(function(data){console.log("heat is running");addHeat(data);});
 
-
-
     //map.removeLayer(feature_layer);
+
+    $(document).ready(function() { 
+        $("#date-container .input-daterange").datepicker({
+        format: "mm/dd/yyyy",
+        autoclose: true,
+        todayHighlight: true,
+        datesDisabled: ['05/06/2015', '05/21/2015'],
+        toggleActive: true,
+        defaultViewDate: { year: 1977, month: 04, day: 25 }
+        });
+    });
 
         </script>
 </body>

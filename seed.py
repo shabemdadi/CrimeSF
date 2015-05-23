@@ -19,7 +19,6 @@ def load_crime_stats():
                          'SEX OFFENSES, FORCIBLE':'Rape/Sexual Assault',
                          'VEHICLE THEFT':'Personal Theft/Larceny',
                          'ROBBERY':'Personal Theft/Larceny',
-                         'ARSON':'Personal Theft/Larceny',
                          'STOLEN PROPERTY':'Personal Theft/Larceny',
                          'SEX OFFENSES, NON FORCIBLE':'Rape/Sexual Assault'
                          }
@@ -34,9 +33,9 @@ def load_crime_stats():
                 description = row[2]
                 if category == "ASSAULT":
                     if "AGGRAVATED" in description:
-                        map_category = "Aggravated assault"
+                        map_category = "Aggravated Assault"
                     else:
-                        map_category = "Simple assault"
+                        map_category = "Simple Assault"
                 else:
                     if category in map_category_dict:
                         map_category = map_category_dict[category]
@@ -72,7 +71,6 @@ def load_recent_stats():
                  'SEX OFFENSES, FORCIBLE':'Rape/Sexual Assault',
                  'VEHICLE THEFT':'Personal Theft/Larceny',
                  'ROBBERY':'Personal Theft/Larceny',
-                 'ARSON':'Personal Theft/Larceny',
                  'STOLEN PROPERTY':'Personal Theft/Larceny',
                  'SEX OFFENSES, NON FORCIBLE':'Rape/Sexual Assault'
                  }
@@ -99,9 +97,9 @@ def load_recent_stats():
                 description = newrow_split[2]
                 if category == "ASSAULT":
                     if "AGGRAVATED" in description:
-                        map_category = "Aggravated assault"
+                        map_category = "Aggravated Assault"
                     else:
-                        map_category = "Simple assault"
+                        map_category = "Simple Assault"
                 else:
                     if category in map_category_dict:
                         map_category = map_category_dict[category]
@@ -156,6 +154,6 @@ def load_victim_stats():
 if __name__ == "__main__":
     connect_to_db(app)
 
-    #load_crime_stats()
-    load_victim_stats()
-    #load_recent_stats()
+    load_crime_stats()
+    #load_victim_stats()
+    load_recent_stats()

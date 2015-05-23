@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>Crime Forecast</title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js'></script>
+<script src="https://code.jquery.com/jquery.js"></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
+
+<link href='https://www.mapbox.com/base/latest/base.css' rel='stylesheet' />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.js"></script>
+
+<style>	
+  body { margin:0; padding:0; }
+  #map { position:relative; top:0; bottom:0; width:100%; min-height: 1000px;}
+  .container-fluid {
+    padding-right: 0;
+    padding-left: 0;
+  }
+  /*#map { position:absolute; top:0; bottom:0; width:100%; }*/
+</style>
+</head>
+<body>
+
+	<div class="container-fluid">
+
+	    <div class="row">
+	        <nav class="navbar navbar-default">
+
+	            <div class="container-fluid">
+	                <div class="navbar-header">
+	                    <button type="button"
+	                        class="navbar-toggle collapsed"
+	                        data-toggle="collapse"
+	                        data-target="#navbar"
+	                        aria-expanded="false"
+	                        aria-controls="navbar">
+	                        <span class="sr-only">Toggle navigation</span>
+	                        <span class="icon-bar"></span>
+	                        <span class="icon-bar"></span>
+	                        <span class="icon-bar"></span>
+	                    </button>
+	                    <a class="navbar-brand" href="/">Crime Forecast</a>
+	                </div> 
+
+	                <div id="navbar" class="navbar-collapse collapse">
+	                    <ul class="nav navbar-nav">
+	                        <li><a href="/heat">Heatmap</a></li>
+	                        <li><a href="/points-of-interest">Points of Interest</a></li>
+	                        <li><a href="/trends">Trends</a></li>
+	                    </ul>
+	                     <ul class="nav navbar-nav navbar-right">
+                                <li>
+                                	<form id="refresh" action="/get_recent">
+                                		<button type="submit" id="refresh_button" class="btn btn-primary">Get Recent Crime</button>
+                                	<form>
+                                </li>
+                        </ul>
+	                </div>
+	            </div>
+	    
+	        </nav>
+	    </div>
+	
+	      <!-- <hr> -->
+
+	{% with messages = get_flashed_messages() %}
+	  {% for message in messages %}
+	      <div class="alert alert-warning">{{ message }}</div>
+	  {% endfor %}
+	{% endwith %}
+
+	{% block content %} put your content here {% endblock %}
+
+ </body>
+ </html>

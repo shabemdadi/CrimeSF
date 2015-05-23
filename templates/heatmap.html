@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+.filter-ui {
+  background:#fff;
+  position:absolute;
+  top:10px;
+  right:10px;
+  z-index:100;
+  padding:10px;
+  border-radius:3px;
+  }
+</style>
+
+<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-heat/v0.1.3/leaflet-heat.js'></script>
+
+<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.42.0/L.Control.Locate.min.js'></script>
+
+<link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.42.0/L.Control.Locate.mapbox.css' rel='stylesheet' />
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-9">
+            <div id="map"></div>
+            <nav id='filters' class='filter-ui'></nav>
+        </div>
+        <div class="col-md-3">
+            <form action="/heat" method="POST">
+                <div class="form-group">
+                    <label>Period Start
+                        <input type="date" class="input-sm form-control" name="start" />
+                    </label>
+                    <span class="input-group-addon">to</span>
+                    <label>Period End
+                        <input type="date" class="input-sm form-control" name="end" />
+                    </label>
+                    <br>
+                    <label>Crime Category 
+                        <br>
+                        <input type ="checkbox" name="map_category", value='Personal Theft/Larceny'>Personal Theft/Larceny
+                        <br>
+                        <input type ="checkbox" name="map_category", value='Robbery'>Robbery
+                        <br>
+                        <input type ="checkbox" name="map_category", value='Rape/Sexual Assault'>Rape/Sexual Assault
+                        <br>
+                        <input type ="checkbox" name="map_category", value='Aggravated Assault'>Aggravated Assault
+                        <br>
+                        <input type ="checkbox" name="map_category", value='Simple Assault'>Simple Assault
+                        <br>
+                        <input type ="checkbox" name="map_category", value='Other'>Other
+                    </label>
+                    <br>
+                    <button type="submit" id="heat_button" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+            <div>
+                <label>Select your gender:
+                    <input type ="radio" name="gender" value="Male">Male
+                    <input type ="radio" name="gender" value="Female">Female
+                </label>
+
+                <label> Select your age range: <select name="age">
+                    <option value="12 to 14">12 to 14</option>
+                    <option value="15 to 17">15 to 17</option>
+                    <option value="18 to 20">18 to 20</option>
+                    <option value="21 to 24">21 to 24</option>
+                    <option value="25 to 34">25 to 34</option>
+                    <option value="35 to 49">35 to 49</option>
+                    <option value="50 to 64">50 to 64</option>
+                    <option value="65 or older">65 or older</option>
+                </select>
+                </label>
+
+                <button type="submit" id="probability_button" class="btn btn-primary">Submit</button>
+            </div>
+
+            <div id="probability">
+                <table id="probs_table"></table>
+            </div>
+        </div>    
+    </div>
+
+<script src='../static/js/map.js'></script>
+<script src='../static/js/heatmap.js'></script>
+
+{% endblock %}

@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+.filter-ui {
+  background:#fff;
+  position:absolute;
+  top:10px;
+  right:10px;
+  z-index:100;
+  padding:10px;
+  border-radius:3px;
+  }
+</style>
+
+<style type='text/css'>
+  .my-legend .legend-title {
+    text-align: left;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 90%;
+    }
+  .my-legend .legend-scale ul {
+    margin: 0;
+    margin-bottom: 5px;
+    padding: 0;
+    float: left;
+    list-style: none;
+    }
+  .my-legend .legend-scale ul li {
+    font-size: 80%;
+    list-style: none;
+    margin-left: 0;
+    line-height: 18px;
+    margin-bottom: 2px;
+    }
+  .my-legend ul.legend-labels li span {
+    display: block;
+    float: left;
+    height: 16px;
+    width: 30px;
+    margin-right: 5px;
+    margin-left: 0;
+    border: 1px solid #999;
+    }
+  .my-legend a {
+    color: #777;
+    }
+</style>
+
+<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-heat/v0.1.3/leaflet-heat.js'></script>
+
+<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.42.0/L.Control.Locate.min.js'></script>
+
+<link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.42.0/L.Control.Locate.mapbox.css' rel='stylesheet' />
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-9">
+            <div id="map"></div>
+            <nav id='filters' class='filter-ui'></nav>
+        </div>
+        <div class="col-md-3">
+            <div class='my-legend'>
+                <div class='legend-title'>Crime Category Legend</div>
+                <div class='legend-scale'>
+                  <ul class='legend-labels'>
+                    <li><span style='background:#FF0000;'></span>Personal Theft/Larceny</li>
+                    <li><span style='background:#0000FF;'></span>Robbery</li>
+                    <li><span style='background:#008000;'></span>Rape/Sexual Assault</li>
+                    <li><span style='background:#FFA500;'></span>Aggravated Assault</li>
+                    <li><span style='background:#6600CC;'></span>Simple Assault</li>
+                    <li><span style='background:#669999;'></span>Other</li>
+                  </ul>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="date" class="input-sm form-control" name="start" />
+                <span class="input-group-addon">to</span>
+                <input type="date" class="input-sm form-control" name="end" />
+                <br>
+                <button type="submit" id="heat_button" class="btn btn-primary">Submit</button>
+            </div>
+            <div>
+                <label>Select your gender:
+                    <input type ="radio" name="gender" value="Male">Male
+                    <input type ="radio" name="gender" value="Female">Female
+                </label>
+
+                <label> Select your age range: <select name="age">
+                    <option value="12 to 14">12 to 14</option>
+                    <option value="15 to 17">15 to 17</option>
+                    <option value="18 to 20">18 to 20</option>
+                    <option value="21 to 24">21 to 24</option>
+                    <option value="25 to 34">25 to 34</option>
+                    <option value="35 to 49">35 to 49</option>
+                    <option value="50 to 64">50 to 64</option>
+                    <option value="65 or older">65 or older</option>
+                </select>
+                </label>
+
+                <button type="submit" id="probability_button" class="btn btn-primary">Submit</button>
+            </div>
+
+            <div id="probability">
+                <table id="probs_table"></table>
+            </div>
+        </div>    
+    </div>
+
+<script src='../static/js/map.js'></script>
+<script src='../static/js/markers.js'></script>
+
+{% endblock %}

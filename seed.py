@@ -1,6 +1,6 @@
 """Utility file to seed crime statistics and victim data"""
 
-from model import Crime_Stat, Victim_Stat, Data_Import, connect_to_db, db
+from model import Crime_Stat, Data_Import, connect_to_db, db
 from server import app
 import csv
 from datetime import datetime
@@ -127,33 +127,8 @@ def load_recent_stats():
 
     db.session.commit()
 
-def load_victim_stats():
-    """Load victim stats from csv file into database"""
-    
-    # variables in this dataset: 'ethnic1', 'weight', 'locationr', 'newoff', 'race1', 'notify', 'year', 'direl', 'marital2', 'treatment', 'hincome', 'injury', 
-    #            'msa', 'vicservices', 'ethnic', 'newcrime', 'weapon', 'gender', 'age', 'popsize', 'hispanic', 'race', 'seriousviolent', 'region', 
-    #            'weapcat'
-    
-
-    with open('Data\Victim_Stats.csv', 'rb') as f:
-        reader = csv.reader(f)
-                              
-        for i, row in enumerate(reader):
-            if i > 0:
-                category = row[0]
-                age_range = row[1]
-                gender = row[2]
-                percent = row[3]
-
-                victim = Victim_Stat(age_range=age_range,gender=gender,category=category,percent=percent)
-                db.session.add(victim)
-        
-        db.session.commit()
-
-
 if __name__ == "__main__":
     connect_to_db(app)
 
     load_crime_stats()
-    #load_victim_stats()
     load_recent_stats()

@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+	#inputs,
+	#errors,
+	#directions {
+	    position: absolute;
+	    width: 33.3333%;
+	    max-width: 300px;
+	    min-width: 200px;
+	}
+
+	#inputs {
+	    z-index: 10;
+	    top: 10px;
+	    left: 10px;
+	}
+
+	#directions {
+	    z-index: 99;
+	    background: rgba(0,0,0,.8);
+	    top: 0;
+	    right: 0;
+	    bottom: 0;
+	    overflow: auto;
+	}
+
+	#errors {
+	    z-index: 8;
+	    opacity: 0;
+	    padding: 10px;
+	    border-radius: 0 0 3px 3px;
+	    background: rgba(0,0,0,.25);
+	    top: 90px;
+	    left: 10px;
+	}
+</style>
+
+<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-heat/v0.1.3/leaflet-heat.js'></script>
+
+<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.42.0/L.Control.Locate.min.js'></script>
+
+<link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.42.0/L.Control.Locate.mapbox.css' rel='stylesheet' />
+
+<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/mapbox-directions.js/v0.1.0/mapbox.directions.js'></script>
+<link rel='stylesheet' href='https://api.tiles.mapbox.com/mapbox.js/plugins/mapbox-directions.js/v0.1.0/mapbox.directions.css' type='text/css' />
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-9">
+            <div id='map'></div>
+			<div id='inputs'></div>
+			<div id='errors'></div>
+			<div id='directions'>
+			  <div id='routes'></div>
+			  <div id='instructions'></div>
+			</div>
+        </div>
+        <div class="col-md-3">
+        	<h4>Date: {{date}} </h4>
+        	<h4>Time: {{time}} </h4>
+
+<script src='../static/js/map.js'></script>
+<script src='../static/js/journey.js'></script>
+
+{% endblock %}

@@ -27,22 +27,5 @@ $("#heat_button").on("submit", function() {
     $.getJSON('/get_heat', { start_date: start_date, end_date: end_date } ).done(function(data){console.log("heat is running");addHeat(data);});
 });
 
-$("#probability_button").on("click", function() {
-    var gender = $("input[name='gender']").val();
-    var age = $("select[name='age']").val();
-    console.log("submitted");
-    $("#probs_table").empty();
-    $.getJSON('/probability', { age: age, gender: gender } ).done(function(data){
-        console.log("probability is running");
-        console.log(data);
-        $("#probs_table").append("<tr><th>Crime Category</th><th>Probability</th></tr>");
-        var appendString = "";
-        for (var item in data){
-            appendString = appendString + "<tr><td>" + item + "</td><td>" + data[item] + "</td></tr>";
-        };
-        console.log(appendString);
-        $("#probs_table").append(appendString);
-    });
-});
 
 $.getJSON('/get_heat', { start_date:[], end_date:[]} ).done(function(data){console.log("heat is running");addHeat(data);});

@@ -1,7 +1,7 @@
 from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, request, flash, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
-from model import Crime_Stat, Victim_Stat, Data_Import, connect_to_db, db
+from model import Crime_Stat, Data_Import, connect_to_db, db
 import json
 import decimal
 import requests
@@ -206,27 +206,6 @@ def get_heat_points():
 
         return jsonify(marker_object_dict)
 
-@app.route('/probability')
-def get_probability_stats():
-    """Get probability stats based on gender and age."""
-
-    age = request.args.get("age") 
-    print age
-    gender = request.args.get("gender")
-    print gender
-
-
-    victim_stats = Victim_Stat.query.filter_by(age_range=age, gender=gender).all()
-
-    victim_dict = {}
-
-    for victim in victim_stats:
-        victim_dict[victim.category] = str(decimal.Decimal(victim.percent))
-
-    print victim_dict
-
-    return jsonify(victim_dict)
-
 @app.route('/trends')
 def get_chart_data():
     """Get data to be rendered on charts.js"""
@@ -255,6 +234,16 @@ def get_chart_data():
 };
 
     render_template("charts.html")
+
+@app.route('/journey')
+def get_route():
+    """Show routing map"""
+
+    date_now = datetime.now()
+    date_formatted = datetime.strftime(date_now,"%A, %B %d, %Y")
+    time_formatted = datetime.strftime(date_now, "%H:%M")
+
+    return render_template("journey.html",date=date_formatted, time=time_formatted)
 
 @app.route('/get_recent')
 def get_recent_stats():

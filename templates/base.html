@@ -1,28 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset=utf-8 />
-<title>Crime Forecast</title>
-<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-<script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js'></script>
-<script src="https://code.jquery.com/jquery.js"></script>
-<link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
+	<meta charset=utf-8 />
+	<title>Crime Forecast</title>
+	<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+	<script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js'></script>
+	<script src="https://code.jquery.com/jquery.js"></script>
+	<link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
 
-<link href='https://www.mapbox.com/base/latest/base.css' rel='stylesheet' />
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.js"></script>
+	<link href='https://www.mapbox.com/base/latest/base.css' rel='stylesheet' />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.js"></script>
 
-<style>	
-  body { margin:0; padding:0; }
-  #map { position:relative; top:0; bottom:0; width:100%; min-height: 1000px;}
-  .container-fluid {
-    padding-right: 0;
-    padding-left: 0;
-  }
-  /*#map { position:absolute; top:0; bottom:0; width:100%; }*/
-</style>
+	<style>	
+	  body { margin:0; padding:0; }
+	  #map { position:relative; top:0; bottom:0; width:100%; min-height: 1000px;}
+	  .container-fluid {
+	    padding-right: 0;
+	    padding-left: 0;
+	  }
+	  /*#map { position:absolute; top:0; bottom:0; width:100%; }*/
+	</style>
 </head>
 <body>
+
+	<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-heat/v0.1.3/leaflet-heat.js'></script>
+
+	<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.42.0/L.Control.Locate.min.js'></script>
+
+	<link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.42.0/L.Control.Locate.mapbox.css' rel='stylesheet' />
 
 	<div class="container-fluid">
 
@@ -50,6 +56,7 @@
 	                        <li><a href="/heat">Heatmap</a></li>
 	                        <li><a href="/points-of-interest">Points of Interest</a></li>
 	                        <li><a href="/trends">Trends</a></li>
+	                        <li><a href="/journey">Your Journey</a></li>
 	                    </ul>
 	                     <ul class="nav navbar-nav navbar-right">
                                 <li>

@@ -32,17 +32,6 @@ class Crime_Stat(db.Model):
     x_cord = db.Column(db.Numeric, nullable=False)
     y_cord = db.Column(db.Numeric, nullable=False)
     
-    
-class Victim_Stat(db.Model):
-    """Table of victim data"""
-    
-    __tablename__ = "victim_stats"
-    
-    victim_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    age_range = db.Column(db.String(10), nullable=False)
-    gender = db.Column(db.String(10), nullable=False)
-    category = db.Column(db.String(60), nullable=False)
-    percent = db.Column(db.Numeric, nullable=False)
 
 class Data_Import(db.Model):
     """Table showing info on last crime statictics import"""

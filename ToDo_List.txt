@@ -1,8 +1,6 @@
 Do this weekend:
 2.have crime marker info in modal window when click on marker
 3.trend line graphs by month, time of day, day of week
-7.show probabilites (only use recent year?)
-8. fix probabilities percentages (round and show percent sign)
 9. add characteristics to features
 11.click/hover over recent events and have info (address, district, description, time,date,weekday, category)
 14.don't have map pan to markers, if only one markers there it will zoom in too much
@@ -14,7 +12,11 @@ time lapse graph
 add time bar
 folder with mvp
 email mentors update
-email mapbox mentor
+email mapbox mentor (routing)
+start routing
+drop victim stats table
+journey page
+time option for routing
 
 Do Later:
 1. greyscale bootstrap theme
@@ -24,7 +26,5 @@ Do Later:
 Do this week:
 1. cacheing
 2. memory issues
-3. select age and gender and have crime map weighed accordingly
-4. routing
 5. ask about decimal rounding issues
 5. add loading screen if needed

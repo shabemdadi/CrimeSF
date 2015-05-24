@@ -35,6 +35,29 @@
 	    top: 90px;
 	    left: 10px;
 	}
+	/*
+	 * This is a very simple version of a 'loading screen': there are much
+	 * fancier ones you can use instead, like
+	 * http://codepen.io/collection/HtAne/
+	 * http://jh3y.github.io/-cs-spinner/
+	 */
+	#loader {
+	    position:absolute; top:0; bottom:0; width:100%;
+	    background:rgba(255, 255, 255, 1);
+	    transition:background 1s ease-out;
+	    -webkit-transition:background 1s ease-out;
+	}
+	#loader.done {
+	    background:rgba(255, 255, 255, 0);
+	}
+	#loader.hide {
+	    display:none;
+	}
+	#loader .message {
+	    position:absolute;
+	    left:50%;
+	    top:50%;
+	}
 </style>
 
 <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-heat/v0.1.3/leaflet-heat.js'></script>
@@ -46,10 +69,13 @@
 <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/mapbox-directions.js/v0.1.0/mapbox.directions.js'></script>
 <link rel='stylesheet' href='https://api.tiles.mapbox.com/mapbox.js/plugins/mapbox-directions.js/v0.1.0/mapbox.directions.css' type='text/css' />
 
+<script src='../static/js/load.js'></script>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-9">
             <div id='map'></div>
+            <div id='loader'><span class='message'>loading</span></div>
 			<div id='inputs'></div>
 			<div id='errors'></div>
 			<div id='directions'>

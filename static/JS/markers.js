@@ -3,6 +3,7 @@ var feature_layer = L.mapbox.featureLayer();
 var filters = document.getElementById('filters');
 
 function addMarkerLayer(data) {
+        startLoading();
         feature_layer = L.mapbox.featureLayer(data).addTo(map);
         feature_layer.on('click', function(e) {
             map.panTo(e.layer.getLatLng());
@@ -60,14 +61,26 @@ function addFilters() {
       return (feature.properties['description'] in enabled);
     });
   };
+  finishedLoading();
 };
 
-$("#marker_button").on("submit", function() {
+$("#marker_button").on("click", function(e) {
+    e.preventDefault();
     var start_date = $("input[name='start']").val();
     var end_date = $("input[name='end']").val();
     console.log("submitted");
-    $.getJSON('/get_markers', { start_date: start_date, end_date: end_date } ).done(function(data){console.log("heat is running");addHeat(data);});
+    $("#filters").empty();
+    $.getJSON('/get_markers', { start_date: start_date, end_date: end_date } ).done(function(data){
+      feature_layer.setGeoJSON([]);
+      console.log("markers is running");
+      addMarkerLayer(data);
+      addFilters();
+    });
 });
 
 
-$.getJSON('/get_markers', function(data){console.log("markers is running");addMarkerLayer(data);addFilters();});
+$.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data){
+    console.log("markers is running");
+    addMarkerLayer(data);
+    addFilters();
+  });

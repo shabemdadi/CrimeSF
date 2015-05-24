@@ -1,12 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-heat/v0.1.3/leaflet-heat.js'></script>
-
-<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.42.0/L.Control.Locate.min.js'></script>
-
-<link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.42.0/L.Control.Locate.mapbox.css' rel='stylesheet' />
-
 <style>
     .filter-ui {
       background:#fff;
@@ -17,6 +11,29 @@
       padding:10px;
       border-radius:3px;
       }
+    /*
+     * This is a very simple version of a 'loading screen': there are much
+     * fancier ones you can use instead, like
+     * http://codepen.io/collection/HtAne/
+     * http://jh3y.github.io/-cs-spinner/
+     */
+    #loader {
+        position:absolute; top:0; bottom:0; width:100%;
+        background:rgba(255, 255, 255, 1);
+        transition:background 1s ease-out;
+        -webkit-transition:background 1s ease-out;
+    }
+    #loader.done {
+        background:rgba(255, 255, 255, 0);
+    }
+    #loader.hide {
+        display:none;
+    }
+    #loader .message {
+        position:absolute;
+        left:50%;
+        top:50%;
+    }
 </style>
 
 <style type='text/css'>
@@ -54,10 +71,19 @@
     }
 </style>
 
+<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-heat/v0.1.3/leaflet-heat.js'></script>
+
+<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.42.0/L.Control.Locate.min.js'></script>
+
+<link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.42.0/L.Control.Locate.mapbox.css' rel='stylesheet' />
+
+<script src='../static/js/load.js'></script>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-9">
             <div id="map"></div>
+            <div id='loader'><span class='message'>loading</span></div>
             <nav id='filters' class='filter-ui'></nav>
         </div>
         <div class="col-md-3">
@@ -75,11 +101,11 @@
                 </div>
             </div>
             <div class="form-group">
-                <input type="date" class="input-sm form-control" name="start" />
+                <input type="date" class="input-sm form-control" name="start" min="2003-01-01">
                 <span class="input-group-addon">to</span>
-                <input type="date" class="input-sm form-control" name="end" />
+                <input type="date" class="input-sm form-control" name="end">
                 <br>
-                <button type="submit" id="heat_button" class="btn btn-primary">Submit</button>
+                <button id="marker_button" class="btn btn-primary">Submit</button>
             </div>
         </div>    
     </div>

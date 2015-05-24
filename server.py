@@ -35,9 +35,9 @@ def show__markers():
 def get_marker_points():
     """Get JSON objects for marker points."""
 
-    start_date = request.form.get("start_date") 
+    start_date = request.args.get("start_date") 
     print start_date
-    end_date = request.form.get("end_date")
+    end_date = request.args.get("end_date")
 
     if start_date:
 
@@ -122,14 +122,14 @@ def get_marker_points():
 
         return jsonify(marker_object_dict)
 
-@app.route('/heat', methods=["POST","GET"])
+@app.route('/heat')
 def show_heat():
     """Show heatmap"""
 
     return render_template("heatmap.html")
 
     
-@app.route('/get_heat', methods=["POST","GET"])
+@app.route('/get_heat')
 def get_heat_points():
     """Make JSON objects for markers on heatmap."""
 

@@ -3,10 +3,9 @@ Do this weekend:
 3.trend line graphs by month, time of day, day of week
 9. add characteristics to features
 11.click/hover over recent events and have info (address, district, description, time,date,weekday, category)
-14.don't have map pan to markers, if only one markers there it will zoom in too much
 15. add filters for heat map
-16. fix heat and marker layer add ons (only show markers for last month?)
-17. heat layer color/opacity
+16. default heat map dates
+17. heat layer color/opacity, fix when add date
 18. fix if no points
 time lapse graph
 add time bar
@@ -22,9 +21,15 @@ Do Later:
 1. greyscale bootstrap theme
 2. style date input fields (calendar drop down, have min and max dates, etc.)
 3. fix crime forecast margin (on left and right)
+4. fancier loading page
 
 Do this week:
 1. cacheing
 2. memory issues
 5. ask about decimal rounding issues
-5. add loading screen if needed
+
+Ask Mapbox:
+1.routing
+2.heatmap color, radius, blur options
+3.zoom location
+4. sometimes map does not show up, only markers or heat points

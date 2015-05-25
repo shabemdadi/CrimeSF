@@ -1,35 +1,39 @@
 Do this weekend:
-2.have crime marker info in modal window when click on marker
-3.trend line graphs by month, time of day, day of week
-9. add characteristics to features
-11.click/hover over recent events and have info (address, district, description, time,date,weekday, category)
-15. add filters for heat map
-16. default heat map dates
-17. heat layer color/opacity, fix when add date
-18. fix if no points
-time lapse graph
-add time bar
-folder with mvp
-email mentors update
-email mapbox mentor (routing)
-start routing
-drop victim stats table
-journey page
-time option for routing
+1.have crime marker info in modal window when click on marker
+2.trend line graphs by month, time of day, day of week
+3. add characteristics to features
+4.click/hover over recent events and have info (address, district, description, time,date,weekday, category)
+5. add filters for heat map
+7.time lapse graph
+9.folder with mvp
+11.email mapbox mentor
+13.journey page
+14.time option for routing
+15.precautions
+16.fix if no data
+18.show where you are on line graphs
+19. filters on trend tables by crime
+20. make homepage map full screen
+22.routing
+23.heatmap color options
 
 Do Later:
 1. greyscale bootstrap theme
 2. style date input fields (calendar drop down, have min and max dates, etc.)
 3. fix crime forecast margin (on left and right)
 4. fancier loading page
+5. decide what to put on home map
 
 Do this week:
 1. cacheing
 2. memory issues
-5. ask about decimal rounding issues
+3. ask about decimal rounding issues
+4. ask about flash message from javascript
+5. routing
+6. add loading to journey page
 
 Ask Mapbox:
 1.routing
 2.heatmap color, radius, blur options
 3.zoom location
-4. sometimes map does not show up, only markers or heat points
+4.sometimes map does not show up, only markers or heat points

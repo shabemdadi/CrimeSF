@@ -1,6 +1,40 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<canvas id="myChart" width="400" height="400"></canvas>
+<style>
+    /*
+     * This is a very simple version of a 'loading screen': there are much
+     * fancier ones you can use instead, like
+     * http://codepen.io/collection/HtAne/
+     * http://jh3y.github.io/-cs-spinner/
+     */
+    #loader {
+        position:absolute; top:0; bottom:0; width:100%;
+        background:rgba(255, 255, 255, 1);
+        transition:background 1s ease-out;
+        -webkit-transition:background 1s ease-out;
+    }
+    #loader.done {
+        background:rgba(255, 255, 255, 0);
+    }
+    #loader.hide {
+        display:none;
+    }
+    #loader .message {
+        position:absolute;
+        left:50%;
+        top:50%;
+    }
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script>
+<script src='../static/js/load.js'></script>
+
+<div id='loader'><span class='message'>loading</span></div>
+<canvas id="TimeChart" width="400" height="400"></canvas>
+<canvas id="DayChart" width="400" height="400"></canvas>
+<canvas id="MonthChart" width="400" height="400"></canvas>
+
+<script src='../static/js/trend_charts.js'></script>
 
 {% endblock %}

@@ -3,7 +3,7 @@ var ctx_time = $("#TimeChart").get(0).getContext("2d");
 var ctx_day = $("#DayChart").get(0).getContext("2d");
 var ctx_month = $("#MonthChart").get(0).getContext("2d");
 // Use JSON get requestts from flask to define data added into each map
-startLoading();	//start loading page
+// startLoading();	//start loading page
 
 $.getJSON('/get_hour_stats',function(data){
 	var timeChart = new Chart(ctx_time).Line(data);
@@ -20,7 +20,7 @@ $.getJSON('/get_month_stats',function(data){
 	console.log(data);
 });
 
-finishedLoading(); //fade out loading page
+// finishedLoading(); //fade out loading page
 // var data = {
 //     labels: ["January", "February", "March", "April", "May", "June", "July"],
 //     datasets: [

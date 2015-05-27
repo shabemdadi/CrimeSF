@@ -1,8 +1,5 @@
 Do this weekend:
-1.have crime marker info in modal window when click on marker
 2.trend line graphs by month, time of day, day of week
-3. add characteristics to features
-4.click/hover over recent events and have info (address, district, description, time,date,weekday, category)
 5. add filters for heat map
 7.time lapse graph
 9.folder with mvp
@@ -15,7 +12,8 @@ Do this weekend:
 19. filters on trend tables by crime
 20. make homepage map full screen
 22.routing
-23.heatmap color options
+25. mouseover/popups
+24.customizaton
 
 Do Later:
 1. greyscale bootstrap theme
@@ -23,11 +21,11 @@ Do Later:
 3. fix crime forecast margin (on left and right)
 4. fancier loading page
 5. decide what to put on home map
+6. maybe add in customization feature using intensity/altitude/weighting
 
 Do this week:
-1. cacheing
-2. memory issues
-3. ask about decimal rounding issues
+1. get recent stats takes a long time
+2. loading time issues (closures)
 4. ask about flash message from javascript
 5. routing
 6. add loading to journey page
@@ -37,3 +35,4 @@ Ask Mapbox:
 2.heatmap color, radius, blur options
 3.zoom location
 4.sometimes map does not show up, only markers or heat points
+5.how to add individual points to heatmap (and weight them appropriately)

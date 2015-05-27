@@ -1,8 +1,9 @@
 var heat = L.heatLayer([], {    //define heat layer options
+    minOpacity: 0, 
     radius: 25,
     blur: 15, 
     maxZoom: 16,
-    gradient : {1: 'red'}
+    gradient : {1 : 'blue'}
 });
 
 var feature_layer = L.mapbox.featureLayer();    //define feature layer

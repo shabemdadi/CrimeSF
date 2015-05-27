@@ -2,6 +2,8 @@
 
 from flask_sqlalchemy import SQLAlchemy
 import decimal
+from datetime import datetime
+from flask import jsonify
 
 # This is the connection to the SQLite database; we're getting this through
 # the Flask-SQLAlchemy helper library. On this, we can find the `session`
@@ -33,7 +35,165 @@ class Crime_Stat(db.Model):
     address = db.Column(db.String(60), nullable=False)
     x_cord = db.Column(db.Numeric, nullable=False)
     y_cord = db.Column(db.Numeric, nullable=False)
-    
+
+    def make_feature_object(self):
+        """Make feature object"""
+
+        date_formatted = datetime.strftime(self.date,"%m/%d/%Y")
+        time_formatted = self.time.strftime("%I:%M %p")
+
+        marker_color_dict = {'Personal Theft/Larceny':'#FF0000',    #This dictionary will link the type of crime to the color marker it will be assigned    
+                                'Robbery':'#0000FF',
+                                'Rape/Sexual Assault':'#008000',
+                                'Aggravated Assault':'#FFA500',
+                                'Simple Assault':'#6600CC',
+                                'Other':'#669999',
+                            }
+
+        feature_object = {
+                                "type": "Feature",
+                                "geometry": {
+                                  "type": "Point",
+                                  "coordinates": [str(decimal.Decimal(self.x_cord)), str(decimal.Decimal(self.y_cord))] #FIX ME
+                                },
+                                "properties": {
+                                  "title": self.map_category,
+                                  "description": self.description,
+                                  "date": date_formatted,
+                                  "time":time_formatted,
+                                  "address":self.address,
+                                  "marker-color": marker_color_dict[self.map_category],
+                                  "marker-size": "small",
+                                  "marker-symbol": "marker"
+                                }
+                              }
+
+        return feature_object
+
+    @classmethod
+    def get_features_objects_by_date(cls,start_date,end_date):
+        """Query table and then make feature objects on each instance to be sent to map"""
+
+        crime_stats = cls.query.filter(cls.date >= start_date, cls.date <= end_date).all() 
+
+        marker_object_dict = { "type": "FeatureCollection"}
+        marker_object_list = []
+
+        for crime in crime_stats:
+            marker_object = crime.make_feature_object()
+
+            marker_object_list.append(marker_object)              
+
+        marker_object_dict["features"] = marker_object_list    
+
+        return jsonify(marker_object_dict)
+
+    @classmethod
+    def get_hour_data(cls):
+        """Create chart variable with labels and datapoints for hour trend graph."""
+
+        label_list = ["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00",
+                  "16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"]
+        data_point_list = []
+
+        for hour in label_list:       #iterate over each hour, and query the database to find the count of crimes happening in each hour. The count will be the datapoint for that hour.
+            count_crimes = Hour_Count.query.filter_by(hour=hour,map_category="all").one().count
+            data_point_list.append(count_crimes)
+
+        data = {"labels": label_list, "datasets": [   #this is the data variable that will be passed into the graph
+            {"label": "My First dataset",
+            "fillColor": "rgba(220,220,220,0.2)",
+            "strokeColor": "rgba(220,220,220,1)",
+            "pointColor": "rgba(220,220,220,1)",
+            "pointStrokeColor": "#fff",
+            "pointHighlightFill": "#fff",
+            "pointHighlightStroke": "rgba(220,220,220,1)",
+            "data": data_point_list}]
+            }
+
+        print data   
+        return jsonify(data)
+
+
+    @classmethod
+    def get_day_data(cls):
+        """Create chart variable with labels and datapoints for day trend graph."""
+
+        data_point_list = []
+        label_list = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+
+        for day in label_list:       #iterate over each hour, and query the database to find the count of crimes happening in each hour. The count will be the datapoint for that hour.
+            count_crimes = Day_Count.query.filter_by(day=day,map_category="all").one().count
+            data_point_list.append(count_crimes)
+
+        data = {"labels": label_list, "datasets": [   #This is the data variable that will be passed into the graph
+            {"label": "My First dataset",
+            "fillColor": "rgba(220,220,220,0.2)",
+            "strokeColor": "rgba(220,220,220,1)",
+            "pointColor": "rgba(220,220,220,1)",
+            "pointStrokeColor": "#fff",
+            "pointHighlightFill": "#fff",
+            "pointHighlightStroke": "rgba(220,220,220,1)",
+            "data": data_point_list}]
+            }
+
+        print data  
+        return jsonify(data)
+
+    @classmethod
+    def get_month_data(cls):
+        """Create chart variable with labels and datapoints for month trend graph."""
+
+        data_point_list = []
+        label_list = ["January","February","March","April","May","June","July","August","September","October","November","December"]
+
+        for month in label_list:       #iterate over each hour, and query the database to find the count of crimes happening in each hour. The count will be the datapoint for that hour.
+            count_crimes = Month_Count.query.filter_by(month=month,map_category="all").one().count
+            data_point_list.append(count_crimes)
+
+        data = {"labels": label_list, "datasets": [   #This is the data variable that will be passed into the graph
+            {"label": "My First dataset",
+            "fillColor": "rgba(220,220,220,0.2)",
+            "strokeColor": "rgba(220,220,220,1)",
+            "pointColor": "rgba(220,220,220,1)",
+            "pointStrokeColor": "#fff",
+            "pointHighlightFill": "#fff",
+            "pointHighlightStroke": "rgba(220,220,220,1)",
+            "data": data_point_list}]
+            }
+
+        print data   
+        return jsonify(data)
+
+class Hour_Count(db.Model):
+    """Table showing counts of crime by hour."""
+
+    __tablename__ = "hour_counts"
+
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    hour = db.Column(db.String(10),nullable=False)
+    map_category = db.Column(db.String(60), nullable=False)
+    count = db.Column(db.Integer,nullable=False)
+
+class Day_Count(db.Model):
+    """Table showing counts of crime by hour."""
+
+    __tablename__ = "day_counts"
+
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    day = db.Column(db.String(10),nullable=False)
+    map_category = db.Column(db.String(60), nullable=False)
+    count = db.Column(db.Integer,nullable=False)
+
+class Month_Count(db.Model):
+    """Table showing counts of crime by hour."""
+
+    __tablename__ = "month_counts"
+
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    month = db.Column(db.String(10),nullable=False)
+    map_category = db.Column(db.String(60), nullable=False)
+    count = db.Column(db.Integer,nullable=False)
 
 class Data_Import(db.Model):
     """Table showing info on last crime statictics import"""

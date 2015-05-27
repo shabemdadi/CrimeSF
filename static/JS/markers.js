@@ -3,18 +3,32 @@ var feature_layer = L.mapbox.featureLayer(); //define the feature layer
 var filters = document.getElementById('filters'); //define the filters in the DOM
 
 function addMarkerLayer(data) { //this will add markers to the map
-        startLoading();         // loading screen will start
-        feature_layer = L.mapbox.featureLayer(data).addTo(map); //GeoJSON feature objects will be added to the feature_layer, which will be added to the map
-        feature_layer.on('click', function(e) {                 //map will zoom into a marker if a user clicks on it
-            map.panTo(e.layer.getLatLng());
-        });
-        map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
-        // var features = feature_layer.getGeoJSON().features;
-        // for (var i = 0; i < features.length; i++) {
-        //    var content = '<p>' + features[i].properties["title"] + '</p>' + // # FIX ME
-        //     '<p>' + features[i].properties["description"] + '</p>';
-        //     features[i].bindPopup(content);
-        // };
+  startLoading();         // loading screen will start
+  feature_layer = L.mapbox.featureLayer(data).addTo(map); //GeoJSON feature objects will be added to the feature_layer, which will be added to the map
+  feature_layer.on('click', function(e) {                 //map will zoom into a marker if a user clicks on it
+      map.panTo(e.layer.getLatLng());
+  });
+  map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
+  // feature_layer.on('ready',function(){
+  //   feature_layer.on('mouseover', function(e) {
+  //     e.layer.openPopup();
+  //   });
+  //   feature_layer.on('mouseout', function(e) {
+  //     e.layer.closePopup();
+  //   });
+  // });
+  // feature_layer.on('ready',function(){
+  //   console.log("in ready event");
+  //   feature_layer.eachLayer(function(layer) {
+  //   // here you call `bindPopup` with a string of HTML you create - the feature
+  //   // properties declared above are available under `layer.feature.properties`
+  //     console.log("in layers");
+  //     var content = '<h2>A ferry ride!<\/h2>' +
+  //         '<p>From: ' + layer.feature.properties["title"] + '<br \/>' +
+  //         'to: ' + layer.feature.properties["description"] + '<\/p>';
+  //     layer.bindPopup(content);
+  //   });
+  // });
 };
 
 function addFilters() {     //this function will add the filter, and create an event listener that will update the marker points when a user checks or unchecks the filter checkboxes
@@ -24,7 +38,7 @@ function addFilters() {     //this function will add the filter, and create an e
   var typesObj = {}, types = [];
   var features = feature_layer.getGeoJSON().features; //get the features objects from the feature layer
   for (var i = 0; i < features.length; i++) {         //iterate over feature objects, creating a dictionary where the key is the description property of each marker, and the value is true
-    typesObj[features[i].properties['description']] = true;
+    typesObj[features[i].properties['title']] = true;
     }
 
   for (var k in typesObj) types.push(k);            //create a list of the descriptions
@@ -58,7 +72,7 @@ function addFilters() {     //this function will add the filter, and create an e
     feature_layer.setFilter(function(feature) {
       // If this symbol is in the list, return true. if not, return false. The 'in' operator in javascript does exactly that: given a string or number, it says if that is in 
       // a object.
-      return (feature.properties['description'] in enabled);
+      return (feature.properties['title'] in enabled);
     });
   };
   finishedLoading();

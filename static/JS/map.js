@@ -4,10 +4,10 @@ L.mapbox.accessToken = 'pk.eyJ1Ijoic2hhYmVtZGFkaSIsImEiOiIwckNSMkpvIn0.MeYrWfZex
 // Set up map characteristics and layers
 var map = L.mapbox.map('map', 'shabemdadi.fab5eb0c')
         .addLayer(L.mapbox.tileLayer('shabemdadi.fab5eb0c'))
-        .addControl(L.mapbox.geocoderControl('mapbox.places', {
-        autocomplete: true
+        .addControl(L.mapbox.geocoderControl('mapbox.places', { //user can enter in address
+        autocomplete: true                                      // address will be autocompleted    
             }));
-        L.control.locate().addTo(map);
+        L.control.locate().addTo(map); //allows user to locate themselves
 
 // Set location to be San Francisco
 
@@ -27,21 +27,3 @@ function showMap(err, data) {
 }
 
 // new L.Control.Zoom({ position: 'topleft' }).addTo(map);
-
-var loader = document.getElementById('loader');
-
-function startLoading() {
-    loader.className = '';
-};
-
-function finishedLoading() {
-    // first, toggle the class 'done', which makes the loading screen
-    // fade out
-    loader.className = 'done';
-    setTimeout(function() {
-        // then, after a half-second, add the class 'hide', which hides
-        // it completely and ensures that the user can interact with the
-        // map again.
-        loader.className = 'hide';
-    }, 500);
-};

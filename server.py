@@ -116,6 +116,12 @@ def get_month_stats():
 
     return Crime_Stat.get_month_data()
 
+@app.route('/map')
+def show_cust_map():
+    """Show customized map"""
+
+    return render_template("cust_map.html")
+
 @app.route('/journey')
 def get_route():
     """Show routing map"""
@@ -152,8 +158,11 @@ def get_recent_stats():
     reader = csv.reader(data_text.splitlines(), delimiter='\t')
 
     for i, row in enumerate(reader):
+        print row
         newrow = row[0].strip("'")
+        print newrow
         newrow_split = newrow.split(",")
+        print newrow_split
         if i > 0:
             try:
                 overlap = Crime_Stat.query.filter_by(incident_num=newrow_split[0]).one()
@@ -173,6 +182,7 @@ def get_recent_stats():
                         map_category = "Other"
                 day_of_week = newrow_split[3]
                 date_input = newrow_split[4]
+                print date_input
                 date = datetime.strptime(date_input, "%m/%d/%Y %H:%M:%S %p")
                 time_input = newrow_split[5]
                 time = datetime.strptime(time_input,"%H:%M").time()
@@ -196,6 +206,52 @@ def get_recent_stats():
     db.session.commit()
 
     print("finished refreshing")
+
+    Hour_Count.query.delete()
+    Day_Count.query.delete()
+    Month_Count.query.delete()
+
+    map_category_list = ['Personal Theft/Larceny','Robbery', 'Rape/Sexual Assault','Aggravated Assault','Simple Assault','Other']
+    hours_list = ["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00",
+                  "16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"]
+    day_list = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+    month_list = ["January","February","March","April","May","June","July","August","September","October","November","December"]
+
+    for hour in hours_list:
+        for category in map_category_list:
+            count = Crime_Stat.query.filter_by(hour=hour,map_category=category).count()
+            hour_stat = Hour_Count(hour=hour,map_category=category,count=count)
+            db.session.add(hour_stat)
+    
+        count_all = Crime_Stat.query.filter_by(hour=hour).count() 
+        hour_stat = Hour_Count(hour=hour,map_category="all",count=count_all)
+        db.session.add(hour_stat)
+    
+    db.session.commit()
+
+    for day in day_list:
+        for category in map_category_list:
+            count = Crime_Stat.query.filter_by(day_of_week=day,map_category=category).count()
+            day_stat = Day_Count(day=day,map_category=category,count=count)
+            db.session.add(day_stat)
+    
+        count_all = Crime_Stat.query.filter_by(day_of_week=day).count() 
+        day_stat = Day_Count(day=day,map_category="all",count=count_all)
+        db.session.add(day_stat)
+
+    db.session.commit()
+
+    for month in month_list:
+        for category in map_category_list:
+            count = Crime_Stat.query.filter_by(month=month,map_category=category).count()
+            month_stat = Month_Count(month=month,map_category=category,count=count)
+            db.session.add(month_stat)
+    
+        count_all = Crime_Stat.query.filter_by(month=month).count() 
+        month_stat = Month_Count(month=month,map_category="all",count=count_all)
+        db.session.add(month_stat)
+        
+    db.session.commit()
 
     flash('Crime stats refreshed')
     return redirect('/')

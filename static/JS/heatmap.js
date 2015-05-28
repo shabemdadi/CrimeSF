@@ -23,13 +23,16 @@ function addHeat(data) {
     feature_layer.eachLayer(function(l) {       //iterate through the features on the feature layer and add those points to the heat map
         heat.addLatLng(l.getLatLng());
     });
-    finishedLoading();                          //loading screen will fade out
+    finishedLoading();
 };
 
 $("#heat_button").on("click", function(e) { //this event listener will kick in when a user submits a date range
     e.preventDefault();
     var start_date = $("input[name='start']").val(); //define the start and end date
     var end_date = $("input[name='end']").val();
+    var checked_categories = $('input:checkbox:checked').map(function() {
+                        return this.value;
+                        }).get();
     console.log("submitted");
     $.getJSON('/get_heat', { start_date: start_date, end_date: end_date } ).done(function(data){ //use a get ajax request and pass in the start and end date to get the GeoJSON features to be added
         console.log(data.features);

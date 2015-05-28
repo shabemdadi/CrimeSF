@@ -28,12 +28,35 @@
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script>
-<!-- <script src='../static/js/load.js'></script>
 
-<div id='loader'><span class='message'>loading</span></div> -->
-<canvas id="TimeChart" width="400" height="400"></canvas>
-<canvas id="DayChart" width="400" height="400"></canvas>
-<canvas id="MonthChart" width="400" height="400"></canvas>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-9">
+			<canvas id="TimeChart" width="800" height="400"></canvas>
+			<canvas id="DayChart" width="800" height="400"></canvas>
+			<canvas id="MonthChart" width="800" height="400"></canvas>
+		</div>
+        <div class="col-md-3">
+        	<div class="form-group">
+            <label>Crime Category 
+                <br>
+                <input type ="checkbox" name="map_category", value='Personal Theft/Larceny'>Personal Theft/Larceny
+                <br>
+                <input type ="checkbox" name="map_category", value='Robbery'>Robbery
+                <br>
+                <input type ="checkbox" name="map_category", value='Rape/Sexual Assault'>Rape/Sexual Assault
+                <br>
+                <input type ="checkbox" name="map_category", value='Aggravated Assault'>Aggravated Assault
+                <br>
+                <input type ="checkbox" name="map_category", value='Simple Assault'>Simple Assault
+                <br>
+                <input type ="checkbox" name="map_category", value='Other'>Other
+            </label>
+            <br>
+            <button id="heat_button" class="btn btn-primary">Submit</button>
+        </div>
+    </div>    
+</div>
 
 <script src='../static/js/trend_charts.js'></script>
 

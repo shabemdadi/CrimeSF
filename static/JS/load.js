@@ -1,3 +1,4 @@
+//Defines start loading and end loading functions to be used on pages with loading screens added
 var loader = document.getElementById('loader');
 
 function startLoading() {

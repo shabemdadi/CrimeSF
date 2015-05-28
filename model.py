@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 import decimal
 from datetime import datetime
 from flask import jsonify
+from time import time
 
 # This is the connection to the SQLite database; we're getting this through
 # the Flask-SQLAlchemy helper library. On this, we can find the `session`
@@ -74,19 +75,51 @@ class Crime_Stat(db.Model):
     def get_features_objects_by_date(cls,start_date,end_date):
         """Query table and then make feature objects on each instance to be sent to map"""
 
+        print time()
         crime_stats = cls.query.filter(cls.date >= start_date, cls.date <= end_date).all() 
+        print len(crime_stats)
+        # crime_stats = cls.query.all(
+        print time()
 
         marker_object_dict = { "type": "FeatureCollection"}
         marker_object_list = []
+
+        print "finished querying"
 
         for crime in crime_stats:
             marker_object = crime.make_feature_object()
 
             marker_object_list.append(marker_object)              
 
+        print time()
         marker_object_dict["features"] = marker_object_list    
 
         return jsonify(marker_object_dict)
+
+    # @classmethod
+    # def get_features_objects_by_date_and_category(cls,start_date,end_date,map_category):
+    #     """Query table and then make feature objects on each instance to be sent to map"""
+
+    #     print time()
+    #     crime_stats = cls.query.filter(cls.date >= start_date, cls.date <= end_date, cls.map_category=map_category).all() 
+    #     print len(crime_stats)
+    #     # crime_stats = cls.query.all(
+    #     print time()
+
+    #     marker_object_dict = { "type": "FeatureCollection"}
+    #     marker_object_list = []
+
+    #     print "finished querying"
+
+    #     for crime in crime_stats:
+    #         marker_object = crime.make_feature_object()
+
+    #         marker_object_list.append(marker_object)              
+
+    #     print time()
+    #     marker_object_dict["features"] = marker_object_list    
+
+    #     return jsonify(marker_object_dict)
 
     @classmethod
     def get_hour_data(cls):
@@ -102,16 +135,15 @@ class Crime_Stat(db.Model):
 
         data = {"labels": label_list, "datasets": [   #this is the data variable that will be passed into the graph
             {"label": "My First dataset",
-            "fillColor": "rgba(220,220,220,0.2)",
-            "strokeColor": "rgba(220,220,220,1)",
-            "pointColor": "rgba(220,220,220,1)",
+            "fillColor": "rgba(151,187,205,0.2)",
+            "strokeColor": "rgba(151,187,205,1)",
+            "pointColor": "rgba(151,187,205,1)",
             "pointStrokeColor": "#fff",
             "pointHighlightFill": "#fff",
-            "pointHighlightStroke": "rgba(220,220,220,1)",
+            "pointHighlightStroke": "rgba(151,187,205,1)",
             "data": data_point_list}]
             }
 
-        print data   
         return jsonify(data)
 
 
@@ -126,18 +158,17 @@ class Crime_Stat(db.Model):
             count_crimes = Day_Count.query.filter_by(day=day,map_category="all").one().count
             data_point_list.append(count_crimes)
 
-        data = {"labels": label_list, "datasets": [   #This is the data variable that will be passed into the graph
+        data = {"labels": label_list, "datasets": [   #this is the data variable that will be passed into the graph
             {"label": "My First dataset",
-            "fillColor": "rgba(220,220,220,0.2)",
-            "strokeColor": "rgba(220,220,220,1)",
-            "pointColor": "rgba(220,220,220,1)",
+            "fillColor": "rgba(151,187,205,0.2)",
+            "strokeColor": "rgba(151,187,205,1)",
+            "pointColor": "rgba(151,187,205,1)",
             "pointStrokeColor": "#fff",
             "pointHighlightFill": "#fff",
-            "pointHighlightStroke": "rgba(220,220,220,1)",
+            "pointHighlightStroke": "rgba(151,187,205,1)",
             "data": data_point_list}]
             }
 
-        print data  
         return jsonify(data)
 
     @classmethod
@@ -151,18 +182,17 @@ class Crime_Stat(db.Model):
             count_crimes = Month_Count.query.filter_by(month=month,map_category="all").one().count
             data_point_list.append(count_crimes)
 
-        data = {"labels": label_list, "datasets": [   #This is the data variable that will be passed into the graph
+        data = {"labels": label_list, "datasets": [   #this is the data variable that will be passed into the graph
             {"label": "My First dataset",
-            "fillColor": "rgba(220,220,220,0.2)",
-            "strokeColor": "rgba(220,220,220,1)",
-            "pointColor": "rgba(220,220,220,1)",
+            "fillColor": "rgba(151,187,205,0.2)",
+            "strokeColor": "rgba(151,187,205,1)",
+            "pointColor": "rgba(151,187,205,1)",
             "pointStrokeColor": "#fff",
             "pointHighlightFill": "#fff",
-            "pointHighlightStroke": "rgba(220,220,220,1)",
+            "pointHighlightStroke": "rgba(151,187,205,1)",
             "data": data_point_list}]
             }
-
-        print data   
+ 
         return jsonify(data)
 
 class Hour_Count(db.Model):

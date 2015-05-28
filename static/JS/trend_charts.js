@@ -3,24 +3,28 @@ var ctx_time = $("#TimeChart").get(0).getContext("2d");
 var ctx_day = $("#DayChart").get(0).getContext("2d");
 var ctx_month = $("#MonthChart").get(0).getContext("2d");
 // Use JSON get requestts from flask to define data added into each map
-// startLoading();	//start loading page
+
+var options = {
+    animation: false,
+    scaleLabel:
+    function(label){return label.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");}
+};
 
 $.getJSON('/get_hour_stats',function(data){
-	var timeChart = new Chart(ctx_time).Line(data);
+	var timeChart = new Chart(ctx_time).Line(data,options);
 	console.log(data);
 });
 
 $.getJSON('/get_day_stats',function(data){
-	var dayChart = new Chart(ctx_day).Line(data);
+	var dayChart = new Chart(ctx_day).Line(data,options);
 	console.log(data);
 });
 
 $.getJSON('/get_month_stats',function(data){
-	var monthChart = new Chart(ctx_month).Line(data);
+	var monthChart = new Chart(ctx_month).Line(data,options);
 	console.log(data);
 });
 
-// finishedLoading(); //fade out loading page
 // var data = {
 //     labels: ["January", "February", "March", "April", "May", "June", "July"],
 //     datasets: [

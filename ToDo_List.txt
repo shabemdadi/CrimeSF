@@ -1,38 +1,21 @@
-Do this weekend:
-2.trend line graphs by month, time of day, day of week
-5. add filters for heat map
-7.time lapse graph
-9.folder with mvp
-11.email mapbox mentor
-13.journey page
-14.time option for routing
-15.precautions
-16.fix if no data
-18.show where you are on line graphs
-19. filters on trend tables by crime
-20. make homepage map full screen
-22.routing
-25. mouseover/popups
-24.customizaton
+Do this week:
+1. routing (loading, alerts, time option,journey page, precautions,map reflects current time,day,month,heated path,drop marker if crime)
+2. filters on trend graphs
+3. filters on heatmap
 
 Do Later:
 1. greyscale bootstrap theme
 2. style date input fields (calendar drop down, have min and max dates, etc.)
 3. fix crime forecast margin (on left and right)
 4. fancier loading page
-5. decide what to put on home map
-6. maybe add in customization feature using intensity/altitude/weighting
-
-Do this week:
-1. get recent stats takes a long time
-2. loading time issues (closures)
-4. ask about flash message from javascript
-5. routing
-6. add loading to journey page
+5. homepage map styling
+6. decide what to put on home map
+7. show where you are on line graphs
+8. style charts (y-axis values, fonts, axis labels, etc.)
+9. heatmap color, radius, blur options
 
 Ask Mapbox:
-1.routing
-2.heatmap color, radius, blur options
-3.zoom location
-4.sometimes map does not show up, only markers or heat points
-5.how to add individual points to heatmap (and weight them appropriately)
+1.heatmap color, radius, blur options
+2.zoom location
+3.sometimes map does not show up, only markers or heat points
+4.how to add individual points to heatmap (and weight them appropriately with altitude/intensity)

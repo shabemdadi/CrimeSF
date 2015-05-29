@@ -6,6 +6,7 @@ import csv
 from datetime import datetime
 from sqlalchemy import desc
 import requests
+import json
 
 
 def load_crime_stats():
@@ -79,26 +80,24 @@ def load_recent_stats():
                  'SEX OFFENSES, NON FORCIBLE':'Rape/Sexual Assault'
                  }
 
-    recent_import_date = Data_Import.query.order_by(desc(Data_Import.max_date)).first().max_date #find the most recent date in the data_import table
+    recent_import_date = Data_Import.query.order_by(desc(Data_Import.max_date)).first().max_date
 
-    recent_import_date_formatted = recent_import_date.strftime('%Y-%m-%dT%H:%M:%S') #format this date as a string
+    recent_import_date_formatted = recent_import_date.strftime('%Y-%m-%dT%H:%M:%S')
 
-    data = requests.get("https://data.sfgov.org/resource/gxxq-x39z.csv?$WHERE=date>='%s'&$$app_token=RvFtAMemRY6per3vRmUEutOfM" % recent_import_date_formatted) #call API only for data after this date
+    data = requests.get("https://data.sfgov.org/resource/gxxq-x39z.json?$WHERE=date>='%s'&$$app_token=RvFtAMemRY6per3vRmUEutOfM" % recent_import_date_formatted)
 
-    data_text = data.text #read in API CSV result as text
+    data_text = data.text
 
-    reader = csv.reader(data_text.splitlines(), delimiter='\t') 
+    data_json = json.loads(data_text)
 
-    for i, row in enumerate(reader):            #iterate through the CSV file, stripping each row of quotation marks, and then spliting each row by the commas
-        newrow = row[0].strip("'")
-        newrow_split = newrow.split(",")
-        if i > 0:                               #start on row 1 (row 0 is the headers)
+    for i, row in enumerate(data_json):
+        if i > 0:
             try:
-                overlap = Crime_Stat.query.filter_by(incident_num=newrow_split[0]).one() #if the incident number is in the database, there will be no error here
-            except:                                     # if the incident number is not in the database, there will be an error and we will want to save these lines to the database
-                incident_num = newrow_split[0]   
-                category = newrow_split[1]
-                description = newrow_split[2]
+                overlap = Crime_Stat.query.filter_by(incident_num=row["incidntnum"]).one()
+            except:
+                incident_num = row["incidntnum"]
+                category = row["category"]
+                description = row["descript"]
                 if category == "ASSAULT":
                     if "AGGRAVATED" in description:
                         map_category = "Aggravated Assault"
@@ -109,15 +108,17 @@ def load_recent_stats():
                         map_category = map_category_dict[category]
                     else:
                         map_category = "Other"
-                day_of_week = newrow_split[3]
-                date_input = newrow_split[4]
-                date = datetime.strptime(date_input, "%m/%d/%Y %H:%M:%S %p")
-                time_input = newrow_split[5]
+                day_of_week = row["dayofweek"]
+                date_input = row["date"]
+                date = datetime.strptime(date_input, "%Y-%m-%dT%H:%M:%S")
+                month = datetime.strftime(date,"%B")
+                time_input = row["time"]
                 time = datetime.strptime(time_input,"%H:%M").time()
-                district = newrow_split[6]
-                address = newrow_split[8]
-                x_cord = newrow_split[9]
-                y_cord = newrow_split[10]
+                hour = time.strftime("%H:00")
+                district = row["pddistrict"]
+                address = row["address"]
+                x_cord = row["location"]["latitude"]
+                y_cord = row["location"]["longitude"]
                 
                 incident = Crime_Stat(incident_num=incident_num,category=category,description=description,map_category=map_category,
                     day_of_week=day_of_week,date=date,month=month,time=time,hour=hour,address=address,district=district,x_cord=x_cord,
@@ -182,6 +183,6 @@ def load_crime_counts():
 if __name__ == "__main__":
     connect_to_db(app)
 
-    # load_crime_stats()
-    # load_recent_stats()
+    #load_crime_stats()
+    load_recent_stats()
     load_crime_counts()

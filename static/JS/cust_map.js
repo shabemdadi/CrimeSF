@@ -1,5 +1,7 @@
-var heat = L.heatLayer([], {radius: 25, max: 1.0}).addTo(map);
+var heat = L.heatLayer([], {minOpacity:0.5, maxZoom:16, max:100000, radius:25}).addTo(map);
 
-heat.addLatLng([-122,37,0.1]);
+var pt = L.latLng(37,-122, 100);
+
+heat.addLatLng(pt);
 
 console.log(heat);

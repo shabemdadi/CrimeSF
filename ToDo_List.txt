@@ -1,7 +1,10 @@
 Do this week:
-1. routing (loading, alerts, time option,journey page, precautions,map reflects current time,day,month,heated path,drop marker if crime)
-2. filters on trend graphs
-3. filters on heatmap
+1. routing (alerts, precautions,drop marker if crime)
+2. filters on heatmap
+3. flash message if no data
+4. folder with mvp
+5. mouseover/popups
+6. filters on trend tables
 
 Do Later:
 1. greyscale bootstrap theme
@@ -11,11 +14,19 @@ Do Later:
 5. homepage map styling
 6. decide what to put on home map
 7. show where you are on line graphs
-8. style charts (y-axis values, fonts, axis labels, etc.)
+8. style charts (fonts, axis labels, etc.)
 9. heatmap color, radius, blur options
+10. predetermined time ranges for heatmap
 
 Ask Mapbox:
 1.heatmap color, radius, blur options
 2.zoom location
 3.sometimes map does not show up, only markers or heat points
 4.how to add individual points to heatmap (and weight them appropriately with altitude/intensity)
+
+Journey Page
+1. make a box (bouding box)
+2. check if marker points are in the box
+3. or check how far away from marker points
+4. define marker points to check
+5. have graphs reflect area

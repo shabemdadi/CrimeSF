@@ -10,7 +10,7 @@ var feature_layer = L.mapbox.featureLayer();    //define feature layer
 
 function addHeat(data) {                        
     // Add each marker point to the heatmap.
-    startLoading();                             //loading screen will come up
+    // startLoading();                             //loading screen will come up
     feature_layer = L.mapbox.featureLayer(data);    //add features to the feature_layer
     console.log(feature_layer);
     heat.addTo(map);                            //add the heat layer
@@ -23,7 +23,7 @@ function addHeat(data) {
     feature_layer.eachLayer(function(l) {       //iterate through the features on the feature layer and add those points to the heat map
         heat.addLatLng(l.getLatLng());
     });
-    finishedLoading();
+    // finishedLoading();
 };
 
 $("#heat_button").on("click", function(e) { //this event listener will kick in when a user submits a date range

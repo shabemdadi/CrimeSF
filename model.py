@@ -59,7 +59,7 @@ class Crime_Stat(db.Model):
                                 },
                                 "properties": {
                                   "title": self.map_category,
-                                  "description": self.description,
+                                  "description": str(self.description).title(),
                                   "date": date_formatted,
                                   "time":time_formatted,
                                   "address":self.address,

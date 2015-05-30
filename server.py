@@ -98,7 +98,7 @@ def get_heat_points():
         end_date = datetime.now()                    
         # beginning_year = "%s-01-01" % end_date.year
         # start_date = datetime.strptime(beginning_year,"%Y-%m-%d")
-        start_date = end_date - timedelta(days=60)
+        start_date = end_date - timedelta(days=30)
 
         print start_date
 

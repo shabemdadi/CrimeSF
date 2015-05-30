@@ -5,6 +5,10 @@ Do this week:
 4. folder with mvp
 5. mouseover/popups
 6. bounding boxes for coordinates/directions response
+7.routing engine
+8.mapbox studio
+9.trend tables reflect where you are
+10. time lapse
 
 Do Later:
 1. greyscale bootstrap theme
@@ -23,7 +27,6 @@ Ask Mapbox:
 1.heatmap color, radius, blur options
 2.zoom location
 3.sometimes map does not show up, only markers or heat points
-4.how to add individual points to heatmap (and weight them appropriately with altitude/intensity)
 5.time lapse
 6.filters on heat map (how and how to put it on map?)
 7.directions API (where/what is the response? walking and driving options? enter in address? alternate directions?)

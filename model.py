@@ -55,7 +55,7 @@ class Crime_Stat(db.Model):
                                 "type": "Feature",
                                 "geometry": {
                                   "type": "Point",
-                                  "coordinates": [str(decimal.Decimal(self.x_cord)), str(decimal.Decimal(self.y_cord))] #FIX ME
+                                  "coordinates": [str(decimal.Decimal(self.y_cord)), str(decimal.Decimal(self.x_cord))]
                                 },
                                 "properties": {
                                   "title": self.map_category,

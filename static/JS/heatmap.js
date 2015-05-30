@@ -8,12 +8,9 @@ var heat = L.heatLayer([], {    //define heat layer options
 
 var feature_layer = L.mapbox.featureLayer();    //define feature layer
 
-console.log("3. heat and feature layer defined");
-
 function addHeat(data) {                        
     // Add each marker point to the heatmap.
-    // startLoading();                            //loading screen will come up
-    console.log('5. adding heat points');
+    startLoading();                             //loading screen will come up
     feature_layer = L.mapbox.featureLayer(data);    //add features to the feature_layer
     console.log(feature_layer);
     heat.addTo(map);                            //add the heat layer
@@ -22,12 +19,11 @@ function addHeat(data) {
         map.panTo(e.layer.getLatLng());
     });
     map.fitBounds(feature_layer.getBounds());  //zoom into the bounds of the features added
-    console.log(map);
     // Add each marker point to the heatmap.
     feature_layer.eachLayer(function(l) {       //iterate through the features on the feature layer and add those points to the heat map
         heat.addLatLng(l.getLatLng());
     });
-    // finishedLoading();
+    finishedLoading();
 };
 
 $("#heat_button").on("click", function(e) { //this event listener will kick in when a user submits a date range
@@ -59,8 +55,6 @@ $("#heat_button").on("click", function(e) { //this event listener will kick in w
 });
 
 $.getJSON('/get_heat', { start_date:[], end_date:[]} ).done(function(data){ //this will be called when the user goes on the heatmap page, it will get the GeoJSON feature objects from the server using our default date range
-    console.log("4. heat is running");
-    debugger;
+    console.log("heat is running");
     addHeat(data);
 });
-

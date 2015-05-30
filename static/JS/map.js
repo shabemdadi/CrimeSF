@@ -9,7 +9,6 @@ var map = L.mapbox.map('map', 'shabemdadi.fab5eb0c')
             }));
         L.control.locate().addTo(map); //allows user to locate themselves
 
-console.log("1. map defined");
 // Set location to be San Francisco
 
 var geocoder = L.mapbox.geocoder('mapbox.places');
@@ -17,7 +16,6 @@ var geocoder = L.mapbox.geocoder('mapbox.places');
 geocoder.query('San Francisco, CA', showMap);
 
 function showMap(err, data) {
-    console.log("2. show map called");
     // The geocoder can return an area, like a city, or a
     // point, like an address. Here we handle both cases,
     // by fitting the map bounds to an area or zooming to a point.

@@ -4,7 +4,7 @@ Do this week:
 3. flash message if no data
 4. folder with mvp
 5. mouseover/popups
-6. filters on trend tables
+6. bounding boxes for coordinates/directions response
 
 Do Later:
 1. greyscale bootstrap theme
@@ -17,16 +17,22 @@ Do Later:
 8. style charts (fonts, axis labels, etc.)
 9. heatmap color, radius, blur options
 10. predetermined time ranges for heatmap
+11. request.path
 
 Ask Mapbox:
 1.heatmap color, radius, blur options
 2.zoom location
 3.sometimes map does not show up, only markers or heat points
 4.how to add individual points to heatmap (and weight them appropriately with altitude/intensity)
+5.time lapse
+6.filters on heat map (how and how to put it on map?)
+7.directions API (where/what is the response? walking and driving options? enter in address? alternate directions?)
+8.popups/mouseovers
+9.styling
+
 
 Journey Page
 1. make a box (bouding box)
 2. check if marker points are in the box
 3. or check how far away from marker points
 4. define marker points to check
-5. have graphs reflect area

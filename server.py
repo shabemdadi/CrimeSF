@@ -7,6 +7,8 @@ import requests
 from sqlalchemy import desc
 import csv
 from datetime import datetime, timedelta
+import time
+import ast
 
 app = Flask(__name__)
 
@@ -33,6 +35,8 @@ def show__markers():
 @app.route('/get_markers')
 def get_marker_points():
     """Get JSON objects for marker points."""
+
+    # time.sleep(30)
 
     start_date = request.args.get("start_date") #start_date and end_date are defined in the event listener in javascript and passed into Flask
     print start_date
@@ -66,6 +70,8 @@ def show_heat():
 @app.route('/get_heat')
 def get_heat_points():
     """Make JSON objects for markers on heatmap."""
+
+    # time.sleep(30)
 
     start_date = request.args.get("start_date") #start and end dates are defined in the event listener in JS when user selects date range
     print start_date
@@ -108,21 +114,30 @@ def get_heat_points():
 def show_charts():
     """Show trend line graphs"""
 
-    return render_template("charts.html")
+    date_now = datetime.now()                                       #Show current date and time
+    date_formatted = datetime.strftime(date_now,"%A, %B %d, %Y")
+    time_formatted = datetime.strftime(date_now, "%H:%M")
+
+    return render_template("charts.html",date=date_formatted,time=time_formatted)
 
 
 @app.route('/get_hour_stats')
 def get_hour_stats():
     """Get hour data to be rendered on charts.js"""
 
-    map_categories = json.dumps(request.args.get("map_categories"))
-    print map_categories
+    map_categories = str(request.args.get("map_categories"))
+    map_categories_list = map_categories.strip("]").strip("[").split(",")
+    category_list = []
 
-    if map_categories:
+    for category in map_categories_list:
+        category_stripped = category.strip('"')
+        category_list.append(category_stripped)
+
+    if map_categories != "None":
 
         print "in map_categories"
 
-        return Crime_Stat.get_hour_data_category(map_categories)
+        return Crime_Stat.get_hour_data_category(category_list)
 
     else:
 
@@ -132,23 +147,51 @@ def get_hour_stats():
 def get_day_stats():
     """Get day data to be rendered on charts.js"""
 
-    return Crime_Stat.get_day_data()
+    map_categories = str(request.args.get("map_categories"))
+    map_categories_list = map_categories.strip("]").strip("[").split(",")
+    category_list = []
+
+    for category in map_categories_list:
+        category_stripped = category.strip('"')
+        category_list.append(category_stripped)
+
+    if map_categories != "None":
+
+        print "in map_categories"
+
+        return Crime_Stat.get_day_data_category(category_list)
+
+    else:
+
+        return Crime_Stat.get_day_data()
 
 @app.route('/get_month_stats')
 def get_month_stats():
     """Get month data to be rendered on charts.js"""
 
-    return Crime_Stat.get_month_data()
+    map_categories = str(request.args.get("map_categories"))
+    map_categories_list = map_categories.strip("]").strip("[").split(",")
+    category_list = []
+
+    for category in map_categories_list:
+        category_stripped = category.strip('"')
+        category_list.append(category_stripped)
+
+    if map_categories != "None":
+
+        print "in map_categories"
+
+        return Crime_Stat.get_month_data_category(category_list)
+
+    else:
+
+        return Crime_Stat.get_month_data()
 
 @app.route('/journey')
 def get_route():
     """Show routing map"""
 
-    date_now = datetime.now()                                       #Show current date and time
-    date_formatted = datetime.strftime(date_now,"%A, %B %d, %Y")
-    time_formatted = datetime.strftime(date_now, "%H:%M")
-
-    return render_template("journey.html",date=date_formatted, time=time_formatted)
+    return render_template("journey.html")
 
 @app.route('/get_recent')  #This will happen when the user clicks on the "Get Recent Stats" button, it will update our database with the same function used in our seed file
 def get_recent_stats():
@@ -272,10 +315,10 @@ def get_recent_stats():
 
     print "finished refreshing counts at %s" % datetime.now()
 
-    current_path = request.path
+    current_path = request.args.get("current_path")
     print current_path
     flash('Crime stats refreshed')
-    return render_template(current_path)
+    return redirect(current_path)
 
 
 if __name__ == "__main__":

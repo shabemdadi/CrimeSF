@@ -3,7 +3,7 @@ var feature_layer = L.mapbox.featureLayer(); //define the feature layer
 var filters = document.getElementById('filters'); //define the filters in the DOM
 
 function addMarkerLayer(data) { //this will add markers to the map
-  // startLoading();         // loading screen will start
+  startLoading();         // loading screen will start
   feature_layer = L.mapbox.featureLayer(data).addTo(map); //GeoJSON feature objects will be added to the feature_layer, which will be added to the map
   feature_layer.on('click', function(e) {                 //map will zoom into a marker if a user clicks on it
       map.panTo(e.layer.getLatLng());
@@ -75,7 +75,7 @@ function addFilters() {     //this function will add the filter, and create an e
       return (feature.properties['title'] in enabled);
     });
   };
-  // finishedLoading();
+  finishedLoading();
 };
 
 $("#marker_button").on("click", function(e) { //this is called when a user submits a date range

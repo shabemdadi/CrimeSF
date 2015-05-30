@@ -205,12 +205,64 @@ class Crime_Stat(db.Model):
                   "16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"]
         data_point_list = []
 
-        print "in hour class method"
-        print map_categories
-        print type(map_categories)
-
         for hour in label_list:       #iterate over each hour, and query the database to find the count of crimes happening in each hour. The count will be the datapoint for that hour.
             count_crimes = Hour_Count.query.filter(Hour_Count.hour==hour, Hour_Count.map_category.in_(map_categories)).all()
+            total_count = sum([count.count for count in count_crimes])
+            # total_count = 0
+            # for count in count_crimes:
+            #     total_count = total_count + count.count
+            data_point_list.append(total_count)
+
+        data = {"labels": label_list, "datasets": [   #this is the data variable that will be passed into the graph
+            {"label": "My First dataset",
+            "fillColor": "rgba(151,187,205,0.2)",
+            "strokeColor": "rgba(151,187,205,1)",
+            "pointColor": "rgba(151,187,205,1)",
+            "pointStrokeColor": "#fff",
+            "pointHighlightFill": "#fff",
+            "pointHighlightStroke": "rgba(151,187,205,1)",
+            "data": data_point_list}]
+            }
+
+        return jsonify(data)
+
+    @classmethod
+    def get_day_data_category(cls,map_categories):
+        """Create chart variable with labels and datapoints for day trend graph, taking into account map_category."""
+
+        label_list = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+        data_point_list = []
+
+        for day in label_list:       #iterate over each hour, and query the database to find the count of crimes happening in each hour. The count will be the datapoint for that hour.
+            count_crimes = Day_Count.query.filter(Day_Count.day==day, Day_Count.map_category.in_(map_categories)).all()
+            total_count = sum([count.count for count in count_crimes])
+            # total_count = 0
+            # for count in count_crimes:
+            #     total_count = total_count + count.count
+            data_point_list.append(total_count)
+
+        data = {"labels": label_list, "datasets": [   #this is the data variable that will be passed into the graph
+            {"label": "My First dataset",
+            "fillColor": "rgba(151,187,205,0.2)",
+            "strokeColor": "rgba(151,187,205,1)",
+            "pointColor": "rgba(151,187,205,1)",
+            "pointStrokeColor": "#fff",
+            "pointHighlightFill": "#fff",
+            "pointHighlightStroke": "rgba(151,187,205,1)",
+            "data": data_point_list}]
+            }
+
+        return jsonify(data)
+
+    @classmethod
+    def get_month_data_category(cls,map_categories):
+        """Create chart variable with labels and datapoints for month trend graph, taking into account map_category."""
+
+        label_list = ["January","February","March","April","May","June","July","August","September","October","November","December"]
+        data_point_list = []
+
+        for month in label_list:       #iterate over each hour, and query the database to find the count of crimes happening in each hour. The count will be the datapoint for that hour.
+            count_crimes = Month_Count.query.filter(Month_Count.month==month, Month_Count.map_category.in_(map_categories)).all()
             total_count = sum([count.count for count in count_crimes])
             # total_count = 0
             # for count in count_crimes:

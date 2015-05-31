@@ -19,12 +19,7 @@ var directionsRoutesControl = L.mapbox.directions.routesControl('routes', direct
 var directionsInstructionsControl = L.mapbox.directions.instructionsControl('instructions', directions)
     .addTo(map);
 
-directions.on("load",function(){
-	console.log(directions.directions.routes[0].geometry.coordinates);
-});
-
 var feature_layer = L.mapbox.featureLayer(); //define the feature layer
-
 
 function addMarkerLayer(data) { //this will add markers to the map
   startLoading();         // loading screen will start
@@ -52,3 +47,23 @@ $.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data)
     console.log("markers is running");
     addMarkerLayer(data);
   });
+
+directions.on("load",function(){
+	console.log(directions.directions.routes[0].geometry.coordinates);
+	console.log(directions.directions.routes[0]);
+	// var route_line = turf.linestring([directions.directions.routes[0].geometry.coordinates], { name: 'route_line' } );
+	// console.log(route_line);
+	var route_line = directions.directions.routes[0];
+	debugger;
+	var unit = 'miles';
+	var buffered = turf.buffer(route_line, 0.1, unit);
+	console.log(buffered);
+	var result = turf.featurecollection([buffered, route_line]);
+	console.log(result);
+	var markers = feature_layer.getGeoJSON();
+	console.log(markers);
+	var markersWithin = turf.within(markers, buffered);
+	console.log(markersWithin);
+});
+
+$("option[name='buffer']").val();

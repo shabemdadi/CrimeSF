@@ -1,5 +1,5 @@
 Do this week:
-1. routing (alerts, precautions,drop marker if crime)
+1. routing (alerts, precautions,drop marker if crime,say types that are closeby)
 2. filters on heatmap
 3. flash message if no data
 4. folder with mvp
@@ -7,6 +7,7 @@ Do this week:
 7.routing engine
 9.trend tables reflect where you are/your time
 10. time lapse/time ranges for heatmap
+11. add option where they can set buffer range
 
 Do Later:
 1. greyscale bootstrap theme
@@ -22,6 +23,9 @@ Do Later:
 12. mapbox studio
 13.clean up/comment code
 14.interview prep
+15. move directions
+16. download most recent stats
+17.read me
 
 Ask Mapbox:
 2.zoom location

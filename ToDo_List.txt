@@ -1,15 +1,10 @@
-Do this week:
-1. routing (alerts, precautions,drop marker if crime,say types that are closeby)
-2. filters on heatmap
-3. flash message if no data
-4. folder with mvp
-6. bounding boxes for coordinates/directions response
-7.routing engine
-9.trend tables reflect where you are/your time
-10. time lapse/time ranges for heatmap
-11. add option where they can set buffer range
+Do this weekend:
+1. filters on heatmap
+2. flash message if no data or no markers in range specified (filters wont update with no markers)
+3. pathfinding
+4. time lapse/time ranges for heatmap
 
-Do Later:
+Do later:
 1. greyscale bootstrap theme
 2. style date input fields (calendar drop down, have min and max dates, etc.)
 3. fix crime forecast margin (on left and right)
@@ -19,21 +14,17 @@ Do Later:
 7. show where you are on line graphs
 8. style charts (fonts, axis labels, etc.)
 9. heatmap color, radius, blur options
-11. request.path
-12. mapbox studio
-13.clean up/comment code
-14.interview prep
-15. move directions
-16. download most recent stats
-17.read me
+10. request.path
+11. mapbox studio
+12.clean up/comment code
+13.interview prep
+14. download most recent stats
+15.read me
+16.format journey page (move instructions)
+17.folder with everything styled before adding routing
+18.trend tables reflecr where you are (location)
+19. pathfinding
 
 Ask Mapbox:
-2.zoom location
+2.zoom location (for journey, markers, heat)
 3.sometimes map does not show up, only markers or heat points (ON HEAT MAP!)
-
-
-Journey Page
-1. make a box (bouding box)
-2. check if marker points are in the box
-3. or check how far away from marker points
-4. define marker points to check

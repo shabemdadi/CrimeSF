@@ -2,10 +2,20 @@
 {% block content %}
 
 <style>
-/*	#inputs,*/
+    .filter-ui {
+      background:#fff;
+      position:absolute;
+      top:10px;
+      right:10px;
+      z-index:100;
+      padding:10px;
+      border-radius:3px;
+      }
+
+	#inputs,
 	#errors,
 	#directions {
-	    position: absolute;
+	    position: relative;
 	    width: 33.3333%;
 	    max-width: 300px;
 	    min-width: 200px;
@@ -13,10 +23,6 @@
 
 	#inputs {
 	    z-index: 10;
-		position: relative;
-	    width: 33.3333%;
-	    max-width: 300px;
-	    min-width: 200px;
 	    top: 10px;
 	    left: 10px;
 	}
@@ -82,19 +88,20 @@
         <div class="col-md-9">
             <div id='map'></div>
             <div id='loader'><span class='message'>loading</span></div>
+            <nav id='filters' class='filter-ui'></nav>
 <!-- 			<div id='inputs'></div> -->
 			<div id='errors'></div>
-			<div id='directions'>
+<!-- 			<div id='directions'>
 			  <div id='routes'></div>
 			  <div id='instructions'></div>
-			</div>
+			</div> -->
         </div>
         <div class="col-md-3">
         	<div id='inputs'></div>
         	<br>
         	<div>
 	        	<label>Select crime buffer zone: 
-	        		<select>
+	        		<select id="buffer_choice">
 	        			<option name="buffer" value="0.1">0.1 miles</option>
 	        			<option name="buffer" value="0.3">0.3 miles</option>
 	        			<option name="buffer" value="0.5">0.5 miles</option>
@@ -105,7 +112,13 @@
 	        		<br>
 	        		<button id="buffer_button" class="btn btn-primary">Submit</button>
 	        	</label>
-        	<div>
+        	</div>
+        	<br>
+        	<div id='directions'>
+			  <div id='routes'></div>
+			  <div id='instructions'></div>
+			</div>
+		</div>	
 
 <script src='../static/js/map.js'></script>
 <script src='../static/js/journey.js'></script>

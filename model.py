@@ -98,32 +98,6 @@ class Crime_Stat(db.Model):
         return jsonify(marker_object_dict)
 
     @classmethod
-    def get_features_objects_by_date_category(cls,start_date,end_date,map_category):
-        """Query table and then make feature objects on each instance to be sent to map"""
-
-        print "get feature objects by date"
-        print time()
-        crime_stats = cls.query.filter(cls.date >= start_date, cls.date <= end_date, cls.map_category.in_(map_category)).all() 
-        print len(crime_stats)
-        # crime_stats = cls.query.all(
-        print time()
-
-        marker_object_dict = { "type": "FeatureCollection"}
-        marker_object_list = []
-
-        print "finished querying"
-
-        for crime in crime_stats:
-            marker_object = crime.make_feature_object()
-
-            marker_object_list.append(marker_object)              
-
-        print time()
-        marker_object_dict["features"] = marker_object_list    
-
-        return jsonify(marker_object_dict)
-
-    @classmethod
     def get_hour_data(cls):
         """Create chart variable with labels and datapoints for hour trend graph."""
 

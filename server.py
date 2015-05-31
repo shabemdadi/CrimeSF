@@ -73,42 +73,27 @@ def get_heat_points():
 
     # time.sleep(30)
 
-    start_date = request.args.get("start_date") #start and end dates are defined in the event listener in JS when user selects date range
+    start_date = request.args.get("start_date") #start_date and end_date are defined in the event listener in javascript and passed into Flask
     print start_date
     end_date = request.args.get("end_date")
-    map_categories = request.args.get("map_categories")
 
-    if start_date:                              #if the user has selected a date range
+    if start_date:                              #if the user enters in a start_date
 
         print "start_date has been posted"
 
-        start_date_formatted = datetime.strptime(start_date,"%Y-%m-%d") #reformat start and end date as date objects
+        start_date_formatted = datetime.strptime(start_date,"%Y-%m-%d") #reformat start and end dates as date objects
         end_date_formatted = datetime.strptime(end_date,"%Y-%m-%d")
+        
+        return Crime_Stat.get_features_objects_by_date(start_date_formatted,end_date_formatted)
 
-        if map_categories:
-
-            return Crime_Stat.get_features_objects_by_date_category(start_date_formatted,end_date_formatted,map_categories)
-
-        else:
-
-            return Crime_Stat.get_features_objects_by_date(start_date_formatted,end_date_formatted)
-
-    else:       #user has not selected a range, use this year as default period
-
+    else:                               # user has not entered in a date, use a default period of 45 days ago
+        
         end_date = datetime.now()                    
-        # beginning_year = "%s-01-01" % end_date.year
-        # start_date = datetime.strptime(beginning_year,"%Y-%m-%d")
         start_date = end_date - timedelta(days=30)
 
         print start_date
 
-        if map_categories:
-
-            return Crime_Stat.get_features_objects_by_date_category(start_date,end_date,map_categories)
-
-        else:
-
-            return Crime_Stat.get_features_objects_by_date(start_date,end_date)
+        return Crime_Stat.get_features_objects_by_date(start_date,end_date)
 
 @app.route('/trends')
 def show_charts():

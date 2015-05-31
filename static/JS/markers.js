@@ -3,7 +3,6 @@ var feature_layer = L.mapbox.featureLayer(); //define the feature layer
 var filters = document.getElementById('filters'); //define the filters in the DOM
 
 function addMarkerLayer(data) { //this will add markers to the map
-  startLoading();         // loading screen will start
   feature_layer = L.mapbox.featureLayer(data).addTo(map); //GeoJSON feature objects will be added to the feature_layer, which will be added to the map
   feature_layer.on('click', function(e) {                 //map will zoom into a marker if a user clicks on it
       map.panTo(e.layer.getLatLng());
@@ -67,7 +66,6 @@ function addFilters() {     //this function will add the filter, and create an e
       return (feature.properties['title'] in enabled);
     });
   };
-  finishedLoading();
 };
 
 $("#marker_button").on("click", function(e) { //this is called when a user submits a date range
@@ -77,16 +75,26 @@ $("#marker_button").on("click", function(e) { //this is called when a user submi
     console.log("submitted");
     $("#filters").empty(); //empty the filters element so that a new filter list can be created
     $.getJSON('/get_markers', { start_date: start_date, end_date: end_date } ).done(function(data){ //pass in the entered start and end dates and get the GeoJSON objects to be added to the map
+      startLoading();
       feature_layer.setGeoJSON([]); //empty the feature_layer of objects
       console.log("markers is running");
-      addMarkerLayer(data);
-      addFilters();
+      try {
+        addMarkerLayer(data);
+        addFilters();
+        $("#error").empty();
+      }
+      catch(err){
+        $("#error").html("No crime stats in range selected");
+      };
+      finishedLoading();
     });
 });
 
 
 $.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data){ //this will load when the user goes to the points of interest page, it will show crimes in the default date range period
     console.log("markers is running");
+    startLoading();         // loading screen will start
     addMarkerLayer(data);
     addFilters();
+    finishedLoading();
   });

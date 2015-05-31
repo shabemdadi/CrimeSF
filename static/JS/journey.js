@@ -104,8 +104,14 @@ function createBuffer (){
 	console.log(markers);
 	var markersWithin = turf.within(markers, buffered);
 	console.log(markersWithin);
-	feature_layer.setGeoJSON([])
-	addMarkerLayer(markersWithin);
+	feature_layer.setGeoJSON([]);
+  try {
+	   addMarkerLayer(markersWithin);
+     $("#error").empty();
+  }
+  catch(err){
+    $("#error").html("No crimes from previous two weeks in buffer zone selected");
+  };
 };
 
 $.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data){ //this will load when the user goes to the points of interest page, it will show crimes in the default date range period
@@ -119,7 +125,7 @@ $.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data)
 directions.on("load",function(){
 	createBuffer();
 	$("#filters").empty(); //empty the filters element so that a new filter list can be created
-    addFilters();
+  addFilters();
 });
 
 $("#buffer_choice").change(function(){

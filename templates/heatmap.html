@@ -42,13 +42,13 @@
 
 <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.42.0/L.Control.Locate.mapbox.css' rel='stylesheet' />
 
-<!-- <script src='../static/js/load.js'></script> -->
+<script src='../static/js/load.js'></script>
 
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-9">
             <div id="map"></div>
-<!--             <div id='loader'><span class='message'>loading</span></div> -->
+            <div id='loader'><span class='message'>loading</span></div>
             <nav id='filters' class='filter-ui'></nav>
         </div>
         <div class="col-md-3">
@@ -61,28 +61,15 @@
                     <input type="date" class="input-sm form-control" name="end">
                 </label>
                 <br>
-                <label>Crime Category 
-                    <br>
-                    <input type ="checkbox" name="map_category" value='Personal Theft/Larceny'>Personal Theft/Larceny
-                    <br>
-                    <input type ="checkbox" name="map_category" value='Robbery'>Robbery
-                    <br>
-                    <input type ="checkbox" name="map_category" value='Rape/Sexual Assault'>Rape/Sexual Assault
-                    <br>
-                    <input type ="checkbox" name="map_category" value='Aggravated Assault'>Aggravated Assault
-                    <br>
-                    <input type ="checkbox" name="map_category" value='Simple Assault'>Simple Assault
-                    <br>
-                    <input type ="checkbox" name="map_category" value='Other'>Other
-                </label>
-                <br>
                 <button id="heat_button" class="btn btn-primary">Submit</button>
+                <br>
+                <div id="error"></div>
             </div>
         </div>    
     </div>
 
 <script src='../static/js/map.js'></script>
 <script src='../static/js/heatmap.js'></script>
-<!-- <script src='../static/js/load.js'></script> -->
+<script src='../static/js/load.js'></script>
 
 {% endblock %}

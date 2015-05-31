@@ -1,8 +1,6 @@
 Do this weekend:
-1. filters on heatmap
-2. flash message if no data or no markers in range specified (filters wont update with no markers)
-3. pathfinding
-4. time lapse/time ranges for heatmap
+1. pathfinding
+2. time lapse/time ranges for heatmap
 
 Do later:
 1. greyscale bootstrap theme
@@ -10,21 +8,24 @@ Do later:
 3. fix crime forecast margin (on left and right)
 4. fancier loading page
 5. homepage map styling
-6. decide what to put on home map
+6. decide what to put on home map and home "about"
 7. show where you are on line graphs
 8. style charts (fonts, axis labels, etc.)
-9. heatmap color, radius, blur options
+9. heatmap color, radius, blur options (make sure same options on heatmap for when selecting filters and re-initializing)
 10. request.path
 11. mapbox studio
 12.clean up/comment code
 13.interview prep
 14. download most recent stats
-15.read me
-16.format journey page (move instructions)
+15.read me, snapshots, etc.
 17.folder with everything styled before adding routing
-18.trend tables reflecr where you are (location)
+18.trend tables reflect where you are (location)
 19. pathfinding
+20. job postings
+21. resume
+22. decided what default date ranges to use for markers and heat (two weeks for markers, month for heat?)
 
 Ask Mapbox:
-2.zoom location (for journey, markers, heat)
-3.sometimes map does not show up, only markers or heat points (ON HEAT MAP!)
+1.zoom location (for journey, markers, heat)
+2.sometimes map does not show up, only markers or heat points, or map does not zoom in around markers
+3.max amount of features before breaking?

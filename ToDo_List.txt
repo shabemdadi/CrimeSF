@@ -1,31 +1,42 @@
-Do this weekend:
-1. pathfinding
+Do this week:
+1. add tests
 2. time lapse/time ranges for heatmap
+3. add report feature
+4. add now showing feature
+5. add other buffer units (meters)
+6. JS tests
+7. add twitter
+8. add twilio (text users route)
+9. style date input fields (calendar drop down, have min and max dates, etc.)
+10. show where you are on line graphs
+11. request.path
+12. mapbox studio
+13. download most recent stats
+14.trend tables reflect where you are (location)
+15. decided what default date ranges to use for markers and heat (two weeks for markers, month for heat?)
+16. style charts (fonts, axis labels, etc.)
+17. heatmap color, radius, blur options (make sure same options on heatmap for when selecting filters and re-initializing)
 
-Do later:
+Styling:
 1. greyscale bootstrap theme
-2. style date input fields (calendar drop down, have min and max dates, etc.)
-3. fix crime forecast margin (on left and right)
-4. fancier loading page
-5. homepage map styling
-6. decide what to put on home map and home "about"
-7. show where you are on line graphs
-8. style charts (fonts, axis labels, etc.)
-9. heatmap color, radius, blur options (make sure same options on heatmap for when selecting filters and re-initializing)
-10. request.path
-11. mapbox studio
-12.clean up/comment code
-13.interview prep
-14. download most recent stats
-15.read me, snapshots, etc.
-17.folder with everything styled before adding routing
-18.trend tables reflect where you are (location)
-19. pathfinding
-20. job postings
-21. resume
-22. decided what default date ranges to use for markers and heat (two weeks for markers, month for heat?)
+2. fix crime forecast margin (on left and right)
+3. fancier loading page
+4. homepage map styling
+5. decide what to put on home map and home "about"
+6. add form controls (must fill out each field, etc.)
 
 Ask Mapbox:
-1.zoom location (for journey, markers, heat)
+1.zoom location (for journey(zoom into route not markers), markers, heat)
 2.sometimes map does not show up, only markers or heat points, or map does not zoom in around markers
 3.max amount of features before breaking?
+
+Career Stuff:
+1. interview prep
+2. research companies
+3. job postings
+
+Career Day Prep:
+1. read me
+2. snapshots
+3. demo routine
+4. download recent stats

@@ -49,7 +49,7 @@ def get_marker_points():
         start_date_formatted = datetime.strptime(start_date,"%Y-%m-%d") #reformat start and end dates as date objects
         end_date_formatted = datetime.strptime(end_date,"%Y-%m-%d")
         
-        return Crime_Stat.get_features_objects_by_date(start_date_formatted,end_date_formatted)
+        return Crime_Stat.get_features_objects_by_date(start_date_formatted,end_date_formatted) #call class method that will return GeoJSON features
 
     else:                               # user has not entered in a date, use a default period of 45 days ago
         
@@ -110,23 +110,23 @@ def show_charts():
 def get_hour_stats():
     """Get hour data to be rendered on charts.js"""
 
-    map_categories = str(request.args.get("map_categories"))
-    map_categories_list = map_categories.strip("]").strip("[").split(",")
+    map_categories = str(request.args.get("map_categories")) #put JS returned into string
+    map_categories_list = map_categories.strip("]").strip("[").split(",") #put string into list
     category_list = []
 
-    for category in map_categories_list:
+    for category in map_categories_list:    #iterate through the list to strip out quotes and add to a list
         category_stripped = category.strip('"')
         category_list.append(category_stripped)
 
-    if map_categories != "None":
+    if map_categories != "None":    #if there is no checkbox checked JS will return "None" as a string
 
         print "in map_categories"
 
-        return Crime_Stat.get_hour_data_category(category_list)
+        return Crime_Stat.get_hour_data_category(category_list) #call class method querying database by hour and provided catory and returns graph variable
 
     else:
 
-        return Crime_Stat.get_hour_data()
+        return Crime_Stat.get_hour_data() #if no categories provided, get all data regardless of category (this is what happens when page first loads)
 
 @app.route('/get_day_stats')
 def get_day_stats():
@@ -178,7 +178,51 @@ def get_route():
 
     return render_template("journey.html")
 
-@app.route('/get_recent')  #This will happen when the user clicks on the "Get Recent Stats" button, it will update our database with the same function used in our seed file
+@app.route('/report')
+def show_report_page():
+    """Show routing map"""
+
+    return render_template("report.html")
+
+@app.route('/report_crime', methods=["POST"])
+def process_report():
+    """Save reported crime to database."""
+
+    time = request.form.get("time")
+    print time
+    date = request.form.get("date")
+    print date
+    address = request.form.get("address")
+    print address
+    description = request.form.get("description")
+    print description
+    map_category = request.form.get("category")
+    print map_category
+
+    # incident_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    # incident_num = db.Column(db.String(60), nullable=False) #want this to be nullable
+    # category = db.Column(db.String(60), nullable=False)     #want this to be nullable
+    # map_category = db.Column(db.String(60), nullable=False)
+    # description = db.Column(db.String(200), nullable=False)
+    # day_of_week = db.Column(db.String(10), nullable=False)
+    # date = db.Column(db.Date, nullable=False)
+    # month = db.Column(db.String(10), nullable=False)
+    # time = db.Column(db.Time, nullable=False)
+    # hour = db.Column(db.String(10), nullable=False)
+    # district = db.Column(db.String(60), nullable=False) #want this to be nullable
+    # address = db.Column(db.String(60), nullable=False)
+    # x_cord = db.Column(db.Numeric, nullable=False)
+    # y_cord = db.Column(db.Numeric, nullable=False)
+
+    # incident = Crime_Stat(incident_num=incident_num,category=category,description=description,map_category=map_category,
+    #                 day_of_week=day_of_week,date=date,month=month,time=time,hour=hour,address=address,district=district,x_cord=x_cord,
+    #                 y_cord=y_cord)
+    
+    # db.session.add(incident)
+
+    # db.session.commit()
+
+@app.route('/get_recent')  #This will happen when the user clicks on the "Get Recent Stats" button, it will update our database and update our counts tables with the same function used in our seed file
 def get_recent_stats():
     """Check API to see if there are new crime stats, if so, import into database."""
 

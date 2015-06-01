@@ -71,7 +71,7 @@ def load_crime_stats():
 def load_recent_stats():
     """Check API to see if there are new crime stats, if so, import into database."""
 
-    map_category_dict = {'LARCENY/THEFT':'Personal Theft/Larceny',
+    map_category_dict = {'LARCENY/THEFT':'Personal Theft/Larceny', #dictionary linking crime categories from data to categories I will show in my map
                  'BURGLARY':'Robbery',
                  'SEX OFFENSES, FORCIBLE':'Rape/Sexual Assault',
                  'VEHICLE THEFT':'Personal Theft/Larceny',
@@ -80,17 +80,17 @@ def load_recent_stats():
                  'SEX OFFENSES, NON FORCIBLE':'Rape/Sexual Assault'
                  }
 
-    recent_import_date = Data_Import.query.order_by(desc(Data_Import.max_date)).first().max_date
+    recent_import_date = Data_Import.query.order_by(desc(Data_Import.max_date)).first().max_date #get the most recent date in the data_import table
 
-    recent_import_date_formatted = recent_import_date.strftime('%Y-%m-%dT%H:%M:%S')
+    recent_import_date_formatted = recent_import_date.strftime('%Y-%m-%dT%H:%M:%S') #format date to be put into API call
 
     data = requests.get("https://data.sfgov.org/resource/gxxq-x39z.json?$WHERE=date>='%s'&$$app_token=RvFtAMemRY6per3vRmUEutOfM" % recent_import_date_formatted)
 
-    data_text = data.text
+    data_text = data.text #put JSON into text
 
-    data_json = json.loads(data_text)
+    data_json = json.loads(data_text) #put JSON into JSON dict
 
-    for i, row in enumerate(data_json):
+    for i, row in enumerate(data_json): #iterate over JSON dict, first checking that incident num is not present, and add to databse if not present
         if i > 0:
             try:
                 overlap = Crime_Stat.query.filter_by(incident_num=row["incidntnum"]).one()
@@ -98,7 +98,7 @@ def load_recent_stats():
                 incident_num = row["incidntnum"]
                 category = row["category"]
                 description = row["descript"]
-                if category == "ASSAULT":
+                if category == "ASSAULT":           #use data description to define if crime is simple or aggravated
                     if "AGGRAVATED" in description:
                         map_category = "Aggravated Assault"
                     else:
@@ -107,14 +107,14 @@ def load_recent_stats():
                     if category in map_category_dict:
                         map_category = map_category_dict[category]
                     else:
-                        map_category = "Other"
+                        map_category = "Other"  #if data category not in dictionary, assign it other
                 day_of_week = row["dayofweek"]
                 date_input = row["date"]
-                date = datetime.strptime(date_input, "%Y-%m-%dT%H:%M:%S")
-                month = datetime.strftime(date,"%B")
+                date = datetime.strptime(date_input, "%Y-%m-%dT%H:%M:%S")   #make date a datetime object to be put into database
+                month = datetime.strftime(date,"%B")                        #make a string of a month to be put into database
                 time_input = row["time"]
-                time = datetime.strptime(time_input,"%H:%M").time()
-                hour = time.strftime("%H:00")
+                time = datetime.strptime(time_input,"%H:%M").time()         #make time a datetime object to be put into database
+                hour = time.strftime("%H:00")                               #make a string of an hour to be put into the database
                 district = row["pddistrict"]
                 address = row["address"]
                 x_cord = row["location"]["latitude"]
@@ -128,8 +128,8 @@ def load_recent_stats():
                 if i % 1000 == 0:
                     db.session.commit()
 
-    max_date = Crime_Stat.query.order_by(desc(Crime_Stat.date)).first().date
-    data_import = Data_Import(max_date=max_date)
+    max_date = Crime_Stat.query.order_by(desc(Crime_Stat.date)).first().date #find the max date in the crime_stats table
+    data_import = Data_Import(max_date=max_date)                             #add the max date to the data_import table
     db.session.add(data_import)
 
     db.session.commit()
@@ -143,6 +143,7 @@ def load_crime_counts():
     day_list = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
     month_list = ["January","February","March","April","May","June","July","August","September","October","November","December"]
 
+    #iterate through items in hour, day, and month lists, and through categories to create the count tables according to the crime_stats database
     for hour in hours_list:
         for category in map_category_list:
             count = Crime_Stat.query.filter_by(hour=hour,map_category=category).count()

@@ -13,7 +13,7 @@ var map = L.mapbox.map('map', 'shabemdadi.fab5eb0c')
 
 var geocoder = L.mapbox.geocoder('mapbox.places');
 
-geocoder.query('San Francisco, CA', showMap);
+geocoder.query('San Francisco, CA', showMap);   //will zoom into San Francisco
 
 function showMap(err, data) {
     // The geocoder can return an area, like a city, or a

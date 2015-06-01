@@ -26,7 +26,7 @@ function addMarkerLayer(data) { //this will add markers to the map
   feature_layer.on('click', function(e) {                 //map will zoom into a marker if a user clicks on it
       map.panTo(e.layer.getLatLng());
   });
-  map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
+  // map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
   feature_layer.eachLayer(function(layer) {
     // here you call `bindPopup` with a string of HTML you create - the feature
     // properties declared above are available under `layer.feature.properties`
@@ -92,29 +92,29 @@ function createBuffer (){
 	console.log(directions.directions.routes[0]);
 	// var route_line = turf.linestring([directions.directions.routes[0].geometry.coordinates], { name: 'route_line' } );
 	// console.log(route_line);
-	var route_line = directions.directions.routes[0];
-	var unit = 'miles';
+	var route_line = directions.directions.routes[0];  //define feature that defines the route given
+	var unit = 'miles';                                //define the unit for the buffer
 	var buffer_dist = $("#buffer_choice").val();
 	console.log(buffer_dist);
-	var buffered = turf.buffer(route_line, buffer_dist, unit);
+	var buffered = turf.buffer(route_line, buffer_dist, unit); //create buffer zone
 	console.log(buffered);
-	var result = turf.featurecollection([buffered, route_line]);
-	console.log(result);
-	var markers = feature_layer.getGeoJSON();
+	// var result = turf.featurecollection([buffered, route_line]);
+	// console.log(result);
+	var markers = feature_layer.getGeoJSON();            //get the feature on the feature_layer
 	console.log(markers);
-	var markersWithin = turf.within(markers, buffered);
+	var markersWithin = turf.within(markers, buffered);  //check whether any of the features are in the buffer zone and save to variable
 	console.log(markersWithin);
-	feature_layer.setGeoJSON([]);
+	feature_layer.setGeoJSON([]);                        //set feature layer to 0 features
   try {
-	   addMarkerLayer(markersWithin);
+	   addMarkerLayer(markersWithin);                    //add only those markers within the buffer zone to the feature layer
      $("#error").empty();
   }
-  catch(err){
+  catch(err){                                           //if there are no features in the buffer zone, add this error message
     $("#error").html("No crimes from previous two weeks in buffer zone selected");
   };
 };
 
-$.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data){ //this will load when the user goes to the points of interest page, it will show crimes in the default date range period
+$.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data){ //this will load when the user goes to the journey page, it will show crimes in the default date range period
     console.log("markers is running");
     startLoading();
     addMarkerLayer(data);
@@ -122,17 +122,19 @@ $.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data)
     finishedLoading();
   });
 
-directions.on("load",function(){
+directions.on("load",function(){  //this will start when a user selects a start and end destination to get directions for
 	createBuffer();
 	$("#filters").empty(); //empty the filters element so that a new filter list can be created
   addFilters();
+  console.log(directions.directions.routes[0].steps[0].maneuver.instruction);
+  // for (var step = 0; i < features.length; i++) 
 });
 
-$("#buffer_choice").change(function(){
+$("#buffer_choice").change(function(){  //this will start when a buffer zone distance is chosen
 	startLoading();
 	console.log("buffer changed");
-	feature_layer.setGeoJSON([]);
-	$.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data){ //this will load when the user goes to the points of interest page, it will show crimes in the default date range period
+	feature_layer.setGeoJSON([]);      //set feature layer to 0 features
+	$.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data){
     console.log("markers is running");
     addMarkerLayer(data);
     debugger;

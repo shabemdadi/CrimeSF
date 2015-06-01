@@ -24,7 +24,6 @@ function addMarkerLayer(data) { //this will add markers to the map
 
 function addFilters() {     //this function will add the filter, and create an event listener that will update the marker points when a user checks or unchecks the filter checkboxes
 // Wait until the marker layer is loaded in order to build a list of possible types. If you are doing this with another featureLayer, you should change map.featureLayer to the variable you have assigned to your featureLayer
-    // feature_layer.on('ready', function() {
 // Collect the types of symbols in this layer. you can also just hardcode an array of types if you know what you want to filter on, like var types = ['foo', 'bar'];
   var typesObj = {}, types = [];
   var features = feature_layer.getGeoJSON().features; //get the features objects from the feature layer
@@ -78,12 +77,12 @@ $("#marker_button").on("click", function(e) { //this is called when a user submi
       startLoading();
       feature_layer.setGeoJSON([]); //empty the feature_layer of objects
       console.log("markers is running");
-      try {
+      try {     //add markers and filters
         addMarkerLayer(data);
         addFilters();
-        $("#error").empty();
+        $("#error").empty(); //empty error message
       }
-      catch(err){
+      catch(err){ //if there is an error adding markers (because no points in data range), add this error message
         $("#error").html("No crime stats in range selected");
       };
       finishedLoading();

@@ -23,8 +23,8 @@ class Crime_Stat(db.Model):
     __tablename__ = "crime_stats"
     
     incident_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    incident_num = db.Column(db.String(60), nullable=False)
-    category = db.Column(db.String(60), nullable=False)
+    incident_num = db.Column(db.String(60), nullable=False) #want this to be nullable
+    category = db.Column(db.String(60), nullable=False)     #want this to be nullable
     map_category = db.Column(db.String(60), nullable=False)
     description = db.Column(db.String(200), nullable=False)
     day_of_week = db.Column(db.String(10), nullable=False)
@@ -32,15 +32,15 @@ class Crime_Stat(db.Model):
     month = db.Column(db.String(10), nullable=False)
     time = db.Column(db.Time, nullable=False)
     hour = db.Column(db.String(10), nullable=False)
-    district = db.Column(db.String(60), nullable=False)
+    district = db.Column(db.String(60), nullable=False) #want this to be nullable
     address = db.Column(db.String(60), nullable=False)
     x_cord = db.Column(db.Numeric, nullable=False)
     y_cord = db.Column(db.Numeric, nullable=False)
 
     def make_feature_object(self):
-        """Make feature object"""
+        """Make GeoJSON feature object"""
 
-        date_formatted = datetime.strftime(self.date,"%m/%d/%Y")
+        date_formatted = datetime.strftime(self.date,"%m/%d/%Y") #format time and date as strings to use in feature objects
         time_formatted = self.time.strftime("%I:%M %p")
 
         marker_color_dict = {'Personal Theft/Larceny':'#FF0000',    #This dictionary will link the type of crime to the color marker it will be assigned    
@@ -55,15 +55,15 @@ class Crime_Stat(db.Model):
                                 "type": "Feature",
                                 "geometry": {
                                   "type": "Point",
-                                  "coordinates": [str(decimal.Decimal(self.y_cord)), str(decimal.Decimal(self.x_cord))]
+                                  "coordinates": [str(decimal.Decimal(self.y_cord)), str(decimal.Decimal(self.x_cord))] #deal with decimal from database
                                 },
                                 "properties": {
                                   "title": self.map_category,
-                                  "description": str(self.description).title(),
+                                  "description": str(self.description).title(), #put description in string and called title capitalization on it
                                   "date": date_formatted,
                                   "time":time_formatted,
                                   "address":self.address,
-                                  "marker-color": marker_color_dict[self.map_category],
+                                  "marker-color": marker_color_dict[self.map_category], #use marker color dictionary to assign marker colors based on type of crime
                                   "marker-size": "small",
                                   "marker-symbol": "marker"
                                 }
@@ -77,9 +77,8 @@ class Crime_Stat(db.Model):
 
         print "get feature objects by date"
         print time()
-        crime_stats = cls.query.filter(cls.date >= start_date, cls.date <= end_date).all() 
+        crime_stats = cls.query.filter(cls.date >= start_date, cls.date <= end_date).all() #create query object of rows that fall in time range
         print len(crime_stats)
-        # crime_stats = cls.query.all(
         print time()
 
         marker_object_dict = { "type": "FeatureCollection"}
@@ -87,13 +86,13 @@ class Crime_Stat(db.Model):
 
         print "finished querying"
 
-        for crime in crime_stats:
+        for crime in crime_stats:                               #iterate over query object calling the feature object class method on each
             marker_object = crime.make_feature_object()
 
-            marker_object_list.append(marker_object)              
+            marker_object_list.append(marker_object)            #append each feature object to a list  
 
         print time()
-        marker_object_dict["features"] = marker_object_list    
+        marker_object_dict["features"] = marker_object_list     #add list of feature objects to the value of a key
 
         return jsonify(marker_object_dict)
 
@@ -130,7 +129,7 @@ class Crime_Stat(db.Model):
         data_point_list = []
         label_list = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
 
-        for day in label_list:       #iterate over each hour, and query the database to find the count of crimes happening in each hour. The count will be the datapoint for that hour.
+        for day in label_list:       #iterate over each day, and query the database to find the count of crimes happening on each day. The count will be the datapoint for that day.
             count_crimes = Day_Count.query.filter_by(day=day,map_category="all").one().count
             data_point_list.append(count_crimes)
 
@@ -154,7 +153,7 @@ class Crime_Stat(db.Model):
         data_point_list = []
         label_list = ["January","February","March","April","May","June","July","August","September","October","November","December"]
 
-        for month in label_list:       #iterate over each hour, and query the database to find the count of crimes happening in each hour. The count will be the datapoint for that hour.
+        for month in label_list:       #iterate over each month, and query the database to find the count of crimes happening in each month. The count will be the datapoint for that month.
             count_crimes = Month_Count.query.filter_by(month=month,map_category="all").one().count
             data_point_list.append(count_crimes)
 
@@ -179,12 +178,9 @@ class Crime_Stat(db.Model):
                   "16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"]
         data_point_list = []
 
-        for hour in label_list:       #iterate over each hour, and query the database to find the count of crimes happening in each hour. The count will be the datapoint for that hour.
+        for hour in label_list:       #iterate over each hour, and query the database to find the count of crimes happening in each hour for the categories checked in checkboxes. The count will be the datapoint for that hour.
             count_crimes = Hour_Count.query.filter(Hour_Count.hour==hour, Hour_Count.map_category.in_(map_categories)).all()
             total_count = sum([count.count for count in count_crimes])
-            # total_count = 0
-            # for count in count_crimes:
-            #     total_count = total_count + count.count
             data_point_list.append(total_count)
 
         data = {"labels": label_list, "datasets": [   #this is the data variable that will be passed into the graph
@@ -207,12 +203,10 @@ class Crime_Stat(db.Model):
         label_list = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
         data_point_list = []
 
-        for day in label_list:       #iterate over each hour, and query the database to find the count of crimes happening in each hour. The count will be the datapoint for that hour.
+        for day in label_list:       #iterate over each day, and query the database to find the count of crimes happening on each day using the catagories checked in checkboxes. The count will be the datapoint for that day.
             count_crimes = Day_Count.query.filter(Day_Count.day==day, Day_Count.map_category.in_(map_categories)).all()
             total_count = sum([count.count for count in count_crimes])
-            # total_count = 0
-            # for count in count_crimes:
-            #     total_count = total_count + count.count
+
             data_point_list.append(total_count)
 
         data = {"labels": label_list, "datasets": [   #this is the data variable that will be passed into the graph
@@ -235,12 +229,9 @@ class Crime_Stat(db.Model):
         label_list = ["January","February","March","April","May","June","July","August","September","October","November","December"]
         data_point_list = []
 
-        for month in label_list:       #iterate over each hour, and query the database to find the count of crimes happening in each hour. The count will be the datapoint for that hour.
+        for month in label_list:       #iterate over each month, and query the database to find the count of crimes happening in each month and for crime catagories denoted by checkboxes. The count will be the datapoint for that month.
             count_crimes = Month_Count.query.filter(Month_Count.month==month, Month_Count.map_category.in_(map_categories)).all()
             total_count = sum([count.count for count in count_crimes])
-            # total_count = 0
-            # for count in count_crimes:
-            #     total_count = total_count + count.count
             data_point_list.append(total_count)
 
         data = {"labels": label_list, "datasets": [   #this is the data variable that will be passed into the graph
@@ -257,7 +248,7 @@ class Crime_Stat(db.Model):
         return jsonify(data)
 
 class Hour_Count(db.Model):
-    """Table showing counts of crime by hour."""
+    """Table showing counts of crime by hour and crime category."""
 
     __tablename__ = "hour_counts"
 
@@ -267,7 +258,7 @@ class Hour_Count(db.Model):
     count = db.Column(db.Integer,nullable=False)
 
 class Day_Count(db.Model):
-    """Table showing counts of crime by hour."""
+    """Table showing counts of crime by day and crime category."""
 
     __tablename__ = "day_counts"
 
@@ -277,7 +268,7 @@ class Day_Count(db.Model):
     count = db.Column(db.Integer,nullable=False)
 
 class Month_Count(db.Model):
-    """Table showing counts of crime by hour."""
+    """Table showing counts of crime by month and crime category."""
 
     __tablename__ = "month_counts"
 

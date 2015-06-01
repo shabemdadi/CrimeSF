@@ -1,16 +1,17 @@
-// Get context with jQuery - using jQuery's .get() method.
+// initialize variables
 var ctx_time, timeChart, ctx_day, dayChart, ctx_month, monthChart;
 
-// Use JSON get requests from flask to define data added into each map
-
+// set global chart configurations
 var options = {
     animation: false,
     scaleShowGridLines : true,
     scaleLabel: "<%= addCommas(value) %>"};
 
+// Use JSON get requests from flask to define data added into each map, save charts to global variables to that they can be changed with checkboxes
+
 $.getJSON('/get_hour_stats',function(data){
-	ctx_time = $("#TimeChart").get(0).getContext("2d");
-	window.timeChart = new Chart(ctx_time).Line(data,options);
+	ctx_time = $("#TimeChart").get(0).getContext("2d"); //get chart element using jQuery
+	window.timeChart = new Chart(ctx_time).Line(data,options); //assign graph the data variable returned from the get request
 	console.log(data);
 });
 
@@ -27,7 +28,7 @@ $.getJSON('/get_month_stats',function(data){
 	console.log(data);
 });
 
-function addCommas(nStr)
+function addCommas(nStr)				//have y-axis be formatted with commas
 {
     nStr += '';
     x = nStr.split('.');
@@ -41,17 +42,17 @@ function addCommas(nStr)
 };
 
 
-$('input:checkbox').change(function(){
+$('input:checkbox').change(function(){ //on changing the checkboxes, empty each graph, gather the checkboxes checked, and recreate charts with new data from get requests
 	console.log("checked");
 	timeChart.destroy();
 	dayChart.destroy();
 	monthChart.destroy();
-	var map_categories = $('input:checkbox:checked').map(function() {
+	var map_categories = $('input:checkbox:checked').map(function() { //create JS object with all of the categories checked to pass to get requests
                         return this.value;
                         }).get();
 	console.log(typeof(map_categories));
 	console.log(map_categories);
-	$.getJSON('/get_hour_stats', { map_categories: JSON.stringify(map_categories) } ).done(function(data){
+	$.getJSON('/get_hour_stats', { map_categories: JSON.stringify(map_categories) } ).done(function(data){ //make JS object a string to pass into get request
 		var ctx_time = $("#TimeChart").get(0).getContext("2d");
 		var timeChart = new Chart(ctx_time).Line(data,options);
 		console.log(data);

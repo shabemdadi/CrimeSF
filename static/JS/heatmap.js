@@ -76,7 +76,7 @@ function addFilters() {     //this function will add the filter, and create an e
     }).addTo(map);
     map.fitBounds(feature_layer.getBounds());  //zoom into the bounds of the features added
     // Add each marker point to the heatmap.
-    feature_layer.eachLayer(function(l) {       //iterate through the features on the feature layer and add those points to the heat map
+    feature_layer.eachLayer(function(l) {      //iterate through the features on the feature layer and add those points to the heat map (the features on the layer now will be those checked on filters)
     heat.addLatLng(l.getLatLng());
     });
   };
@@ -90,12 +90,6 @@ $("#heat_button").on("click", function(e) { //this event listener will kick in w
     $("#filters").empty(); //empty the filters element so that a new filter list can be created
     $.getJSON('/get_heat', { start_date: start_date, end_date: end_date } ).done(function(data){ //use a get ajax request and pass in the start and end date to get the GeoJSON features to be added
         startLoading();
-        console.log(data.features);
-        // if (data === { "type": "FeatureCollection"}){
-        //     console.log("in if");
-        //     alert("No crime statistics found in date range entered");
-        //     return;
-        // };
         console.log("heat is running");
         map.removeLayer(heat);      //remove the heat layer
         heat = L.heatLayer([], {    //redfine the heat layer
@@ -107,9 +101,9 @@ $("#heat_button").on("click", function(e) { //this event listener will kick in w
         feature_layer.setGeoJSON([]);   //set the features on the feature_layer to an empty list
         try {
             addHeat(data);                  //call the heat function
-            addFilters();
-            $("#error").empty();
-        }
+            addFilters();                   // add filters
+            $("#error").empty();            //empty error message elements
+        }                                   //if there is an error adding features (no crimes in date range), add error message
         catch(err){
             $("#error").html("No crime stats in range selected");
         };

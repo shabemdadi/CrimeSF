@@ -18,6 +18,7 @@ Styling:
 9. style charts (fonts, axis labels, etc.)
 10. have current time in time and date fields
 11. mapbox studio
+12. think about where to zoom
 
 Ask Mapbox:
 1. be able to zoom into markers and route
@@ -29,6 +30,8 @@ Career Stuff:
 1. interview prep
 2. research companies
 3. job postings
+4. update resume
+5. update linkedin
 
 Career Day Prep:
 1. read me

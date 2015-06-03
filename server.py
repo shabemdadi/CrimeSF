@@ -54,7 +54,7 @@ def get_marker_points():
     else:                               # user has not entered in a date, use a default period of 45 days ago
         
         end_date = datetime.now()                    
-        start_date = end_date - timedelta(days=15)
+        start_date = end_date - timedelta(days=16)
 
         print start_date
 

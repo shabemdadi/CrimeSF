@@ -1,12 +1,10 @@
 Do this week:
-2. time lapse/time ranges for heatmap
-5. add other buffer units (meters)
-twitter
-6. JS tests
-12. mapbox studio
-18. if user selects different route buffer should update
-zooming features
-now showing feature
+1. twitter button
+2. JS/python tests
+5. now showing feature
+6. add "did you mean?" on address on report page
+10. practice demo
+11. fix heat map loader
 
 Styling:
 1. greyscale bootstrap theme
@@ -15,17 +13,17 @@ Styling:
 4. homepage map styling
 5. decide what to put on home map and home "about"
 6. add form controls (must fill out each field, etc.)
-7. add "did you mean?" address thing
-8. show where you are on line graphs
-9. style date input fields (calendar drop down, have min and max dates, etc.)
-10. style charts (fonts, axis labels, etc.)
-11. have current time in time and date fields
-12. heatmap color, radius, blur options (make sure same options on heatmap for when selecting filters and re-initializing)
+7. show where you are on line graphs
+8. style date input fields (calendar drop down, have min and max dates, etc.)
+9. style charts (fonts, axis labels, etc.)
+10. have current time in time and date fields
+11. mapbox studio
 
 Ask Mapbox:
-1.zoom location (for journey(zoom into route not markers), markers, heat, report)
-2.sometimes map does not show up, only markers or heat points, or map does not zoom in around markers
-3.max amount of features before breaking?
+1. be able to zoom into markers and route
+2. sometimes map does not show up, only markers or heat points, or map does not zoom in around markers
+3. sometimes issue with loader
+4. heatmap color, radius, blur options (make sure same options on heatmap for when selecting filters and re-initializing), make heatmap opaque
 
 Career Stuff:
 1. interview prep
@@ -35,5 +33,12 @@ Career Stuff:
 Career Day Prep:
 1. read me
 2. snapshots
-3. demo routine
+3. demo routine (pre selected values, tabs, etc)
 4. download recent stats (database nullables if re-seeding)
+5. clean up/comment/delete all the print and console log statements
+
+Things to do after career day pre-deployment:
+1. time lapse/predetermined time ranges for heatmap (look into links Lauren sent about js pipe)
+2. can select buffer amount and units
+3. create a daily timer for updating stats and remove update stats button
+4. pathfinding

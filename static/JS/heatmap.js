@@ -3,7 +3,9 @@ var heat = L.heatLayer([], {    //define heat layer options
     radius: 25,
     blur: 15, 
     maxZoom: 16,
-    gradient : {1 : 'blue'}
+    max: 0
+    // opacity: 0
+    // gradient : {1 : 'blue'}
 });
 
 var feature_layer = L.mapbox.featureLayer();    //define feature layer
@@ -17,7 +19,7 @@ function addHeat(data) {
     feature_layer.on('click', function(e) {     //when clicking on the feature_layer, zoom into that location
         map.panTo(e.layer.getLatLng());
     });
-    map.fitBounds(feature_layer.getBounds());  //zoom into the bounds of the features added
+    // map.fitBounds(feature_layer.getBounds());  //zoom into the bounds of the features added
     // Add each marker point to the heatmap.
     feature_layer.eachLayer(function(l) {       //iterate through the features on the feature layer and add those points to the heat map
         heat.addLatLng(l.getLatLng());
@@ -74,7 +76,7 @@ function addFilters() {     //this function will add the filter, and create an e
         maxZoom: 16,
         gradient : {1: 'red'}
     }).addTo(map);
-    map.fitBounds(feature_layer.getBounds());  //zoom into the bounds of the features added
+    // map.fitBounds(feature_layer.getBounds());  //zoom into the bounds of the features added
     // Add each marker point to the heatmap.
     feature_layer.eachLayer(function(l) {      //iterate through the features on the feature layer and add those points to the heat map (the features on the layer now will be those checked on filters)
     heat.addLatLng(l.getLatLng());
@@ -89,7 +91,7 @@ $("#heat_button").on("click", function(e) { //this event listener will kick in w
     console.log("submitted");
     $("#filters").empty(); //empty the filters element so that a new filter list can be created
     $.getJSON('/get_heat', { start_date: start_date, end_date: end_date } ).done(function(data){ //use a get ajax request and pass in the start and end date to get the GeoJSON features to be added
-        startLoading();
+        // startLoading();
         console.log("heat is running");
         map.removeLayer(heat);      //remove the heat layer
         heat = L.heatLayer([], {    //redfine the heat layer
@@ -99,22 +101,30 @@ $("#heat_button").on("click", function(e) { //this event listener will kick in w
             gradient : {1: 'red'}
         });
         feature_layer.setGeoJSON([]);   //set the features on the feature_layer to an empty list
-        try {
-            addHeat(data);                  //call the heat function
-            addFilters();                   // add filters
-            $("#error").empty();            //empty error message elements
-        }                                   //if there is an error adding features (no crimes in date range), add error message
-        catch(err){
-            $("#error").html("No crime stats in range selected");
+        addHeat(data);                  //call the heat function
+        addFilters();                   // add filters
+        $("#error").empty();            //empty error message elements
+        if (feature_layer.getGeoJSON().features.length === 0){ //if there are no crime stats to add to the map
+          console.log("in if");
+          $("#error").html("No crime stats in range selected");
         };
-        finishedLoading();
+        // try {
+        //     addHeat(data);                  //call the heat function
+        //     addFilters();                   // add filters
+        //     $("#error").empty();            //empty error message elements
+        // }                                   //if there is an error adding features (no crimes in date range), add error message
+        // catch(err){
+        //     $("#error").html("No crime stats in range selected");
+        // };
+        // finishedLoading();
     });
 });
 
 $.getJSON('/get_heat', { start_date:[], end_date:[]} ).done(function(data){ //this will be called when the user goes on the heatmap page, it will get the GeoJSON feature objects from the server using our default date range
     console.log("heat is running");
-    startLoading();
+    // startLoading();
     addHeat(data);
+    map.fitBounds(feature_layer.getBounds());  //zoom into the bounds of the features added
     addFilters();
-    finishedLoading();
+    // finishedLoading();
 });

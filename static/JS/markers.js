@@ -7,7 +7,7 @@ function addMarkerLayer(data) { //this will add markers to the map
   feature_layer.on('click', function(e) {                 //map will zoom into a marker if a user clicks on it
       map.panTo(e.layer.getLatLng());
   });
-  map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
+  // map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
   feature_layer.eachLayer(function(layer) {
     // here you call `bindPopup` with a string of HTML you create - the feature
     // properties declared above are available under `layer.feature.properties`
@@ -77,13 +77,12 @@ $("#marker_button").on("click", function(e) { //this is called when a user submi
       startLoading();
       feature_layer.setGeoJSON([]); //empty the feature_layer of objects
       console.log("markers is running");
-      try {     //add markers and filters
-        addMarkerLayer(data);
-        addFilters();
-        $("#error").empty(); //empty error message
-      }
-      catch(err){ //if there is an error adding markers (because no points in data range), add this error message
-        $("#error").html("No crime stats in range selected");
+      addMarkerLayer(data);
+      addFilters();
+      $("#error").empty(); //empty error message
+      if (feature_layer.getGeoJSON().features.length === 0){ //if there are no crime stats to add to the map
+          console.log("in if");
+          $("#error").html("No crime stats in range selected");
       };
       finishedLoading();
     });
@@ -95,5 +94,6 @@ $.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data)
     startLoading();         // loading screen will start
     addMarkerLayer(data);
     addFilters();
+    map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
     finishedLoading();
   });

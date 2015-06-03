@@ -1,21 +1,12 @@
 Do this week:
-1. add tests
 2. time lapse/time ranges for heatmap
-3. add report feature
-4. add now showing feature
 5. add other buffer units (meters)
+twitter
 6. JS tests
-7. add twitter
-8. add twilio (text users route)
-9. style date input fields (calendar drop down, have min and max dates, etc.)
-10. show where you are on line graphs
-11. request.path
 12. mapbox studio
-13. download most recent stats
-14.trend tables reflect where you are (location)
-15. decided what default date ranges to use for markers and heat (two weeks for markers, month for heat?)
-16. style charts (fonts, axis labels, etc.)
-17. heatmap color, radius, blur options (make sure same options on heatmap for when selecting filters and re-initializing)
+18. if user selects different route buffer should update
+zooming features
+now showing feature
 
 Styling:
 1. greyscale bootstrap theme
@@ -24,9 +15,15 @@ Styling:
 4. homepage map styling
 5. decide what to put on home map and home "about"
 6. add form controls (must fill out each field, etc.)
+7. add "did you mean?" address thing
+8. show where you are on line graphs
+9. style date input fields (calendar drop down, have min and max dates, etc.)
+10. style charts (fonts, axis labels, etc.)
+11. have current time in time and date fields
+12. heatmap color, radius, blur options (make sure same options on heatmap for when selecting filters and re-initializing)
 
 Ask Mapbox:
-1.zoom location (for journey(zoom into route not markers), markers, heat)
+1.zoom location (for journey(zoom into route not markers), markers, heat, report)
 2.sometimes map does not show up, only markers or heat points, or map does not zoom in around markers
 3.max amount of features before breaking?
 
@@ -39,4 +36,4 @@ Career Day Prep:
 1. read me
 2. snapshots
 3. demo routine
-4. download recent stats
+4. download recent stats (database nullables if re-seeding)

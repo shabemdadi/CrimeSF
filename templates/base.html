@@ -55,9 +55,9 @@
 	                    </ul>
 	                     <ul class="nav navbar-nav navbar-right">
                                 <li>
-                                	<form id="refresh">
-                                		<button id="refresh_button" class="btn btn-primary">Get Recent Crime</button>
-                                	<form>
+                                	<form action="/get_recent" id="refresh">
+                                		<button id="refresh_button" type="submit" class="btn btn-primary">Get Recent Crime</button>
+                                	</form>
                                 </li>
                         </ul>
 	                </div>
@@ -65,21 +65,6 @@
 	    
 	        </nav>
 	    </div>
-
-	<script>
-
-		console.log("this is running")
-
-		$("#refresh_button").on("click",function(e){
-			var current_path = document.URL;
-			console.log(current_path);
-			// console.log(window.location.href);
-			$.get('/get_recent',{current_path: current_path}).done(function(){
-			console.log("in submit");
-			});
-		});
-
-	</script>
 	
 	      <!-- <hr> -->
 

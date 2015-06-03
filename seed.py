@@ -128,7 +128,7 @@ def load_recent_stats():
                 if i % 1000 == 0:
                     db.session.commit()
 
-    max_date = Crime_Stat.query.order_by(desc(Crime_Stat.date)).first().date #find the max date in the crime_stats table
+    max_date = Crime_Stat.query.filter(Crime_Stat.incident_num != "citizen_report").order_by(desc(Crime_Stat.date)).first().date #find the max date in the crime_stats table
     data_import = Data_Import(max_date=max_date)                             #add the max date to the data_import table
     db.session.add(data_import)
 

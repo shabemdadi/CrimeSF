@@ -26,7 +26,7 @@ function addMarkerLayer(data) { //this will add markers to the map
   feature_layer.on('click', function(e) {                 //map will zoom into a marker if a user clicks on it
       map.panTo(e.layer.getLatLng());
   });
-  // map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
+  map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
   feature_layer.eachLayer(function(layer) {
     // here you call `bindPopup` with a string of HTML you create - the feature
     // properties declared above are available under `layer.feature.properties`

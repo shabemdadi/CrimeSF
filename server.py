@@ -54,7 +54,7 @@ def get_marker_points():
     else:                               # user has not entered in a date, use a default period of 45 days ago
         
         end_date = datetime.now()                    
-        start_date = end_date - timedelta(days=30)
+        start_date = end_date - timedelta(days=15)
 
         print start_date
 
@@ -184,43 +184,61 @@ def show_report_page():
 
     return render_template("report.html")
 
-@app.route('/report_crime', methods=["POST"])
+@app.route('/report_crime')
 def process_report():
     """Save reported crime to database."""
 
-    time = request.form.get("time")
-    print time
-    date = request.form.get("date")
-    print date
-    address = request.form.get("address")
-    print address
-    description = request.form.get("description")
-    print description
-    map_category = request.form.get("category")
-    print map_category
+    print "in report crime"
 
-    # incident_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    # incident_num = db.Column(db.String(60), nullable=False) #want this to be nullable
-    # category = db.Column(db.String(60), nullable=False)     #want this to be nullable
-    # map_category = db.Column(db.String(60), nullable=False)
-    # description = db.Column(db.String(200), nullable=False)
-    # day_of_week = db.Column(db.String(10), nullable=False)
-    # date = db.Column(db.Date, nullable=False)
-    # month = db.Column(db.String(10), nullable=False)
-    # time = db.Column(db.Time, nullable=False)
-    # hour = db.Column(db.String(10), nullable=False)
-    # district = db.Column(db.String(60), nullable=False) #want this to be nullable
-    # address = db.Column(db.String(60), nullable=False)
-    # x_cord = db.Column(db.Numeric, nullable=False)
-    # y_cord = db.Column(db.Numeric, nullable=False)
+    time_input = request.args.get("time")
+    # time_current = request.args.get("current_time")
+    date_input = request.args.get("date")
+    # date_current = request.args.get("current_date")
+    address_input = request.args.get("address")
+    # address_current = request.args.get("current_address")
+    description = request.args.get("description")
+    map_category = request.args.get("map_category")
 
-    # incident = Crime_Stat(incident_num=incident_num,category=category,description=description,map_category=map_category,
-    #                 day_of_week=day_of_week,date=date,month=month,time=time,hour=hour,address=address,district=district,x_cord=x_cord,
-    #                 y_cord=y_cord)
+    time = datetime.strptime(time_input,"%H:%M").time()
+
+    # if time_current:
+    #     time = datetime.datetime.now().time()
+
+    date = datetime.strptime(date_input, "%Y-%m-%d")
+
+    # if date_current:
+    #     date = datetime.now()
+
+    geocode = requests.get("http://api.tiles.mapbox.com/v4/geocode/mapbox.places/'%s'.json?access_token=pk.eyJ1Ijoic2hhYmVtZGFkaSIsImEiOiIwckNSMkpvIn0.MeYrWfZexYn1AwdiasXbsg" % address_input)
+    geocode_text = geocode.text
+    geocode_json = json.loads(geocode_text)
+
+    coordinates = geocode_json["features"][0]["geometry"]["coordinates"]
+
+    y_cord = coordinates[0]
+    x_cord = coordinates[1]
+    address = address_input
+
+    # if address_current:
+
+    incident_num = "citizen_report"
+    category = "citizen_report"
+    district = "citizen_report"
+    day_of_week = datetime.strftime(date,"%A")
+    month = datetime.strftime(date,"%B")
+    hour = time.strftime("%H:00") 
+
+    incident = Crime_Stat(incident_num=incident_num, category=category, district=district,description=description,map_category=map_category,
+        day_of_week=day_of_week,date=date,month=month,time=time,hour=hour,address=address,x_cord=x_cord,y_cord=y_cord)
     
-    # db.session.add(incident)
+    db.session.add(incident)
 
-    # db.session.commit()
+    db.session.commit()
+
+    feature_object = incident.make_feature_object()
+
+    print jsonify(feature_object)
+    return jsonify(feature_object)
 
 @app.route('/get_recent')  #This will happen when the user clicks on the "Get Recent Stats" button, it will update our database and update our counts tables with the same function used in our seed file
 def get_recent_stats():
@@ -287,7 +305,7 @@ def get_recent_stats():
                 if i % 1000 == 0:
                     db.session.commit()
 
-    max_date = Crime_Stat.query.order_by(desc(Crime_Stat.date)).first().date
+    max_date = Crime_Stat.query.filter(Crime_Stat.incident_num != "citizen_report").order_by(desc(Crime_Stat.date)).first().date
     data_import = Data_Import(max_date=max_date)
     db.session.add(data_import)
 
@@ -344,10 +362,8 @@ def get_recent_stats():
 
     print "finished refreshing counts at %s" % datetime.now()
 
-    current_path = request.args.get("current_path")
-    print current_path
     flash('Crime stats refreshed')
-    return redirect(current_path)
+    return redirect(request.referrer)
 
 
 if __name__ == "__main__":

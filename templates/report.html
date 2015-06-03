@@ -8,6 +8,12 @@
 
 <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.42.0/L.Control.Locate.mapbox.css' rel='stylesheet' />
 
+<script>
+
+!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+
+</script>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-9">
@@ -16,43 +22,46 @@
         </div>
         <div class="col-md-3">
         	<div class="form-group">
-        		<form action="/report_crime" id="report_form">
-	            	<label>Enter Time
-	                	<input type="time" class="input-sm form-control" name="time" id="report_time" min="2003-01-01">
-	                	<input type="radio" name="time" id="report_current_time" value="current time">Current Time
-					</label>
-					<br>
-					<label>Enter Date
-	                	<input type="date" class="input-sm form-control" id="report_date" name="date">
-	                	<input type="radio" name="date" id="report_current_date" value="current date">Current Date
-	            	</label>
-	                <br>
-	                <label>Enter Address
-	                	<input type="text" class="input-sm form-control" id="report_address" name="address">
-	                	<input type="radio" name="address" id="report_current_address" value="current address">Current Address
-	            	</label>
-	                <br>
-	                <label>Enter Description
-	                	<textarea name='description' id='report_description' maxlength="200"></textarea>
-	            	</label>
-	            	<br>
-	            	<label>Select Category
-	            		<br>
-	            		<input type="radio" name="crime_category" value="Personal Theft/Larceny">Personal Theft/Larceny
-	            		<br>
-	            		<input type="radio" name="crime_category" value="Robbery">Robbery
-	            		<br>
-	            		<input type="radio" name="crime_category" value="Rape/Sexual Assault">Rape/Sexual Assault
-	            		<br>
-	            		<input type="radio" name="crime_category" value="Simple Assault">Simple Assault
-	            		<br>
-	            		<input type="radio" name="crime_category" value="Aggravated Assault">Aggravated Assault
-	            		<br>
-	            		<input type="radio" name="crime_category" value="Other">Other
-	            	</label>
-	            	<br>
-	                <button type="submit" id="report_button" class="btn btn-primary">Submit</button>
-	        	</form>    
+<!--         		<form action="/report_crime" id="report_form"> -->
+            	<label>Enter Time
+                	<input type="time" class="input-sm form-control" name="time_input" id="report_time" min="2003-01-01">
+<!-- 	                	<input type="radio" name="current_time" id="report_current_time" value="current time">Current Time -->
+				</label>
+				<br>
+				<label>Enter Date
+                	<input type="date" class="input-sm form-control" id="report_date" name="date_input">
+<!-- 	                	<input type="radio" name="current_date" id="report_current_date" value="current date">Current Date -->
+            	</label>
+                <br>
+                <label>Enter Address
+                	<input type="text" class="input-sm form-control" id="report_address" name="address_input">
+<!-- 	                	<input type="radio" name="current_address" id="report_current_address" value="current address">Current Address -->
+            	</label>
+                <br>
+                <label>Enter Description
+                	<textarea name='description' id='report_description' maxlength="200"></textarea>
+            	</label>
+            	<br>
+            	<label>Select Category
+            		<br>
+            		<input type="radio" name="crime_category" value="Personal Theft/Larceny">Personal Theft/Larceny
+            		<br>
+            		<input type="radio" name="crime_category" value="Robbery">Robbery
+            		<br>
+            		<input type="radio" name="crime_category" value="Rape/Sexual Assault">Rape/Sexual Assault
+            		<br>
+            		<input type="radio" name="crime_category" value="Simple Assault">Simple Assault
+            		<br>
+            		<input type="radio" name="crime_category" value="Aggravated Assault">Aggravated Assault
+            		<br>
+            		<input type="radio" name="crime_category" value="Other">Other
+            	</label>
+            	<br>
+            	<button type="submit" id="report_button" class="btn btn-primary">Submit</button>
+            	<br>
+            	<label>Notify your friends
+            		<a href="https://twitter.com/share" class="twitter-share-button" id="twitter_icon" data-text="Custom" data-size="large" data-hashtags="CrimeSF">Tweet</a>
+            	<label>  
 	        </div>
         </div>    
     </div>

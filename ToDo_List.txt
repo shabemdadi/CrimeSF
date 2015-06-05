@@ -1,15 +1,16 @@
 Do this week:
-1. twitter button
-2. JS/python tests
-5. now showing feature
-6. add "did you mean?" on address on report page
-10. practice demo
-11. fix heat map loader
+1. implement Michael's speed suggestions
+2. zoom into buffer zone!
+demo routine
+take off redirect config
+download stats
+twitter button
+loading screens
 
 Styling:
-1. greyscale bootstrap theme
+1. greyscale bootstrap theme (or other color/font scheme, look at color.adobe.com)
 2. fix crime forecast margin (on left and right)
-3. fancier loading page
+3. fancier loading page np.progress.js
 4. homepage map styling
 5. decide what to put on home map and home "about"
 6. add form controls (must fill out each field, etc.)
@@ -18,20 +19,16 @@ Styling:
 9. style charts (fonts, axis labels, etc.)
 10. have current time in time and date fields
 11. mapbox studio
-12. think about where to zoom
 
 Ask Mapbox:
-1. be able to zoom into markers and route
+1. be able to zoom into buffer zone
 2. sometimes map does not show up, only markers or heat points, or map does not zoom in around markers
-3. sometimes issue with loader
-4. heatmap color, radius, blur options (make sure same options on heatmap for when selecting filters and re-initializing), make heatmap opaque
+3. heatmap color, radius, blur options (make sure same options on heatmap for when selecting filters and re-initializing), make heatmap opaque
 
 Career Stuff:
 1. interview prep
 2. research companies
 3. job postings
-4. update resume
-5. update linkedin
 
 Career Day Prep:
 1. read me
@@ -45,3 +42,7 @@ Things to do after career day pre-deployment:
 2. can select buffer amount and units
 3. create a daily timer for updating stats and remove update stats button
 4. pathfinding
+5. migrate to PostgreSQL
+6. use PostGIS in mapbox studio
+7. add "did you mean?" on address on report page
+8. more tests

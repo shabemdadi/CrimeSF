@@ -29,6 +29,11 @@ def index():
 def show__markers():
     """Show map with markers."""
 
+    # end_date = datetime.now()                    
+    # start_date = end_date - timedelta(days=16)
+    # end_date_formatted = datetime.strftime(end_date,"%m-%d-%Y")
+    # start_date_formatted = datetime.strftime(start_date,"%m-%d-%Y")
+
     return render_template("markers.html")
 
 
@@ -54,7 +59,7 @@ def get_marker_points():
     else:                               # user has not entered in a date, use a default period of 45 days ago
         
         end_date = datetime.now()                    
-        start_date = end_date - timedelta(days=16)
+        start_date = end_date - timedelta(days=15)
 
         print start_date
 
@@ -63,6 +68,12 @@ def get_marker_points():
 @app.route('/heat')
 def show_heat():
     """Show heatmap"""
+
+    # end_date = datetime.now()                    
+    # start_date = end_date - timedelta(days=30)
+    # end_date_formatted = datetime.strftime(end_date,"%m-%d-%Y")
+    # start_date_formatted = datetime.strftime(start_date,"%m-%d-%Y")
+
 
     return render_template("heatmap.html")
 

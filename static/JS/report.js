@@ -1,12 +1,3 @@
-// var marker = L.marker(new L.LatLng(37.9, -122), {
-//     icon: L.mapbox.marker.icon({
-//         'marker-color': 'ff8888'
-//     }),
-//     draggable: true
-// });
-
-// marker.bindPopup('This marker is draggable! Move it around.');
-// marker.addTo(map);
 
 var feature_layer = L.mapbox.featureLayer(); //define the feature layer
 
@@ -30,21 +21,21 @@ function addMarkerLayer(data) { //this will add markers to the map
     });
 };
 
+function tweetSetup(custom_text) {
+    console.log("tweet setup running");
+    $(".twitter-share-button").remove();
+    var tweet = $('<a>')
+        .attr('href', "https://twitter.com/share")
+        .attr('id', "tweet")
+        .attr('class', "twitter-share-button")
+        .attr("data-size","large")
+        .attr("data-hashtags","CrimeSF")
+        .text('Tweet');
 
-// (function () {
-//     var date = new Date().toISOString().substring(0, 10),
-//         field = $('#report_date');
-//     field.value = date;
-//     console.log(field.value);
-
-// })()
-
-// var currentTime = new Date()
-// var month = currentTime.getMonth() + 1
-// var day = currentTime.getDate()
-// var year = currentTime.getFullYear()
-
-// $('#report_date').value = month + "/" + day + "/" + year;
+    $("#tweet_div").append(tweet);
+    tweet.attr('data-text', custom_text);
+    twttr.widgets.load();
+};
 
 $("#report_button").on("click", function(e){
   NProgress.start();
@@ -71,18 +62,9 @@ $("#report_button").on("click", function(e){
   });
 });
 
-function tweetSetup(custom_text) {
-    console.log("tweet setup running");
-    $(".twitter-share-button").remove();
-    var tweet = $('<a>')
-        .attr('href', "https://twitter.com/share")
-        .attr('id', "tweet")
-        .attr('class', "twitter-share-button")
-        .attr("data-size","large")
-        .attr("data-hashtags","CrimeSF")
-        .text('Tweet');
+$("input[name='time_input']").attr("value",moment().format("HH:mm"));
+$("input[name='date_input']").attr("value",moment().format("YYYY-MM-DD"));
+$("input[name='address_input']").attr("value","683 Sutter Street, San Francisco, CA");
+$("textarea[name='description']").html("Pick pocketer");
+$("#theft").prop("checked",true);
 
-    $("#tweet_div").append(tweet);
-    tweet.attr('data-text', custom_text);
-    twttr.widgets.load();
-}

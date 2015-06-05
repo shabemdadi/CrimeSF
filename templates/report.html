@@ -11,6 +11,8 @@
 <script src='../static/nprogress/nprogress.js'></script>
 <link rel='stylesheet' href='../static/nprogress/nprogress.css'/>
 
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
+
 <script>
 
 !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
@@ -47,17 +49,17 @@
             	<br>
             	<label>Select Category
             		<br>
-            		<input type="radio" name="crime_category" value="Personal Theft/Larceny">Personal Theft/Larceny
+            		<input type="radio" name="crime_category" id="theft" value="Personal Theft/Larceny">Personal Theft/Larceny
             		<br>
-            		<input type="radio" name="crime_category" value="Robbery">Robbery
+            		<input type="radio" name="crime_category" id="robbery" value="Robbery">Robbery
             		<br>
-            		<input type="radio" name="crime_category" value="Rape/Sexual Assault">Rape/Sexual Assault
+            		<input type="radio" name="crime_category" id="rape" value="Rape/Sexual Assault">Rape/Sexual Assault
             		<br>
-            		<input type="radio" name="crime_category" value="Simple Assault">Simple Assault
+            		<input type="radio" name="crime_category" id="simple assault" value="Simple Assault">Simple Assault
             		<br>
-            		<input type="radio" name="crime_category" value="Aggravated Assault">Aggravated Assault
+            		<input type="radio" name="crime_category" id="aggrav assault" value="Aggravated Assault">Aggravated Assault
             		<br>
-            		<input type="radio" name="crime_category" value="Other">Other
+            		<input type="radio" name="crime_category" id="other" value="Other">Other
             	</label>
             	<br>
             	<button type="submit" id="report_button" class="btn btn-primary">Submit</button>

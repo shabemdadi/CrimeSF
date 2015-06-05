@@ -101,4 +101,8 @@ $( document ).ready(function(){
       map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
       finishedLoading();
     });
+
+  $("input[name='start']").attr("value",moment().subtract(15, 'day').format("YYYY-MM-DD"));
+  $("input[name='end']").attr("value",moment().format("YYYY-MM-DD"));
+
 });

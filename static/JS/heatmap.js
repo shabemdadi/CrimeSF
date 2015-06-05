@@ -9,7 +9,7 @@ $( document ).ready(function(){
         maxZoom: 16,
         // max: 0
         // opacity: 0
-        gradient : {1 : 'blue'}
+        // gradient : {1 : 'blue'}
     });
 
     var feature_layer = L.mapbox.featureLayer();    //define feature layer
@@ -78,8 +78,8 @@ $( document ).ready(function(){
         heat = L.heatLayer([], {    //redfine the heat layer
             radius: 25,
             blur: 15, 
-            maxZoom: 16,
-            gradient : {1: 'red'}
+            maxZoom: 16
+            // gradient : {1: 'red'}
         }).addTo(map);
         // map.fitBounds(feature_layer.getBounds());  //zoom into the bounds of the features added
         // Add each marker point to the heatmap.
@@ -104,8 +104,8 @@ $( document ).ready(function(){
             heat = L.heatLayer([], {    //redfine the heat layer
                 radius: 25,
                 blur: 15, 
-                maxZoom: 16,
-                gradient : {1: 'red'}
+                maxZoom: 16
+                // gradient : {1: 'red'}
             });
             feature_layer.setGeoJSON([]);   //set the features on the feature_layer to an empty list
             addHeat(data);                  //call the heat function
@@ -131,10 +131,14 @@ $( document ).ready(function(){
     $.getJSON('/get_heat', { start_date:[], end_date:[]} ).done(function(data){ //this will be called when the user goes on the heatmap page, it will get the GeoJSON feature objects from the server using our default date range
         console.log("heat is running");
         startLoading();
+
         addHeat(data);
         map.fitBounds(feature_layer.getBounds());  //zoom into the bounds of the features added
         addFilters();
         // $(".svg").hide();
         finishedLoading();
     });
+
+    $("input[name='start']").attr("value",moment().subtract(15, 'day').format("YYYY-MM-DD"));
+    $("input[name='end']").attr("value",moment().format("YYYY-MM-DD"));
 });

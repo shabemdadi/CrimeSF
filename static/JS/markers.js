@@ -9,7 +9,7 @@ $( document ).ready(function(){
     feature_layer.on('click', function(e) {                 //map will zoom into a marker if a user clicks on it
         map.panTo(e.layer.getLatLng());
     });
-    map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
+    // map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
     feature_layer.eachLayer(function(layer) {
       // here you call `bindPopup` with a string of HTML you create - the feature
       // properties declared above are available under `layer.feature.properties`
@@ -56,6 +56,7 @@ $( document ).ready(function(){
     // This function is called whenever someone clicks on a checkbox and changes the selection of markers to be displayed.
     function update() {
       console.log("update has been called");
+      NProgress.start();
       var enabled = {};
       // Run through each checkbox and record whether it is checked. If it is, add it to the object of types to display, otherwise do not.
       for (var i = 0; i < checkboxes.length; i++) {
@@ -66,17 +67,18 @@ $( document ).ready(function(){
         // a object.
         return (feature.properties['title'] in enabled);
       });
+      NProgress.done();
     };
   };
 
   $("#marker_button").on("click", function(e) { //this is called when a user submits a date range
+      NProgress.start();
       e.preventDefault();
       var start_date = $("input[name='start']").val(); //start and end date from the input fields that were submitted
       var end_date = $("input[name='end']").val();
       console.log("submitted");
       $("#filters").empty(); //empty the filters element so that a new filter list can be created
       $.getJSON('/get_markers', { start_date: start_date, end_date: end_date } ).done(function(data){ //pass in the entered start and end dates and get the GeoJSON objects to be added to the map
-        startLoading();
         feature_layer.setGeoJSON([]); //empty the feature_layer of objects
         console.log("markers is running");
         addMarkerLayer(data);
@@ -86,7 +88,7 @@ $( document ).ready(function(){
             console.log("in if");
             $("#error").html("No crime stats in range selected");
         };
-        finishedLoading();
+        NProgress.done();
       });
   });
 
@@ -96,7 +98,7 @@ $( document ).ready(function(){
       startLoading();         // loading screen will start
       addMarkerLayer(data);
       addFilters();
-      // map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
+      map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
       finishedLoading();
     });
 });

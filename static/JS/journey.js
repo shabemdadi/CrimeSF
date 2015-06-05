@@ -75,6 +75,7 @@ $( document ).ready(function(){
 
     // This function is called whenever someone clicks on a checkbox and changes the selection of markers to be displayed.
     function update() {
+      NProgress.start();
       console.log("update has been called");
       var enabled = {};
       // Run through each checkbox and record whether it is checked. If it is, add it to the object of types to display, otherwise do not.
@@ -86,6 +87,7 @@ $( document ).ready(function(){
         // a object.
         return (feature.properties['title'] in enabled);
       });
+      NProgress.done();
     };
   };
 
@@ -141,6 +143,7 @@ $( document ).ready(function(){
 
   directions.on("load",function(){  //this will start when a user selects a start and end destination to get directions for
   	console.log("on directions loading");
+    NProgress.start();
     feature_layer.setGeoJSON([]);      //set feature layer to 0 features
     $.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data){
       console.log("markers is running");
@@ -148,6 +151,7 @@ $( document ).ready(function(){
       createBuffer();
       $("#filters").empty(); //empty the filters element so that a new filter list can be created
       addFilters();
+      NProgress.done();
       });
    //  createBuffer();
   	// $("#filters").empty(); //empty the filters element so that a new filter list can be created
@@ -162,7 +166,8 @@ $( document ).ready(function(){
   });
 
   $("#buffer_choice").change(function(){  //this will start when a buffer zone distance is chosen
-  	startLoading();
+  	// startLoading();
+    NProgress.start();
   	console.log("buffer changed");
   	feature_layer.setGeoJSON([]);      //set feature layer to 0 features
   	$.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data){
@@ -171,7 +176,8 @@ $( document ).ready(function(){
       createBuffer();
       $("#filters").empty(); //empty the filters element so that a new filter list can be created
       addFilters();
+      NProgress.done();
     	});
-    	finishedLoading();
+    	// finishedLoading();
   });
 });

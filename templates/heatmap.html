@@ -36,17 +36,92 @@
     }
 </style>
 
+<!-- </style>
+
+  $svg-radius: 50;
+  $stroke-width: 4;
+  $radius: $svg-radius - $stroke-width / 2;
+  $diameter: $radius * 2;
+  $pi: 3.14159265359;
+  $circumference: $pi * $diameter;
+  $revolution: 2000ms;
+  $color-steps: 4;
+
+  body { background: #000; }
+
+  .svg {
+    margin: 24px auto;
+    display: block;
+    animation: svg-rotate $revolution * $color-steps linear infinite;
+  }
+
+  circle {
+    fill: transparent;
+    stroke: hotpink; // overridden in animation
+    stroke-width: $stroke-width;
+    stroke-linecap: round;
+    stroke-dasharray: 0, $circumference;
+    animation: 
+      stroke-dash  $revolution linear infinite,
+      stroke-width $revolution linear infinite,
+      stroke-color $revolution * $color-steps steps($color-steps) infinite;
+  }
+
+  // slowly rotating the whole svg
+  @keyframes svg-rotate {
+    to { transform: rotate(360deg); }
+  }
+
+  // animating the stroke width
+  @keyframes stroke-width {
+    // fade-ish feels
+    0%, 100% { stroke-width: 0; }
+    // throttle til circle is almost complete
+    45%, 55% { stroke-width: $stroke-width / 2; }
+    // pump it up
+    50%      { stroke-width: $stroke-width; }
+  }  
+
+  // offsetting and lengthening the stroke dash
+  @keyframes stroke-dash {
+    0%   { // draw circle
+      stroke-dasharray: 0, $circumference; 
+      stroke-dashoffset: 0; 
+    }
+    50% { // complete circle
+      stroke-dasharray: $circumference, 0; 
+      stroke-dashoffset: 0;
+    }
+    100% { // undraw circle
+      stroke-dasharray: $circumference, $circumference; 
+      stroke-dashoffset: -$circumference; 
+    }
+  }
+
+  // stepped color animation
+  @keyframes stroke-color {
+    from { stroke: hotpink; }
+    //to   { stroke: white; } // unnecessary if white
+  }
+</style> -->
+
 <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-heat/v0.1.3/leaflet-heat.js'></script>
 
 <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.42.0/L.Control.Locate.min.js'></script>
 
 <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.42.0/L.Control.Locate.mapbox.css' rel='stylesheet' />
 
+<script src='../static/nprogress/nprogress.js'></script>
+<link rel='stylesheet' href='../static/nprogress/nprogress.css'/>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-9">
             <div id="map"></div>
             <div id='loader'><span class='message'>loading</span></div>
+<!--             <svg class="svg" width=200 height=200>
+              <circle cx=100 cy=100 r=50 />
+            </svg> -->
             <nav id='filters' class='filter-ui'></nav>
         </div>
         <div class="col-md-3">

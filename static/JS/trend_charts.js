@@ -44,6 +44,7 @@ function addCommas(nStr)				//have y-axis be formatted with commas
 
 $('input:checkbox').change(function(){ //on changing the checkboxes, empty each graph, gather the checkboxes checked, and recreate charts with new data from get requests
 	console.log("checked");
+	NProgress.start();
 	timeChart.destroy();
 	dayChart.destroy();
 	monthChart.destroy();
@@ -69,5 +70,6 @@ $('input:checkbox').change(function(){ //on changing the checkboxes, empty each 
 		var monthChart = new Chart(ctx_month).Line(data,options);
 		console.log(data);
 	});
+	NProgress.done();
 });
 

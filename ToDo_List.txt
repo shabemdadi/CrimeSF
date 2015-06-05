@@ -1,11 +1,13 @@
 Do this week:
 1. implement Michael's speed suggestions
 2. zoom into buffer zone!
+3. download stats
 demo routine
-take off redirect config
-download stats
 twitter button
 loading screens
+change heatmap dates
+code organization (in static folder)
+fix date "to" span box
 
 Styling:
 1. greyscale bootstrap theme (or other color/font scheme, look at color.adobe.com)
@@ -19,6 +21,8 @@ Styling:
 9. style charts (fonts, axis labels, etc.)
 10. have current time in time and date fields
 11. mapbox studio
+12. mapbox filter with select only
+13. favicon/icons
 
 Ask Mapbox:
 1. be able to zoom into buffer zone

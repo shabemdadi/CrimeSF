@@ -47,6 +47,7 @@ function addMarkerLayer(data) { //this will add markers to the map
 // $('#report_date').value = month + "/" + day + "/" + year;
 
 $("#report_button").on("click", function(e){
+  NProgress.start();
 	console.log("form submitted");
 	var time = $("input[name='time_input']").val();
 	var date = $("input[name='date_input']").val();
@@ -54,9 +55,9 @@ $("#report_button").on("click", function(e){
 	var description = $("textarea[name='description']").val();
 	var map_category = $("input[name='crime_category']").val();
 	twttr.widgets.load();
-	var tweet = "Caution! " + description + " at " + address;
-	$("#twitter_icon").attr("data-text", tweet);
-	debugger;
+	var tweet_text = "Caution! " + description + " at " + address;
+  tweetSetup(tweet_text);
+	// $("#twitter_icon").attr("data-text", tweet);
 	console.log(time);
 	console.log(date);
 	console.log(address);
@@ -66,20 +67,22 @@ $("#report_button").on("click", function(e){
     console.log("markers is running");
     feature_layer.setGeoJSON([]); //empty the feature_layer of objects
     addMarkerLayer(data);
+    NProgress.done();
   });
 });
 
-// $('#b.btn').on('click', function(ev) {
-//     ev.preventDefault();
-//     // Remove existing iframe
-//     $('#tweetBtn iframe').remove();
-//     // Generate new markup
-//     var tweetBtn = $('<a></a>')
-//         .addClass('twitter-share-button')
-//         .attr('href', 'http://twitter.com/share')
-//         .attr('data-text', tweet)
-//         .attr('data-size', 'large')
-//         .attr('data-hashtags', 'CrimeSF');
-//     $('#tweetBtn').append(tweetBtn);
-//     twttr.widgets.load();
-// });
+function tweetSetup(custom_text) {
+    console.log("tweet setup running");
+    $(".twitter-share-button").remove();
+    var tweet = $('<a>')
+        .attr('href', "https://twitter.com/share")
+        .attr('id', "tweet")
+        .attr('class', "twitter-share-button")
+        .attr("data-size","large")
+        .attr("data-hashtags","CrimeSF")
+        .text('Tweet');
+
+    $("#tweet_div").append(tweet);
+    tweet.attr('data-text', custom_text);
+    twttr.widgets.load();
+}

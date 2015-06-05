@@ -1,5 +1,7 @@
 $( document ).ready(function(){
 
+    // jakealbaughSignature("light");
+
     var heat = L.heatLayer([], {    //define heat layer options
         minOpacity: 0, 
         radius: 25,
@@ -21,7 +23,7 @@ $( document ).ready(function(){
         feature_layer.on('click', function(e) {     //when clicking on the feature_layer, zoom into that location
             map.panTo(e.layer.getLatLng());
         });
-        map.fitBounds(feature_layer.getBounds());  //zoom into the bounds of the features added
+        // map.fitBounds(feature_layer.getBounds());  //zoom into the bounds of the features added
         // Add each marker point to the heatmap.
         feature_layer.eachLayer(function(l) {       //iterate through the features on the feature layer and add those points to the heat map
             heat.addLatLng(l.getLatLng());
@@ -60,6 +62,7 @@ $( document ).ready(function(){
 
       // This function is called whenever someone clicks on a checkbox and changes the selection of markers to be displayed.
       function update() {
+        NProgress.start();
         console.log("update has been called");
         var enabled = {};
         // Run through each checkbox and record whether it is checked. If it is, add it to the object of types to display, otherwise do not.
@@ -83,17 +86,19 @@ $( document ).ready(function(){
         feature_layer.eachLayer(function(l) {      //iterate through the features on the feature layer and add those points to the heat map (the features on the layer now will be those checked on filters)
         heat.addLatLng(l.getLatLng());
         });
+        NProgress.done();
       };
     };
 
     $("#heat_button").on("click", function(e) { //this event listener will kick in when a user submits a date range
+        NProgress.start();
         e.preventDefault();
         var start_date = $("input[name='start']").val(); //define the start and end date
         var end_date = $("input[name='end']").val();
         console.log("submitted");
         $("#filters").empty(); //empty the filters element so that a new filter list can be created
         $.getJSON('/get_heat', { start_date: start_date, end_date: end_date } ).done(function(data){ //use a get ajax request and pass in the start and end date to get the GeoJSON features to be added
-            startLoading();
+            // startLoading();
             console.log("heat is running");
             map.removeLayer(heat);      //remove the heat layer
             heat = L.heatLayer([], {    //redfine the heat layer
@@ -118,7 +123,8 @@ $( document ).ready(function(){
             // catch(err){
             //     $("#error").html("No crime stats in range selected");
             // };
-            finishedLoading();
+            // finishedLoading();
+            NProgress.done();
         });
     });
 
@@ -126,8 +132,9 @@ $( document ).ready(function(){
         console.log("heat is running");
         startLoading();
         addHeat(data);
-        // map.fitBounds(feature_layer.getBounds());  //zoom into the bounds of the features added
+        map.fitBounds(feature_layer.getBounds());  //zoom into the bounds of the features added
         addFilters();
+        // $(".svg").hide();
         finishedLoading();
     });
 });

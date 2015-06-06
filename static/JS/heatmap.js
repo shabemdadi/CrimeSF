@@ -1,7 +1,5 @@
 $( document ).ready(function(){
 
-    // jakealbaughSignature("light");
-
     var heat = L.heatLayer([], {    //define heat layer options
         minOpacity: 0, 
         radius: 25,
@@ -133,12 +131,20 @@ $( document ).ready(function(){
         startLoading();
 
         addHeat(data);
-        map.fitBounds(feature_layer.getBounds());  //zoom into the bounds of the features added
+        // map.fitBounds(feature_layer.getBounds());  //zoom into the bounds of the features added
         addFilters();
+        map.fitBounds(feature_layer.getBounds());  //zoom into the bounds of the features added
         // $(".svg").hide();
         finishedLoading();
     });
 
     $("input[name='start']").attr("value",moment().subtract(15, 'day').format("YYYY-MM-DD"));
     $("input[name='end']").attr("value",moment().format("YYYY-MM-DD"));
+
+    $('#heat_route').addClass('active');
+    $('#markers_route').removeClass('active');
+    $('#trends_route').removeClass('active');
+    $('#report_route').removeClass('active');
+    $('#journey_route').removeClass('active');
+    $('#home_route').removeClass('active');
 });

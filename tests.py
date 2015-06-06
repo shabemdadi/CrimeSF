@@ -12,7 +12,7 @@ class TestMyAppUnitTestCase(unittest.TestCase):
 
     def test_stat_upload(self):
         print "test is running"
-        self.assertFalse(Crime_Stat.query.with_entities(Crime_Stat.incident_num,func.count(Crime_Stat.incident_num)).group_by(Crime_Stat.incident_num).having(func.count(Crime_Stat.incident_num) > 1).all())
+        self.assertFalse(Crime_Stat.query.with_entities(Crime_Stat.incident_num,Crime_Stat.category,func.count('*')).group_by(Crime_Stat.incident_num, Crime_Stat.category).having(func.count('*') > 1).all())
 
 if __name__ == "__main__":
     print "main is running"

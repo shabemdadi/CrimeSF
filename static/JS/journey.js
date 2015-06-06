@@ -136,8 +136,9 @@ $( document ).ready(function(){
       console.log("markers is running");
       startLoading();
       addMarkerLayer(data);
-      map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
+      // map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
       addFilters();
+      map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
       finishedLoading();
     });
 
@@ -180,4 +181,14 @@ $( document ).ready(function(){
     	});
     	// finishedLoading();
   });
+
+  // $("#mapbox-directions-origin-input").attr("value","1328 Hyde Street, San Francisco");
+  // $("#mapbox-directions-destination-input").attr("value","88 Colin P Kelly Jr Street, San Francisco");
+
+  $('#heat_route').removeClass('active');
+  $('#markers_route').removeClass('active');
+  $('#trends_route').removeClass('active');
+  $('#report_route').removeClass('active');
+  $('#journey_route').addClass('active');
+  $('#home_route').removeClass('active');
 });

@@ -110,11 +110,11 @@ def get_heat_points():
 def show_charts():
     """Show trend line graphs"""
 
-    date_now = datetime.now()                                       #Show current date and time
-    date_formatted = datetime.strftime(date_now,"%A, %B %d, %Y")
-    time_formatted = datetime.strftime(date_now, "%H:%M")
+    # date_now = datetime.now()                                       #Show current date and time
+    # date_formatted = datetime.strftime(date_now,"%A, %B %d, %Y")
+    # time_formatted = datetime.strftime(date_now, "%H:%M")
 
-    return render_template("charts.html",date=date_formatted,time=time_formatted)
+    return render_template("charts.html")
 
 
 @app.route('/get_hour_stats')
@@ -209,6 +209,7 @@ def process_report():
     # address_current = request.args.get("current_address")
     description = request.args.get("description")
     map_category = request.args.get("map_category")
+    print map_category
 
     time = datetime.strptime(time_input,"%H:%M").time()
 
@@ -216,6 +217,9 @@ def process_report():
     #     time = datetime.datetime.now().time()
 
     date = datetime.strptime(date_input, "%Y-%m-%d")
+    date_string = datetime.strftime(date,"%Y-%m-%d")
+    print date
+    print date_string
 
     # if date_current:
     #     date = datetime.now()
@@ -227,7 +231,9 @@ def process_report():
     coordinates = geocode_json["features"][0]["geometry"]["coordinates"]
 
     y_cord = coordinates[0]
+    print y_cord
     x_cord = coordinates[1]
+    print x_cord
     address = address_input
 
     # if address_current:
@@ -238,18 +244,30 @@ def process_report():
     day_of_week = datetime.strftime(date,"%A")
     month = datetime.strftime(date,"%B")
     hour = time.strftime("%H:00") 
+    print hour
 
-    incident = Crime_Stat(incident_num=incident_num, category=category, district=district,description=description,map_category=map_category,
-        day_of_week=day_of_week,date=date,month=month,time=time,hour=hour,address=address,x_cord=x_cord,y_cord=y_cord)
-    
-    db.session.add(incident)
+    overlap = Crime_Stat.query.filter_by(date=date_string,x_cord=x_cord,y_cord=y_cord,hour=hour,map_category=map_category).all()
+    overlap2 = Crime_Stat.query.filter_by(date=date_input).all()
+    print len(overlap)
 
-    db.session.commit()
+    if overlap:
+        
+        print "in overlap"
+        return jsonify({"nothing":"nothing"})
 
-    feature_object = incident.make_feature_object()
+    else:
 
-    print jsonify(feature_object)
-    return jsonify(feature_object)
+        incident = Crime_Stat(incident_num=incident_num, category=category, district=district,description=description,map_category=map_category,
+            day_of_week=day_of_week,date=date,month=month,time=time,hour=hour,address=address,x_cord=x_cord,y_cord=y_cord)
+        
+        db.session.add(incident)
+
+        db.session.commit()
+
+        feature_object = incident.make_feature_object()
+
+        print jsonify(feature_object)
+        return jsonify(feature_object)
 
 @app.route('/get_recent')  #This will happen when the user clicks on the "Get Recent Stats" button, it will update our database and update our counts tables with the same function used in our seed file
 def get_recent_stats():
@@ -281,7 +299,7 @@ def get_recent_stats():
     for i, row in enumerate(data_json):
         if i > 0:
             try:
-                overlap = Crime_Stat.query.filter_by(incident_num=row["incidntnum"]).one()
+                overlap = Crime_Stat.query.filter_by(incident_num=row["incidntnum"],category=row["category"]).one()
             except:
                 incident_num = row["incidntnum"]
                 category = row["category"]

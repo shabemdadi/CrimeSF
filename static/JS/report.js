@@ -57,7 +57,19 @@ $("#report_button").on("click", function(e){
 	$.getJSON('/report_crime', { time: time, date: date, address: address, description: description, map_category: map_category } ).done(function(data){ //this will load when the user goes to the points of interest page, it will show crimes in the default date range period
     console.log("markers is running");
     feature_layer.setGeoJSON([]); //empty the feature_layer of objects
-    addMarkerLayer(data);
+    // addMarkerLayer(data);
+    $("#error").empty();            //empty error message elements
+    try {
+        addMarkerLayer(data);
+        // feature_layer.getGeoJSON();
+    }
+    catch(err){
+        $("#error").html("This incident has already been reported");
+    };
+    // if (feature_layer.getGeoJSON().features.length === 0){ //if there are no crime stats to add to the map
+    //   console.log("in if");
+    //   $("#error").html("This incident has already been reported");
+    // };
     NProgress.done();
   });
 });
@@ -67,4 +79,11 @@ $("input[name='date_input']").attr("value",moment().format("YYYY-MM-DD"));
 $("input[name='address_input']").attr("value","683 Sutter Street, San Francisco, CA");
 $("textarea[name='description']").html("Pick pocketer");
 $("#theft").prop("checked",true);
+
+$('#heat_route').removeClass('active');
+$('#markers_route').removeClass('active');
+$('#trends_route').removeClass('active');
+$('#report_route').addClass('active');
+$('#journey_route').removeClass('active');
+$('#home_route').removeClass('active');
 

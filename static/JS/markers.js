@@ -105,4 +105,11 @@ $( document ).ready(function(){
   $("input[name='start']").attr("value",moment().subtract(15, 'day').format("YYYY-MM-DD"));
   $("input[name='end']").attr("value",moment().format("YYYY-MM-DD"));
 
+  $('#heat_route').removeClass('active');
+  $('#markers_route').addClass('active');
+  $('#trends_route').removeClass('active');
+  $('#report_route').removeClass('active');
+  $('#journey_route').removeClass('active');
+  $('#home_route').removeClass('active');
+
 });

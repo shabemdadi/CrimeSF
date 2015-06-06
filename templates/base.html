@@ -13,7 +13,8 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.js"></script>
 
 	<style>	
-	  body { margin:0; padding:0; }
+	  body { margin:0; padding:0;
+	/*  		    background: #000; */}
 	  #map { position:relative; top:0; bottom:0; width:100%; min-height: 1000px;}
 	  .container-fluid {
 	    padding-right: 0;
@@ -42,16 +43,16 @@
 	                        <span class="icon-bar"></span>
 	                        <span class="icon-bar"></span>
 	                    </button>
-	                    <a class="navbar-brand" href="/">CrimeSF</a>
+	                    <a id="home_route" class="navbar-brand" href="/">CrimeSF</a>
 	                </div> 
 
 	                <div id="navbar" class="navbar-collapse collapse">
 	                    <ul class="nav navbar-nav">
-	                        <li><a href="/heat">Heatmap</a></li>
-	                        <li><a href="/points-of-interest">Points of Interest</a></li>
-	                        <li><a href="/trends">Trends</a></li>
-	                        <li><a href="/report">Report</a></li>
-	                        <li><a href="/journey">Your Journey</a></li>
+	                        <li id="heat_route"><a href="/heat">Heatmap</a></li>
+	                        <li id="markers_route"><a href="/points-of-interest">Points of Interest</a></li>
+	                        <li id="trends_route"><a href="/trends">Trends</a></li>
+	                        <li id="report_route"><a href="/report">Report</a></li>
+	                        <li id="journey_route"><a href="/journey">Your Journey</a></li>
 	                    </ul>
 	                     <ul class="nav navbar-nav navbar-right">
                                 <li>
@@ -65,6 +66,25 @@
 	    
 	        </nav>
 	    </div>
+
+
+	    <script> 
+
+	 //    $(document).ready(function(){
+
+		//     $('.nav li').click(function(e) {
+		// 	    $('.nav li.active').removeClass('active');
+		// 	    var $this = $(this);
+		// 	    if (!$this.hasClass('active')) {
+		// 	        $this.addClass('active');
+		// 	    }
+		// 	    e.preventDefault();
+		// 	});
+
+		// });
+	    // $('.nav li a')
+
+	    </script>
 	
 	      <!-- <hr> -->
 

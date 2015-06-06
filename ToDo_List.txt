@@ -1,35 +1,29 @@
-Do this week:
+Do this weekend:
 1. implement Michael's speed suggestions
 2. zoom into buffer zone!
 3. download stats
-demo routine
-loading screens
-change heatmap dates
-fix date "to" span box
-think about incident and category duplicates(reseed, readd incides, delete dups, change get recent in model and server and test)
-demo script
-dont let same citizen report be added again (flash  message)
-order of loading maps
-make trend tables wider
-add coloring on tabs
+7. fix date "to" span box
+13. email Meggie about demo
+14. greyscale bootstrap theme (or other color/font scheme, look at color.adobe.com)
+15. fix crime forecast margin (on left and right)
+16. homepage map styling
+17. decide what to put on home map and home "about"
+18. add form controls (must fill out each field, etc.)
+20. style date input fields (calendar drop down, have min and max dates, etc.)
+21. style charts (fonts, axis labels, hoverover numbers,etc.)
+22. mapbox studio
+24. favicon/icons
+25. put all fields on top of the map
+26. make website look good at all sizes
 
-Styling:
-1. greyscale bootstrap theme (or other color/font scheme, look at color.adobe.com)
-2. fix crime forecast margin (on left and right)
-4. homepage map styling
-5. decide what to put on home map and home "about"
-6. add form controls (must fill out each field, etc.)
-7. show where you are on line graphs
-8. style date input fields (calendar drop down, have min and max dates, etc.)
-9. style charts (fonts, axis labels, etc.)
-11. mapbox studio
-12. mapbox filter with select only
-13. favicon/icons
-14. put all fields on top of the map
+This week:
+1. demo routine - origin and desintations on journey tab (keep tab open with the desintation and route preloaded)
+2. loading screen
+3. change heatmap dates if fixed heatmap colors
 
 Ask Mapbox:
 1. be able to zoom into buffer zone
-2. sometimes map does not show up, only markers or heat points, or map does not zoom in around markers
+2. sometimes map does not show up, only markers or heat points, or map does not zoom in around markers (loading order)
 3. heatmap color, radius, blur options (make sure same options on heatmap for when selecting filters and re-initializing), make heatmap opaque
 
 Career Stuff:

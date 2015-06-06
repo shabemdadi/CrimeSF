@@ -93,7 +93,7 @@ def load_recent_stats():
     for i, row in enumerate(data_json): #iterate over JSON dict, first checking that incident num is not present, and add to databse if not present
         if i > 0:
             try:
-                overlap = Crime_Stat.query.filter_by(incident_num=row["incidntnum"]).one()
+                overlap = Crime_Stat.query.filter_by(incident_num=row["incidntnum"],category=row["category"]).one()
             except:
                 incident_num = row["incidntnum"]
                 category = row["category"]
@@ -184,6 +184,6 @@ def load_crime_counts():
 if __name__ == "__main__":
     connect_to_db(app)
 
-    #load_crime_stats()
+    # load_crime_stats()
     load_recent_stats()
     load_crime_counts()

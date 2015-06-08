@@ -12,15 +12,15 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.js"></script>
 
-	<style>	
-	  body { margin:0; padding:0;
-	/*  		    background: #000; */}
+	<style>
+	  body { margin:0; padding:0;}
+
 	  #map { position:relative; top:0; bottom:0; width:100%; min-height: 1000px;}
+
 	  .container-fluid {
 	    padding-right: 0;
 	    padding-left: 0;
 	  }
-	  /*#map { position:absolute; top:0; bottom:0; width:100%; }*/
 	</style>
 </head>
 <body>
@@ -67,32 +67,14 @@
 	        </nav>
 	    </div>
 
-
-	    <script> 
-
-	 //    $(document).ready(function(){
-
-		//     $('.nav li').click(function(e) {
-		// 	    $('.nav li.active').removeClass('active');
-		// 	    var $this = $(this);
-		// 	    if (!$this.hasClass('active')) {
-		// 	        $this.addClass('active');
-		// 	    }
-		// 	    e.preventDefault();
-		// 	});
-
-		// });
-	    // $('.nav li a')
-
-	    </script>
-	
 	      <!-- <hr> -->
 
 	{% with messages = get_flashed_messages() %}
 	  {% for message in messages %}
-	      <div class="alert alert-warning">{{ message }}</div>
+	      <div class="alert alert-success" role="alert">{{ message }}</div>
 	  {% endfor %}
 	{% endwith %}
+	<div id="error"></div>
 
 	{% block content %} put your content here {% endblock %}
 

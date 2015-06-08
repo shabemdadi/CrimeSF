@@ -1,32 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<style>
-    /*
-     * This is a very simple version of a 'loading screen': there are much
-     * fancier ones you can use instead, like
-     * http://codepen.io/collection/HtAne/
-     * http://jh3y.github.io/-cs-spinner/
-     */
-    #loader {
-        position:absolute; top:0; bottom:0; width:100%;
-        background:rgba(255, 255, 255, 1);
-        transition:background 1s ease-out;
-        -webkit-transition:background 1s ease-out;
-    }
-    #loader.done {
-        background:rgba(255, 255, 255, 0);
-    }
-    #loader.hide {
-        display:none;
-    }
-    #loader .message {
-        position:absolute;
-        left:50%;
-        top:50%;
-    }
-</style>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script>
 
 <script src='../static/nprogress/nprogress.js'></script>
@@ -42,21 +16,29 @@
 			<canvas id="MonthChart" width="800" height="400"></canvas>
 		</div>
         <div class="col-md-3">
-        	<div class="form-group">
-            <label>Crime Category 
-                <br>
-                <input type ="checkbox" name="map_category", value='Personal Theft/Larceny' checked>Personal Theft/Larceny
-                <br>
-                <input type ="checkbox" name="map_category", value='Robbery' checked>Robbery
-                <br>
-                <input type ="checkbox" name="map_category", value='Rape/Sexual Assault' checked>Rape/Sexual Assault
-                <br>
-                <input type ="checkbox" name="map_category", value='Aggravated Assault' checked>Aggravated Assault
-                <br>
-                <input type ="checkbox" name="map_category", value='Simple Assault' checked>Simple Assault
-                <br>
-                <input type ="checkbox" name="map_category", value='Other' checked>Other
-            </label>
+            <div>
+                <label>
+                    Crime Category
+                </label>
+            </div>
+            <div>
+                <input type="checkbox" name="map_category" value='Personal Theft/Larceny' checked>Personal Theft/Larceny
+            </div>
+            <div>
+                <input type="checkbox" name="map_category" value='Robbery' checked>Robbery
+            </div>
+            <div>
+                <input type="checkbox" name="map_category" value='Rape/Sexual Assault' checked>Rape/Sexual Assault
+            </div>
+            <div>
+                <input type="checkbox" name="map_category" value='Aggravated Assault' checked>Aggravated Assault
+            </div>
+            <div>
+                <input type="checkbox" name="map_category" value='Simple Assault' checked>Simple Assault
+            </div>
+            <div>
+                <input type="checkbox" name="map_category" value='Other' checked>Other
+            </div>
         </div>
     </div>    
 </div>

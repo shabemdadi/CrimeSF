@@ -9,11 +9,9 @@ $( document ).ready(function(){
     feature_layer.on('click', function(e) {                 //map will zoom into a marker if a user clicks on it
         map.panTo(e.layer.getLatLng());
     });
-    // map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
     feature_layer.eachLayer(function(layer) {
       // here you call `bindPopup` with a string of HTML you create - the feature
       // properties declared above are available under `layer.feature.properties`
-        console.log("in layers");
         var content = '<h1 align="center"><b>' + layer.feature.properties["title"] + '</b><\/h1>' +
             '<p align="center"><b>Description: </b>' + layer.feature.properties["description"] + '<br \/>' +
             '<b>Time: </b>' + layer.feature.properties["time"] + '<br \/>' +
@@ -55,7 +53,6 @@ $( document ).ready(function(){
 
     // This function is called whenever someone clicks on a checkbox and changes the selection of markers to be displayed.
     function update() {
-      console.log("update has been called");
       NProgress.start();
       var enabled = {};
       // Run through each checkbox and record whether it is checked. If it is, add it to the object of types to display, otherwise do not.
@@ -74,18 +71,17 @@ $( document ).ready(function(){
   $("#marker_button").on("click", function(e) { //this is called when a user submits a date range
       NProgress.start();
       e.preventDefault();
+      $("#error").removeClass("alert alert-danger"); 
+      $("#error").empty();
       var start_date = $("input[name='start']").val(); //start and end date from the input fields that were submitted
       var end_date = $("input[name='end']").val();
-      console.log("submitted");
       $("#filters").empty(); //empty the filters element so that a new filter list can be created
       $.getJSON('/get_markers', { start_date: start_date, end_date: end_date } ).done(function(data){ //pass in the entered start and end dates and get the GeoJSON objects to be added to the map
         feature_layer.setGeoJSON([]); //empty the feature_layer of objects
-        console.log("markers is running");
         addMarkerLayer(data);
         addFilters();
-        $("#error").empty(); //empty error message
         if (feature_layer.getGeoJSON().features.length === 0){ //if there are no crime stats to add to the map
-            console.log("in if");
+            $("#error").addClass("alert alert-danger"); 
             $("#error").html("No crime stats in range selected");
         };
         NProgress.done();
@@ -94,17 +90,18 @@ $( document ).ready(function(){
 
 
   $.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data){ //this will load when the user goes to the points of interest page, it will show crimes in the default date range period
-      console.log("markers is running");
-      startLoading();         // loading screen will start
+      startLoading(); 
       addMarkerLayer(data);
       addFilters();
-      map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
+      map.fitBounds(feature_layer.getBounds());   //position map using bounds of markers
       finishedLoading();
     });
 
+  //this adds default values to the form
   $("input[name='start']").attr("value",moment().subtract(15, 'day').format("YYYY-MM-DD"));
   $("input[name='end']").attr("value",moment().format("YYYY-MM-DD"));
 
+  //this will have the tab in the navbar for this page be active
   $('#heat_route').removeClass('active');
   $('#markers_route').addClass('active');
   $('#trends_route').removeClass('active');

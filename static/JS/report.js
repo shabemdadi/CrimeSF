@@ -6,7 +6,6 @@ function addMarkerLayer(data) { //this will add markers to the map
   feature_layer.on('click', function(e) {                 //map will zoom into a marker if a user clicks on it
       map.panTo(e.layer.getLatLng());
   });
-  // map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
   feature_layer.eachLayer(function(layer) {
     // here you call `bindPopup` with a string of HTML you create - the feature
     // properties declared above are available under `layer.feature.properties`
@@ -21,8 +20,7 @@ function addMarkerLayer(data) { //this will add markers to the map
     });
 };
 
-function tweetSetup(custom_text) {
-    console.log("tweet setup running");
+function tweetSetup(custom_text) {  //this function will re add the twitter button with text that we define
     $(".twitter-share-button").remove();
     var tweet = $('<a>')
         .attr('href', "https://twitter.com/share")
@@ -39,47 +37,36 @@ function tweetSetup(custom_text) {
 
 $("#report_button").on("click", function(e){
   NProgress.start();
-	console.log("form submitted");
-	var time = $("input[name='time_input']").val();
+  $("#error").removeClass("alert alert-danger"); 
+  $("#error").empty();
+	var time = $("input[name='time_input']").val();  //get the form values
 	var date = $("input[name='date_input']").val();
 	var address = $("input[name='address_input']").val();
 	var description = $("textarea[name='description']").val();
 	var map_category = $("input[name='crime_category']").val();
-	twttr.widgets.load();
-	var tweet_text = "Caution! " + description + " at " + address;
-  tweetSetup(tweet_text);
-	// $("#twitter_icon").attr("data-text", tweet);
-	console.log(time);
-	console.log(date);
-	console.log(address);
-	console.log(description);
-	console.log(tweet);
-	$.getJSON('/report_crime', { time: time, date: date, address: address, description: description, map_category: map_category } ).done(function(data){ //this will load when the user goes to the points of interest page, it will show crimes in the default date range period
-    console.log("markers is running");
+	var tweet_text = "Caution! " + description + " at " + address; //this is the text that we want to go into the tweet box
+  tweetSetup(tweet_text);             //run the twitter button setup
+	$.getJSON('/report_crime', { time: time, date: date, address: address, description: description, map_category: map_category } ).done(function(data){ //this will add a marker on the map for the incident the user just reported
     feature_layer.setGeoJSON([]); //empty the feature_layer of objects
-    // addMarkerLayer(data);
-    $("#error").empty();            //empty error message elements
     try {
         addMarkerLayer(data);
-        // feature_layer.getGeoJSON();
     }
     catch(err){
-        $("#error").html("This incident has already been reported");
+        $("#error").addClass("alert alert-danger"); 
+        $("#error").html("This incident has already been reported.");
     };
-    // if (feature_layer.getGeoJSON().features.length === 0){ //if there are no crime stats to add to the map
-    //   console.log("in if");
-    //   $("#error").html("This incident has already been reported");
-    // };
     NProgress.done();
   });
 });
 
+//this adds default values to the form
 $("input[name='time_input']").attr("value",moment().format("HH:mm"));
 $("input[name='date_input']").attr("value",moment().format("YYYY-MM-DD"));
 $("input[name='address_input']").attr("value","683 Sutter Street, San Francisco, CA");
 $("textarea[name='description']").html("Pick pocketer");
 $("#theft").prop("checked",true);
 
+//this will have the tab in the navbar for this page be active
 $('#heat_route').removeClass('active');
 $('#markers_route').removeClass('active');
 $('#trends_route').removeClass('active');

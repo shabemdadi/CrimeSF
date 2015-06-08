@@ -15,7 +15,7 @@ def load_crime_stats():
     # variables in this dataset: 'IncidntNum','Category','Descript','DayOfWeek','Date','Time','PdDistrict','Resolution','Address','X','Y','Location'
 
 
-    map_category_dict = {'LARCENY/THEFT':'Personal Theft/Larceny',          # Make dictionary linking crime categories from data to catgories on map
+    map_category_dict = {'LARCENY/THEFT':'Personal Theft/Larceny',  # Make dictionary linking crime categories from data to catgories on map
                          'BURGLARY':'Robbery',
                          'SEX OFFENSES, FORCIBLE':'Rape/Sexual Assault',
                          'VEHICLE THEFT':'Personal Theft/Larceny',
@@ -28,7 +28,7 @@ def load_crime_stats():
         reader = csv.reader(f)
     
         for i, row in enumerate(reader):                          #iterate through CSV datafile, designating database variables to save
-            if i > 0:
+            if i > 0:                                             #first row is the column headers, so we skip it
                 incident_num = row[0]
                 category = row[1]
                 description = row[2]
@@ -44,11 +44,11 @@ def load_crime_stats():
                         map_category = "Other"
                 day_of_week = row[3]
                 date_input = row[4]
-                date = datetime.strptime(date_input, "%m/%d/%Y %H:%M:%S %p")
-                month = datetime.strftime(date,"%B")
+                date = datetime.strptime(date_input, "%m/%d/%Y %H:%M:%S %p")    #format date as object
+                month = datetime.strftime(date,"%B")                            #get just the month string
                 time_input = row[5]
-                time = datetime.strptime(time_input,"%H:%M").time()
-                hour = time.strftime("%H:00")
+                time = datetime.strptime(time_input,"%H:%M").time()             #format time as object
+                hour = time.strftime("%H:00")                                   #get just the hour string
                 district = row[6]
                 address = row[8]
                 x_cord = row[9]
@@ -90,7 +90,7 @@ def load_recent_stats():
 
     data_json = json.loads(data_text) #put JSON into JSON dict
 
-    for i, row in enumerate(data_json): #iterate over JSON dict, first checking that incident num is not present, and add to databse if not present
+    for i, row in enumerate(data_json): #iterate over JSON dict, first checking that combo of incident num and category is not present, and add to databse if not present
         if i > 0:
             try:
                 overlap = Crime_Stat.query.filter_by(incident_num=row["incidntnum"],category=row["category"]).one()
@@ -151,7 +151,7 @@ def load_crime_counts():
             db.session.add(hour_stat)
     
         count_all = Crime_Stat.query.filter_by(hour=hour).count() 
-        hour_stat = Hour_Count(hour=hour,map_category="all",count=count_all)
+        hour_stat = Hour_Count(hour=hour,map_category="all",count=count_all)    #this is a row for all categories combined
         db.session.add(hour_stat)
     
     db.session.commit()
@@ -184,6 +184,6 @@ def load_crime_counts():
 if __name__ == "__main__":
     connect_to_db(app)
 
-    # load_crime_stats()
+    #load_crime_stats()
     load_recent_stats()
     load_crime_counts()

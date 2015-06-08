@@ -15,13 +15,10 @@ $( document ).ready(function(){
     function addHeat(data) {                        
         // Add each marker point to the heatmap.
         feature_layer = L.mapbox.featureLayer(data);    //add features to the feature_layer
-        console.log(feature_layer);
         heat.addTo(map);                            //add the heat layer
-        console.log(heat);
         feature_layer.on('click', function(e) {     //when clicking on the feature_layer, zoom into that location
             map.panTo(e.layer.getLatLng());
         });
-        // map.fitBounds(feature_layer.getBounds());  //zoom into the bounds of the features added
         // Add each marker point to the heatmap.
         feature_layer.eachLayer(function(l) {       //iterate through the features on the feature layer and add those points to the heat map
             heat.addLatLng(l.getLatLng());
@@ -61,7 +58,6 @@ $( document ).ready(function(){
       // This function is called whenever someone clicks on a checkbox and changes the selection of markers to be displayed.
       function update() {
         NProgress.start();
-        console.log("update has been called");
         var enabled = {};
         // Run through each checkbox and record whether it is checked. If it is, add it to the object of types to display, otherwise do not.
         for (var i = 0; i < checkboxes.length; i++) {
@@ -77,9 +73,7 @@ $( document ).ready(function(){
             radius: 25,
             blur: 15, 
             maxZoom: 16
-            // gradient : {1: 'red'}
         }).addTo(map);
-        // map.fitBounds(feature_layer.getBounds());  //zoom into the bounds of the features added
         // Add each marker point to the heatmap.
         feature_layer.eachLayer(function(l) {      //iterate through the features on the feature layer and add those points to the heat map (the features on the layer now will be those checked on filters)
         heat.addLatLng(l.getLatLng());
@@ -91,56 +85,44 @@ $( document ).ready(function(){
     $("#heat_button").on("click", function(e) { //this event listener will kick in when a user submits a date range
         NProgress.start();
         e.preventDefault();
+        $("#error").removeClass("alert alert-danger"); 
+        $("#error").empty();
         var start_date = $("input[name='start']").val(); //define the start and end date
         var end_date = $("input[name='end']").val();
-        console.log("submitted");
         $("#filters").empty(); //empty the filters element so that a new filter list can be created
         $.getJSON('/get_heat', { start_date: start_date, end_date: end_date } ).done(function(data){ //use a get ajax request and pass in the start and end date to get the GeoJSON features to be added
-            // startLoading();
-            console.log("heat is running");
             map.removeLayer(heat);      //remove the heat layer
             heat = L.heatLayer([], {    //redfine the heat layer
                 radius: 25,
                 blur: 15, 
                 maxZoom: 16
-                // gradient : {1: 'red'}
             });
             feature_layer.setGeoJSON([]);   //set the features on the feature_layer to an empty list
             addHeat(data);                  //call the heat function
             addFilters();                   // add filters
-            $("#error").empty();            //empty error message elements
             if (feature_layer.getGeoJSON().features.length === 0){ //if there are no crime stats to add to the map
               console.log("in if");
+              $("#error").addClass("alert alert-danger"); 
               $("#error").html("No crime stats in range selected");
             };
-            // try {
-            //     addHeat(data);                  //call the heat function
-            //     addFilters();                   // add filters
-            //     $("#error").empty();            //empty error message elements
-            // }                                   //if there is an error adding features (no crimes in date range), add error message
-            // catch(err){
-            //     $("#error").html("No crime stats in range selected");
-            // };
-            // finishedLoading();
             NProgress.done();
         });
     });
 
     $.getJSON('/get_heat', { start_date:[], end_date:[]} ).done(function(data){ //this will be called when the user goes on the heatmap page, it will get the GeoJSON feature objects from the server using our default date range
-        console.log("heat is running");
         startLoading();
-
         addHeat(data);
-        // map.fitBounds(feature_layer.getBounds());  //zoom into the bounds of the features added
         addFilters();
         map.fitBounds(feature_layer.getBounds());  //zoom into the bounds of the features added
         // $(".svg").hide();
         finishedLoading();
     });
 
+    //this adds default values to the form
     $("input[name='start']").attr("value",moment().subtract(15, 'day').format("YYYY-MM-DD"));
     $("input[name='end']").attr("value",moment().format("YYYY-MM-DD"));
 
+    //this will have the tab in the navbar for this page be active
     $('#heat_route').addClass('active');
     $('#markers_route').removeClass('active');
     $('#trends_route').removeClass('active');

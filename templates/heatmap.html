@@ -2,153 +2,39 @@
 {% block content %}
 
 <style>
-    .filter-ui {
-      background:#fff;
+  .filter-ui {
+    background:#fff;
+    position:absolute;
+    top:10px;
+    right:10px;
+    z-index:100;
+    padding:10px;
+    border-radius:3px;
+    }
+  /*
+   * This is a very simple version of a 'loading screen': there are much
+   * fancier ones you can use instead, like
+   * http://codepen.io/collection/HtAne/
+   * http://jh3y.github.io/-cs-spinner/
+   */
+  #loader {
+      position:absolute; top:0; bottom:0; width:100%;
+      background:rgba(255, 255, 255, 1);
+      transition:background 1s ease-out;
+      -webkit-transition:background 1s ease-out;
+  }
+  #loader.done {
+      background:rgba(255, 255, 255, 0);
+  }
+  #loader.hide {
+      display:none;
+  }
+  #loader .message {
       position:absolute;
-      top:10px;
-      right:10px;
-      z-index:100;
-      padding:10px;
-      border-radius:3px;
-      }
-    /*
-     * This is a very simple version of a 'loading screen': there are much
-     * fancier ones you can use instead, like
-     * http://codepen.io/collection/HtAne/
-     * http://jh3y.github.io/-cs-spinner/
-     */
-    #loader {
-        position:absolute; top:0; bottom:0; width:100%;
-        background:rgba(255, 255, 255, 1);
-        transition:background 1s ease-out;
-        -webkit-transition:background 1s ease-out;
-    }
-    #loader.done {
-        background:rgba(255, 255, 255, 0);
-    }
-    #loader.hide {
-        display:none;
-    }
-    #loader .message {
-        position:absolute;
-        left:50%;
-        top:50%;
-    }
+      left:50%;
+      top:50%;
+  }
 
-    body {
-      background-color: black;
-      margin: 50px;
-      color: #333;
-      font-family: ubuntu, Verdana;
-    }
-    body > div {
-      left: calc(50% - 100px);
-      position: relative;
-      background-color: black;
-      width: 200px;
-      height: 200px;
-      border-radius: 100%;
-      overflow: hidden;
-    }
-    body > div:nth-child(2) {
-      width: 180px;
-      height: 180px;
-      top: -190px;
-      left: calc(50% - 90px);
-      line-height: 180px;
-      text-align: center;
-    }
-    body > div div {
-      width: 150px;
-      height: 150px;
-      border-radius: 100%;
-      filter: blur(30px);
-      -webkit-filter: blur(30px);
-      position: absolute;
-    }
-    body > div div:nth-child(1) {
-      background-color: red;
-      -webkit-animation: move 4s;
-      -webkit-animation-delay: 4.8s;
-      -webkit-animation-iteration-count: infinite;
-      -webkit-animation-timing-function: linear;
-      animation: move 4s;
-      animation-delay: 4.8s;
-      animation-iteration-count: infinite;
-      animation-timing-function: linear;
-    }
-    body > div div:nth-child(2) {
-      background-color: green;
-      -webkit-animation: move 3s;
-      -webkit-animation-delay: 0s;
-      -webkit-animation-iteration-count: infinite;
-      -webkit-animation-timing-function: linear;
-      animation: move 3s;
-      animation-delay: 0s;
-      animation-iteration-count: infinite;
-      animation-timing-function: linear;
-    }
-    body > div div:nth-child(3) {
-      background-color: blue;
-      -webkit-animation: move 6s;
-      -webkit-animation-delay: 3.2s;
-      -webkit-animation-iteration-count: infinite;
-      -webkit-animation-timing-function: linear;
-      animation: move 6s;
-      animation-delay: 3.2s;
-      animation-iteration-count: infinite;
-      animation-timing-function: linear;
-    }
-    body > div div:nth-child(4) {
-      background-color: yellow;
-      -webkit-animation: move 5s;
-      -webkit-animation-delay: 1.6s;
-      -webkit-animation-iteration-count: infinite;
-      -webkit-animation-timing-function: linear;
-      animation: move 5s;
-      animation-delay: 1.6s;
-      animation-iteration-count: infinite;
-      animation-timing-function: linear;
-    }
-
-    @-webkit-keyframes move {
-      0%, 100% {
-        top: 0%;
-        left: 0%;
-      }
-      25% {
-        top: 0%;
-        left: 50%;
-      }
-      50% {
-        top: 50%;
-        left: 50%;
-      }
-      75% {
-        top: 50%;
-        left: 0%;
-      }
-    }
-    @keyframes move {
-      0%, 100% {
-        top: 0%;
-        left: 0%;
-      }
-      25% {
-        top: 0%;
-        left: 50%;
-      }
-      50% {
-        top: 50%;
-        left: 50%;
-      }
-      75% {
-        top: 50%;
-        left: 0%;
-      }
-    }
-
-    
 </style>
 
 <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-heat/v0.1.3/leaflet-heat.js'></script>
@@ -177,17 +63,16 @@
         <div class="col-md-3">
             <div class="form-group">
                 <label>Period Start
-                    <input type="date" class="input-sm form-control" name="start" min="2003-01-01">
+                    <input type="date" class="form-control" name="start" min="2003-01-01">
                 </label>
-                <span class="input-group-addon">to</span>
-                <label>Period End
-                    <input type="date" class="input-sm form-control" name="end">
-                </label>
-                <br>
-                <button id="heat_button" class="btn btn-primary">Submit</button>
-                <br>
-                <div id="error"></div>
             </div>
+            <span class="input-group-addon">to</span>
+            <div class="form-group">
+                <label>Period End
+                    <input type="date" class="form-control" name="end">
+                </label>
+            </div>
+            <button id="heat_button" class="btn btn-primary">Submit</button>
         </div>    
     </div>
 

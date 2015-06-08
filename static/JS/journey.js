@@ -4,8 +4,6 @@ $( document ).ready(function(){
   // and inputs will pull data.
   var directions = L.mapbox.directions();
 
-  console.log(directions);
-
   var directionsLayer = L.mapbox.directions.layer(directions)
       .addTo(map);
 
@@ -28,11 +26,9 @@ $( document ).ready(function(){
     feature_layer.on('click', function(e) {                 //map will zoom into a marker if a user clicks on it
         map.panTo(e.layer.getLatLng());
     });
-    // map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
     feature_layer.eachLayer(function(layer) {
       // here you call `bindPopup` with a string of HTML you create - the feature
       // properties declared above are available under `layer.feature.properties`
-        console.log("in layers");
         var content = '<h1 align="center"><b>' + layer.feature.properties["title"] + '</b><\/h1>' +
             '<p align="center"><b>Description: </b>' + layer.feature.properties["description"] + '<br \/>' +
             '<b>Time: </b>' + layer.feature.properties["time"] + '<br \/>' +
@@ -76,7 +72,6 @@ $( document ).ready(function(){
     // This function is called whenever someone clicks on a checkbox and changes the selection of markers to be displayed.
     function update() {
       NProgress.start();
-      console.log("update has been called");
       var enabled = {};
       // Run through each checkbox and record whether it is checked. If it is, add it to the object of types to display, otherwise do not.
       for (var i = 0; i < checkboxes.length; i++) {
@@ -93,98 +88,65 @@ $( document ).ready(function(){
 
   function createBuffer (){
   	// console.log(directions.directions.routes[0].geometry.coordinates);
-  	// console.log(directions.directions.routes[0]);
   	// var route_line = turf.linestring([directions.directions.routes[0].geometry.coordinates], { name: 'route_line' } );
-  	// console.log(route_line);
-  	var route_line = directions.directions.routes[0];  //define feature that defines the route given
+  	var route_line = directions.directions.routes[0];  //define variable that defines the route given
   	var unit = 'miles';                                //define the unit for the buffer
-  	var buffer_dist = $("#buffer_choice").val();
-  	console.log(buffer_dist);
+  	var buffer_dist = $("#buffer_choice").val();       //get the form value for the buffer zone, which is defaulted to 0.1 miles
   	var buffered = turf.buffer(route_line, buffer_dist, unit); //create buffer zone
     // var buffered_coords = buffered.features[0].geometry.coordinates;
-    // console.log(buffered_coords);
     // var buffered_layer = L.mapbox.featureLayer(buffered_coords).addTo(map);
-    // console.log(buffered_layer);
-    // map.fitBounds(buffered_layer.getBounds());
-   //  map.fitBounds(buffered.features[0].geometry.coordinates);
   	// var result = turf.featurecollection([buffered, route_line]);
-   //  debugger;
-  	// console.log(result);
-   //  map.fitBounds(result.features[0].features[0].geometry.coordinates);
-    // debugger;
   	var markers = feature_layer.getGeoJSON();            //get the feature on the feature_layer
-  	// console.log(markers);
   	var markersWithin = turf.within(markers, buffered);  //check whether any of the features are in the buffer zone and save to variable
-  	// console.log(markersWithin);
   	feature_layer.setGeoJSON([]);                        //set feature layer to 0 features
     addMarkerLayer(markersWithin);                    //add only those markers within the buffer zone to the feature layer
+    $("#error").removeClass("alert alert-danger"); 
     $("#error").empty();
     if (feature_layer.getGeoJSON().features.length === 0){ //if there are no crime stats to add to the map
         console.log("in if");
+        $("#error").addClass("alert alert-danger"); 
         $("#error").html("No crimes from previous two weeks in buffer zone selected");
     };
-    // try {
-  	 //   addMarkerLayer(markersWithin);                    //add only those markers within the buffer zone to the feature layer
-    //    $("#error").empty();
-    // }
-    // catch(err){                                           //if there are no features in the buffer zone, add this error message
-    //   $("#error").html("No crimes from previous two weeks in buffer zone selected");
-    // };
   };
 
   $.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data){ //this will load when the user goes to the journey page, it will show crimes in the default date range period
-      console.log("markers is running");
       startLoading();
       addMarkerLayer(data);
-      // map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
       addFilters();
       map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
       finishedLoading();
     });
 
   directions.on("load",function(){  //this will start when a user selects a start and end destination to get directions for
-  	console.log("on directions loading");
     NProgress.start();
     feature_layer.setGeoJSON([]);      //set feature layer to 0 features
     $.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data){
-      console.log("markers is running");
-      addMarkerLayer(data);
-      createBuffer();
+      addMarkerLayer(data); //re-add the markers
+      createBuffer();       //create buffer zone
       $("#filters").empty(); //empty the filters element so that a new filter list can be created
       addFilters();
+      map.fitBounds(directionsLayer.routeLayer.getBounds());
       NProgress.done();
       });
-   //  createBuffer();
-  	// $("#filters").empty(); //empty the filters element so that a new filter list can be created
-   //  addFilters();
-    map.fitBounds(directionsLayer.routeLayer.getBounds());
-    // console.log(directions.directions.routes[0].steps[0].maneuver.instruction);
-    // for (var step = 0; i < features.length; i++) 
-  });
-
-  directions.on('selectRoute', function(){
-    console.log("select route running");
   });
 
   $("#buffer_choice").change(function(){  //this will start when a buffer zone distance is chosen
-  	// startLoading();
     NProgress.start();
-  	console.log("buffer changed");
   	feature_layer.setGeoJSON([]);      //set feature layer to 0 features
   	$.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data){
-      console.log("markers is running");
       addMarkerLayer(data);
       createBuffer();
       $("#filters").empty(); //empty the filters element so that a new filter list can be created
       addFilters();
       NProgress.done();
     	});
-    	// finishedLoading();
   });
 
+  //this adds default values to the form
   // $("#mapbox-directions-origin-input").attr("value","1328 Hyde Street, San Francisco");
   // $("#mapbox-directions-destination-input").attr("value","88 Colin P Kelly Jr Street, San Francisco");
 
+  //this will have the tab in the navbar for this page be active
   $('#heat_route').removeClass('active');
   $('#markers_route').removeClass('active');
   $('#trends_route').removeClass('active');

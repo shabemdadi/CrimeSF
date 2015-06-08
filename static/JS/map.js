@@ -10,7 +10,6 @@ var map = L.mapbox.map('map', 'shabemdadi.fab5eb0c')
         L.control.locate().addTo(map); //allows user to locate themselves
 
 // Set location to be San Francisco
-
 var geocoder = L.mapbox.geocoder('mapbox.places');
 
 geocoder.query('San Francisco, CA', showMap);   //will zoom into San Francisco

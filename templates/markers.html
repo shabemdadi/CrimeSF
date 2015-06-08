@@ -2,41 +2,39 @@
 {% block content %}
 
 <style>
-    .filter-ui {
-      background:#fff;
+  .filter-ui {
+    background:#fff;
+    position:absolute;
+    top:10px;
+    right:10px;
+    z-index:100;
+    padding:10px;
+    border-radius:3px;
+    }
+  /*
+   * This is a very simple version of a 'loading screen': there are much
+   * fancier ones you can use instead, like
+   * http://codepen.io/collection/HtAne/
+   * http://jh3y.github.io/-cs-spinner/
+   */
+  #loader {
+      position:absolute; top:0; bottom:0; width:100%;
+      background:rgba(255, 255, 255, 1);
+      transition:background 1s ease-out;
+      -webkit-transition:background 1s ease-out;
+  }
+  #loader.done {
+      background:rgba(255, 255, 255, 0);
+  }
+  #loader.hide {
+      display:none;
+  }
+  #loader .message {
       position:absolute;
-      top:10px;
-      right:10px;
-      z-index:100;
-      padding:10px;
-      border-radius:3px;
-      }
-    /*
-     * This is a very simple version of a 'loading screen': there are much
-     * fancier ones you can use instead, like
-     * http://codepen.io/collection/HtAne/
-     * http://jh3y.github.io/-cs-spinner/
-     */
-    #loader {
-        position:absolute; top:0; bottom:0; width:100%;
-        background:rgba(255, 255, 255, 1);
-        transition:background 1s ease-out;
-        -webkit-transition:background 1s ease-out;
-    }
-    #loader.done {
-        background:rgba(255, 255, 255, 0);
-    }
-    #loader.hide {
-        display:none;
-    }
-    #loader .message {
-        position:absolute;
-        left:50%;
-        top:50%;
-    }
-</style>
-
-<style type='text/css'>
+      left:50%;
+      top:50%;
+  }
+    
   .my-legend .legend-title {
     text-align: left;
     margin-bottom: 5px;
@@ -105,17 +103,18 @@
             </div>
             <div class="form-group">
                 <label>Period Start
-                  <input type="date" class="input-sm form-control" name="start" min="2003-01-01">
+                  <input type="date" class="form-control" name="start" min="2003-01-01">
                 </label>
-                <span class="input-group-addon">to</span>
-                <label>Period End
-                  <input type="date" class="input-sm form-control" name="end">
-                </label>
-                <br>
-                <button id="marker_button" class="btn btn-primary">Submit</button>
-                <br>
-                <div id="error"></div>
             </div>
+            <span class="input-group-addon">to</span>
+            <div class="form-group">
+                <label>Period End
+                  <input type="date" class="form-control" name="end">
+                </label>
+            </div>
+            <button id="marker_button" class="btn btn-primary">Submit</button>
+                <br>
+<!--                 <div id="error"></div> -->
         </div>    
     </div>
 

@@ -29,11 +29,6 @@ def index():
 def show__markers():
     """Show map with markers."""
 
-    # end_date = datetime.now()                    
-    # start_date = end_date - timedelta(days=16)
-    # end_date_formatted = datetime.strftime(end_date,"%m-%d-%Y")
-    # start_date_formatted = datetime.strftime(start_date,"%m-%d-%Y")
-
     return render_template("markers.html")
 
 
@@ -41,22 +36,17 @@ def show__markers():
 def get_marker_points():
     """Get JSON objects for marker points."""
 
-    # time.sleep(30)
-
     start_date = request.args.get("start_date") #start_date and end_date are defined in the event listener in javascript and passed into Flask
-    print start_date
     end_date = request.args.get("end_date")
 
     if start_date:                              #if the user enters in a start_date
-
-        print "start_date has been posted"
 
         start_date_formatted = datetime.strptime(start_date,"%Y-%m-%d") #reformat start and end dates as date objects
         end_date_formatted = datetime.strptime(end_date,"%Y-%m-%d")
         
         return Crime_Stat.get_features_objects_by_date(start_date_formatted,end_date_formatted) #call class method that will return GeoJSON features
 
-    else:                               # user has not entered in a date, use a default period of 45 days ago
+    else:                               # user has not entered in a date, use a default period
         
         end_date = datetime.now()                    
         start_date = end_date - timedelta(days=15)
@@ -69,12 +59,6 @@ def get_marker_points():
 def show_heat():
     """Show heatmap"""
 
-    # end_date = datetime.now()                    
-    # start_date = end_date - timedelta(days=30)
-    # end_date_formatted = datetime.strftime(end_date,"%m-%d-%Y")
-    # start_date_formatted = datetime.strftime(start_date,"%m-%d-%Y")
-
-
     return render_template("heatmap.html")
 
     
@@ -82,22 +66,17 @@ def show_heat():
 def get_heat_points():
     """Make JSON objects for markers on heatmap."""
 
-    # time.sleep(30)
-
     start_date = request.args.get("start_date") #start_date and end_date are defined in the event listener in javascript and passed into Flask
-    print start_date
     end_date = request.args.get("end_date")
 
     if start_date:                              #if the user enters in a start_date
-
-        print "start_date has been posted"
 
         start_date_formatted = datetime.strptime(start_date,"%Y-%m-%d") #reformat start and end dates as date objects
         end_date_formatted = datetime.strptime(end_date,"%Y-%m-%d")
         
         return Crime_Stat.get_features_objects_by_date(start_date_formatted,end_date_formatted)
 
-    else:                               # user has not entered in a date, use a default period of 45 days ago
+    else:                               # user has not entered in a date, use a default period
         
         end_date = datetime.now()                    
         start_date = end_date - timedelta(days=15)
@@ -109,10 +88,6 @@ def get_heat_points():
 @app.route('/trends')
 def show_charts():
     """Show trend line graphs"""
-
-    # date_now = datetime.now()                                       #Show current date and time
-    # date_formatted = datetime.strftime(date_now,"%A, %B %d, %Y")
-    # time_formatted = datetime.strftime(date_now, "%H:%M")
 
     return render_template("charts.html")
 
@@ -130,8 +105,6 @@ def get_hour_stats():
         category_list.append(category_stripped)
 
     if map_categories != "None":    #if there is no checkbox checked JS will return "None" as a string
-
-        print "in map_categories"
 
         return Crime_Stat.get_hour_data_category(category_list) #call class method querying database by hour and provided catory and returns graph variable
 
@@ -153,8 +126,6 @@ def get_day_stats():
 
     if map_categories != "None":
 
-        print "in map_categories"
-
         return Crime_Stat.get_day_data_category(category_list)
 
     else:
@@ -174,8 +145,6 @@ def get_month_stats():
         category_list.append(category_stripped)
 
     if map_categories != "None":
-
-        print "in map_categories"
 
         return Crime_Stat.get_month_data_category(category_list)
 
@@ -199,62 +168,44 @@ def show_report_page():
 def process_report():
     """Save reported crime to database."""
 
-    print "in report crime"
-
     time_input = request.args.get("time")
-    # time_current = request.args.get("current_time")
     date_input = request.args.get("date")
-    # date_current = request.args.get("current_date")
     address_input = request.args.get("address")
-    # address_current = request.args.get("current_address")
     description = request.args.get("description")
     map_category = request.args.get("map_category")
-    print map_category
 
-    time = datetime.strptime(time_input,"%H:%M").time()
+    time = datetime.strptime(time_input,"%H:%M").time() #format the time as a datetime object
 
-    # if time_current:
-    #     time = datetime.datetime.now().time()
+    date = datetime.strptime(date_input, "%Y-%m-%d")    #format the date as a datetime object
+    date_string = datetime.strftime(date,"%Y-%m-%d")    #format date as a string
 
-    date = datetime.strptime(date_input, "%Y-%m-%d")
-    date_string = datetime.strftime(date,"%Y-%m-%d")
-    print date
-    print date_string
-
-    # if date_current:
-    #     date = datetime.now()
-
+    #use the Mapbox geocoder API to get the coordinates of the addressed inputted
     geocode = requests.get("http://api.tiles.mapbox.com/v4/geocode/mapbox.places/'%s'.json?access_token=pk.eyJ1Ijoic2hhYmVtZGFkaSIsImEiOiIwckNSMkpvIn0.MeYrWfZexYn1AwdiasXbsg" % address_input)
-    geocode_text = geocode.text
-    geocode_json = json.loads(geocode_text)
+    geocode_text = geocode.text     #put the response into text
+    geocode_json = json.loads(geocode_text) #read in as json
 
-    coordinates = geocode_json["features"][0]["geometry"]["coordinates"]
+    coordinates = geocode_json["features"][0]["geometry"]["coordinates"]    #this will return the coordinates of the first returned location, sometimes there is more than one, maybe deal with this later
 
     y_cord = coordinates[0]
-    print y_cord
     x_cord = coordinates[1]
-    print x_cord
     address = address_input
-
-    # if address_current:
 
     incident_num = "citizen_report"
     category = "citizen_report"
     district = "citizen_report"
-    day_of_week = datetime.strftime(date,"%A")
-    month = datetime.strftime(date,"%B")
-    hour = time.strftime("%H:00") 
-    print hour
+    day_of_week = datetime.strftime(date,"%A")  #get a string with the day of the week
+    month = datetime.strftime(date,"%B")        #get a string with the month
+    hour = time.strftime("%H:00")               # get a string with the hour
 
+    #see if another user has submitted a report on the same date, at the dame location, at the same hour, and with the same category
     overlap = Crime_Stat.query.filter_by(date=date_string,x_cord=x_cord,y_cord=y_cord,hour=hour,map_category=map_category).all()
-    overlap2 = Crime_Stat.query.filter_by(date=date_input).all()
-    print len(overlap)
 
+    #if so, do not update the database
     if overlap:
         
-        print "in overlap"
         return jsonify({"nothing":"nothing"})
 
+    #if not, update the database with the citizen report and call the feature object method on the instance so there will be a marker passed to the map
     else:
 
         incident = Crime_Stat(incident_num=incident_num, category=category, district=district,description=description,map_category=map_category,
@@ -266,7 +217,6 @@ def process_report():
 
         feature_object = incident.make_feature_object()
 
-        print jsonify(feature_object)
         return jsonify(feature_object)
 
 @app.route('/get_recent')  #This will happen when the user clicks on the "Get Recent Stats" button, it will update our database and update our counts tables with the same function used in our seed file
@@ -404,6 +354,6 @@ if __name__ == "__main__":
 
     # Use the DebugToolbar
     DebugToolbarExtension(app)
-    app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+    app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False #this is so the toolbar does not interrupt redirects
 
     app.run()

@@ -1,25 +1,28 @@
 Do this weekend:
-1. implement Michael's speed suggestions
 2. zoom into buffer zone!
 3. download stats
-7. fix date "to" span box
-13. email Meggie about demo
-14. greyscale bootstrap theme (or other color/font scheme, look at color.adobe.com)
-15. fix crime forecast margin (on left and right)
-16. homepage map styling
-17. decide what to put on home map and home "about"
-18. add form controls (must fill out each field, etc.)
-20. style date input fields (calendar drop down, have min and max dates, etc.)
-21. style charts (fonts, axis labels, hoverover numbers,etc.)
-22. mapbox studio
-24. favicon/icons
-25. put all fields on top of the map
-26. make website look good at all sizes
+4. email Meggie about demo
+5. fix crime forecast margin (on left and right)
+7. decide what to put on home map and home "about"
+8. style charts (fonts, axis labels, hoverover numbers,etc.)
+10. favicon/icons/logo
+12. delete added markers
+
+greyscale bootstrap theme (or other color/font scheme, look at color.adobe.com)
+form controls (dates)
+style date input fields (calendar drop down, have min and max dates, etc.)
+make website look good at all sizes
+michael's speed suggestions
+put all fields on top of map
+make map full screen
+delete added markers
 
 This week:
 1. demo routine - origin and desintations on journey tab (keep tab open with the desintation and route preloaded)
 2. loading screen
 3. change heatmap dates if fixed heatmap colors
+4. fix span box
+5. checkbox not working
 
 Ask Mapbox:
 1. be able to zoom into buffer zone
@@ -40,6 +43,7 @@ Career Day Prep:
 3. demo routine (pre selected values, tabs, etc)
 4. download recent stats (database nullables if re-seeding)
 5. clean up/comment/delete all the print and console log statements
+6. clean up laptop
 
 Things to do after career day pre-deployment:
 1. time lapse/predetermined time ranges for heatmap (look into links Lauren sent about js pipe)

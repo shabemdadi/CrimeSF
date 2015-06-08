@@ -26,49 +26,66 @@
         </div>
         <div class="col-md-3">
         	<div class="form-group">
-<!--         		<form action="/report_crime" id="report_form"> -->
             	<label>Enter Time
-                	<input type="time" class="input-sm form-control" name="time_input" id="report_time" min="2003-01-01">
-<!-- 	                	<input type="radio" name="current_time" id="report_current_time" value="current time">Current Time -->
+                	<input type="time" class="form-control" name="time_input" id="report_time" min="2003-01-01">
 				</label>
-				<br>
+            </div>
+            <div class="form-group">
 				<label>Enter Date
-                	<input type="date" class="input-sm form-control" id="report_date" name="date_input">
-<!-- 	                	<input type="radio" name="current_date" id="report_current_date" value="current date">Current Date -->
+                	<input type="date" class="form-control" id="report_date" name="date_input">
             	</label>
-                <br>
+            </div>
+            <div class="form-group">
                 <label>Enter Address
-                	<input type="text" class="input-sm form-control" id="report_address" name="address_input">
-<!-- 	                	<input type="radio" name="current_address" id="report_current_address" value="current address">Current Address -->
+                	<input type="text" class="form-control" id="report_address" name="address_input" placheolder="Enter address">
             	</label>
-                <br>
+            </div>
+            <div class="form-group">
                 <label>Enter Description
                     <br>
-                	<textarea name='description' id='report_description' maxlength="200"></textarea>
+                	<textarea class="form-control" name='description' id='report_description' maxlength="200" placeholder="Enter description"></textarea>
             	</label>
-            	<br>
-            	<label>Select Category
-            		<br>
+            </div>
+            <div>
+                <label>Select Category
+                </label>
+            </div>
+            <div class="radio">
+            	<label>
             		<input type="radio" name="crime_category" id="theft" value="Personal Theft/Larceny">Personal Theft/Larceny
-            		<br>
-            		<input type="radio" name="crime_category" id="robbery" value="Robbery">Robbery
-            		<br>
+            	</label>
+            </div>
+            <div class="radio">
+                <label>
+            	   <input type="radio" name="crime_category" id="robbery" value="Robbery">Robbery
+                </labeL>
+            </div>
+            <div class="radio">
+                <label>
             		<input type="radio" name="crime_category" id="rape" value="Rape/Sexual Assault">Rape/Sexual Assault
-            		<br>
+            	</label>
+            </div>
+            <div class="radio">
+                <label>
             		<input type="radio" name="crime_category" id="simple assault" value="Simple Assault">Simple Assault
-            		<br>
+                </label>
+            </div>
+            <div class="radio">
+                <label>
             		<input type="radio" name="crime_category" id="aggrav assault" value="Aggravated Assault">Aggravated Assault
-            		<br>
+            	</label>
+            </div>
+            <div class="radio">
+                <label>
             		<input type="radio" name="crime_category" id="other" value="Other">Other
             	</label>
-            	<br>
-            	<button type="submit" id="report_button" class="btn btn-primary">Submit</button>
-            	<br>
-                <div id="error"></div>
-                <div id="tweet_div">Notify your friends
-            		<a href="https://twitter.com/share" class="twitter-share-button" id="tweet" data-text="Custom" data-size="large" data-hashtags="CrimeSF">Tweet</a>
-                </div>
-	        </div>
+            </div>
+        	<button type="submit" id="report_button" class="btn btn-primary">Submit</button>
+        	<br>
+<!--             <div id="error"></div> -->
+            <div id="tweet_div">Notify your friends
+        		<a href="https://twitter.com/share" class="twitter-share-button" id="tweet" data-text="Custom" data-size="large" data-hashtags="CrimeSF">Tweet</a>
+            </div>
         </div>    
     </div>
 

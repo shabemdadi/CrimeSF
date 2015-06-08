@@ -104,17 +104,16 @@ $( document ).ready(function(){
     $("#error").empty();
     if (feature_layer.getGeoJSON().features.length === 0){ //if there are no crime stats to add to the map
         console.log("in if");
-        $("#error").addClass("alert alert-danger"); 
+        $("#error").addClass("alert alert-primary"); 
         $("#error").html("No crimes from previous two weeks in buffer zone selected");
     };
   };
 
   $.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data){ //this will load when the user goes to the journey page, it will show crimes in the default date range period
-      startLoading();
       addMarkerLayer(data);
       addFilters();
       map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
-      finishedLoading();
+      $(".circle_box").hide();
     });
 
   directions.on("load",function(){  //this will start when a user selects a start and end destination to get directions for
@@ -126,6 +125,7 @@ $( document ).ready(function(){
       $("#filters").empty(); //empty the filters element so that a new filter list can be created
       addFilters();
       map.fitBounds(directionsLayer.routeLayer.getBounds());
+      console.log(directionsLayer.routeLayer.getBounds());
       NProgress.done();
       });
   });

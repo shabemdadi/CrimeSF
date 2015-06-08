@@ -9,11 +9,16 @@
 	<link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
 
 	<link href='https://www.mapbox.com/base/latest/base.css' rel='stylesheet' />
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"> -->
+	<link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../static/bootstrap/css/bootstrap.css">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.js"></script>
 
+	<link href='http://fonts.googleapis.com/css?family=PT+Mono' rel='stylesheet' type='text/css'>
+
 	<style>
-	  body { margin:0; padding:0;}
+	  body,h1,h2,p { margin:0; padding:0;
+	  			font-family: 'PT Mono';}
 
 	  #map { position:relative; top:0; bottom:0; width:100%; min-height: 1000px;}
 
@@ -21,6 +26,15 @@
 	    padding-right: 0;
 	    padding-left: 0;
 	  }
+
+	  .navbar-default {
+	  	padding: 0px 20px;
+	  }
+
+	  .navbar-right {
+	  	padding-top: 5px;
+	  }
+
 	</style>
 </head>
 <body>
@@ -30,7 +44,7 @@
 	    <div class="row">
 	        <nav class="navbar navbar-default">
 
-	            <div class="container-fluid">
+<!-- 	            <div class="container"> -->
 	                <div class="navbar-header">
 	                    <button type="button"
 	                        class="navbar-toggle collapsed"
@@ -43,7 +57,10 @@
 	                        <span class="icon-bar"></span>
 	                        <span class="icon-bar"></span>
 	                    </button>
-	                    <a id="home_route" class="navbar-brand" href="/">CrimeSF</a>
+	                    <a id="home_route" class="navbar-brand" href="/">
+	                    	<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+	                    	CrimeSF</a>
+
 	                </div> 
 
 	                <div id="navbar" class="navbar-collapse collapse">
@@ -55,15 +72,16 @@
 	                        <li id="journey_route"><a href="/journey">Your Journey</a></li>
 	                    </ul>
 	                     <ul class="nav navbar-nav navbar-right">
-                                <li>
-                                	<form action="/get_recent" id="refresh">
-                                		<button id="refresh_button" type="submit" class="btn btn-primary">Get Recent Crime</button>
-                                	</form>
-                                </li>
+                            <li>
+                            	<form action="/get_recent" id="refresh">
+                            		<button id="refresh_button" type="submit" class="btn btn-primary">Get Recent Crime</button>
+                            	</form>
+                            </li>
                         </ul>
 	                </div>
-	            </div>
+<!-- 	            </div> -->
 	    
+
 	        </nav>
 	    </div>
 
@@ -71,7 +89,7 @@
 
 	{% with messages = get_flashed_messages() %}
 	  {% for message in messages %}
-	      <div class="alert alert-success" role="alert">{{ message }}</div>
+	      <div class="alert alert-primary" role="alert">{{ message }}</div>
 	  {% endfor %}
 	{% endwith %}
 	<div id="error"></div>

@@ -102,7 +102,7 @@ $( document ).ready(function(){
             addFilters();                   // add filters
             if (feature_layer.getGeoJSON().features.length === 0){ //if there are no crime stats to add to the map
               console.log("in if");
-              $("#error").addClass("alert alert-danger"); 
+              $("#error").addClass("alert alert-primary"); 
               $("#error").html("No crime stats in range selected");
             };
             NProgress.done();
@@ -110,12 +110,10 @@ $( document ).ready(function(){
     });
 
     $.getJSON('/get_heat', { start_date:[], end_date:[]} ).done(function(data){ //this will be called when the user goes on the heatmap page, it will get the GeoJSON feature objects from the server using our default date range
-        startLoading();
         addHeat(data);
         addFilters();
         map.fitBounds(feature_layer.getBounds());  //zoom into the bounds of the features added
-        // $(".svg").hide();
-        finishedLoading();
+        $(".circle_box").hide();
     });
 
     //this adds default values to the form

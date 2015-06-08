@@ -3,7 +3,7 @@
 
 <style>
   .filter-ui {
-    background:#fff;
+    background:#151515;
     position:absolute;
     top:10px;
     right:10px;
@@ -11,28 +11,107 @@
     padding:10px;
     border-radius:3px;
     }
-  /*
-   * This is a very simple version of a 'loading screen': there are much
-   * fancier ones you can use instead, like
-   * http://codepen.io/collection/HtAne/
-   * http://jh3y.github.io/-cs-spinner/
-   */
-  #loader {
-      position:absolute; top:0; bottom:0; width:100%;
-      background:rgba(255, 255, 255, 1);
-      transition:background 1s ease-out;
-      -webkit-transition:background 1s ease-out;
+
+  .circle_box {
+    background: #000;
+     position:absolute; top:0; bottom:0; width:100%; min-height: 1000px;
+    display: inline-flex;
   }
-  #loader.done {
-      background:rgba(255, 255, 255, 0);
+
+  .circle_box_svg {
+       margin: auto auto; 
   }
-  #loader.hide {
-      display:none;
+
+  .svg {
+/*    margin: 24px auto;*/
+    display: block;
+    -webkit-animation: svg-rotate 8000ms linear infinite;
+            animation: svg-rotate 8000ms linear infinite;
+    margin: auto auto;
   }
-  #loader .message {
-      position:absolute;
-      left:50%;
-      top:50%;
+
+  circle {
+    fill: transparent;
+    stroke: hotpink;
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-dasharray: 0, 301.59289;
+    -webkit-animation: stroke-dash 2000ms linear infinite, stroke-width 2000ms linear infinite, stroke-color 8000ms steps(4) infinite;
+            animation: stroke-dash 2000ms linear infinite, stroke-width 2000ms linear infinite, stroke-color 8000ms steps(4) infinite;
+  }
+
+  @-webkit-keyframes svg-rotate {
+    to {
+      -webkit-transform: rotate(360deg);
+              transform: rotate(360deg);
+    }
+  }
+
+  @keyframes svg-rotate {
+    to {
+      -webkit-transform: rotate(360deg);
+              transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes stroke-width {
+    0%, 100% {
+      stroke-width: 0;
+    }
+    45%, 55% {
+      stroke-width: 2;
+    }
+    50% {
+      stroke-width: 4;
+    }
+  }
+  @keyframes stroke-width {
+    0%, 100% {
+      stroke-width: 0;
+    }
+    45%, 55% {
+      stroke-width: 2;
+    }
+    50% {
+      stroke-width: 4;
+    }
+  }
+  @-webkit-keyframes stroke-dash {
+    0% {
+      stroke-dasharray: 0, 301.59289;
+      stroke-dashoffset: 0;
+    }
+    50% {
+      stroke-dasharray: 301.59289, 0;
+      stroke-dashoffset: 0;
+    }
+    100% {
+      stroke-dasharray: 301.59289, 301.59289;
+      stroke-dashoffset: -301.59289;
+    }
+  }
+  @keyframes stroke-dash {
+    0% {
+      stroke-dasharray: 0, 301.59289;
+      stroke-dashoffset: 0;
+    }
+    50% {
+      stroke-dasharray: 301.59289, 0;
+      stroke-dashoffset: 0;
+    }
+    100% {
+      stroke-dasharray: 301.59289, 301.59289;
+      stroke-dashoffset: -301.59289;
+    }
+  }
+  @-webkit-keyframes stroke-color {
+    from {
+      stroke: hotpink;
+    }
+  }
+  @keyframes stroke-color {
+    from {
+      stroke: hotpink;
+    }
   }
 
 </style>
@@ -54,10 +133,13 @@
     <div class="row">
         <div class="col-md-9">
             <div id="map"></div>
-            <div id='loader'><span class='message'>loading</span></div>
-<!--             <svg class="svg" width=200 height=200>
-              <circle cx=100 cy=100 r=50 />
-            </svg> -->
+            <div class="circle_box">
+              <div class="circle_box_svg">
+              <svg class="svg" width=200 height=200>
+                <circle cx=100 cy=100 r=50 />
+              </svg>
+            </div>
+          </div>
             <nav id='filters' class='filter-ui'></nav>
         </div>
         <div class="col-md-3">
@@ -72,12 +154,11 @@
                     <input type="date" class="form-control" name="end">
                 </label>
             </div>
-            <button id="heat_button" class="btn btn-primary">Submit</button>
+            <button id="heat_button" class="btn btn-default">Submit</button>
         </div>    
     </div>
 
 <script src='../static/js/map.js'></script>
 <script src='../static/js/heatmap.js'></script>
-<script src='../static/js/load.js'></script>
 
 {% endblock %}

@@ -81,7 +81,7 @@ $( document ).ready(function(){
         addMarkerLayer(data);
         addFilters();
         if (feature_layer.getGeoJSON().features.length === 0){ //if there are no crime stats to add to the map
-            $("#error").addClass("alert alert-danger"); 
+            $("#error").addClass("alert alert-primary"); 
             $("#error").html("No crime stats in range selected");
         };
         NProgress.done();
@@ -90,11 +90,10 @@ $( document ).ready(function(){
 
 
   $.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data){ //this will load when the user goes to the points of interest page, it will show crimes in the default date range period
-      startLoading(); 
       addMarkerLayer(data);
       addFilters();
       map.fitBounds(feature_layer.getBounds());   //position map using bounds of markers
-      finishedLoading();
+      $(".circle_box").hide();
     });
 
   //this adds default values to the form

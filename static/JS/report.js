@@ -39,6 +39,7 @@ $( document ).ready(function(){
   $("#report_button").on("click", function(e){
     NProgress.start();
     $("#error").removeClass("alert alert-danger"); 
+    $("#error").removeClass("alert alert-info"); 
     $("#error").empty();
   	var time = $("input[name='time_input']").val();  //get the form values
   	var date = $("input[name='date_input']").val();

@@ -87,7 +87,7 @@ $( document ).ready(function(){
     $("#heat_button").on("click", function(e) { //this event listener will kick in when a user submits a date range
         NProgress.start();
         e.preventDefault();
-        $("#error").removeClass("alert alert-danger"); 
+        $("#error").removeClass("alert alert-info"); 
         $("#error").empty();
         var start_date = $("input[name='start']").val(); //define the start and end date
         var end_date = $("input[name='end']").val();

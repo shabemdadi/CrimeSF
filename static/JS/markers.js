@@ -73,7 +73,7 @@ $( document ).ready(function(){
   $("#marker_button").on("click", function(e) { //this is called when a user submits a date range
       NProgress.start();
       e.preventDefault();
-      $("#error").removeClass("alert alert-danger"); 
+      $("#error").removeClass("alert alert-info"); 
       $("#error").empty();
       var start_date = $("input[name='start']").val(); //start and end date from the input fields that were submitted
       var end_date = $("input[name='end']").val();

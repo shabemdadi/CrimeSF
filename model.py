@@ -77,6 +77,8 @@ class Crime_Stat(db.Model):
 
         crime_stats = cls.query.filter(cls.date >= start_date, cls.date <= end_date).all() #create query object of rows that fall in time range
 
+        print len(crime_stats)
+        
         marker_object_dict = { "type": "FeatureCollection"}
         marker_object_list = []
 

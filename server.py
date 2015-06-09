@@ -41,6 +41,8 @@ def get_marker_points():
 
     if start_date:                              #if the user enters in a start_date
 
+        print start_date
+
         start_date_formatted = datetime.strptime(start_date,"%Y-%m-%d") #reformat start and end dates as date objects
         end_date_formatted = datetime.strptime(end_date,"%Y-%m-%d")
         
@@ -70,6 +72,9 @@ def get_heat_points():
     end_date = request.args.get("end_date")
 
     if start_date:                              #if the user enters in a start_date
+
+        print start_date
+        print end_date
 
         start_date_formatted = datetime.strptime(start_date,"%Y-%m-%d") #reformat start and end dates as date objects
         end_date_formatted = datetime.strptime(end_date,"%Y-%m-%d")

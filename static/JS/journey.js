@@ -99,7 +99,7 @@ $( document ).ready(function(){
   	var markersWithin = turf.within(markers, buffered);  //check whether any of the features are in the buffer zone and save to variable
   	feature_layer.setGeoJSON([]);                        //set feature layer to 0 features
     addMarkerLayer(markersWithin);                    //add only those markers within the buffer zone to the feature layer
-    $("#error").removeClass("alert alert-danger"); 
+    $("#error").removeClass("alert alert-info"); 
     $("#error").empty();
     if (feature_layer.getGeoJSON().features.length === 0){ //if there are no crime stats to add to the map
         $("#error").addClass("alert alert-info"); 

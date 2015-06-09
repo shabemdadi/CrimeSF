@@ -51,8 +51,8 @@ def load_crime_stats():
                 hour = time.strftime("%H:00")                                   #get just the hour string
                 district = row[6]
                 address = row[8]
-                x_cord = row[9]
-                y_cord = row[10]
+                x_cord = row[10]
+                y_cord = row[9]
                 
                 incident = Crime_Stat(incident_num=incident_num,category=category,description=description,map_category=map_category,    #make an instance of the Crime_Stat class
                     day_of_week=day_of_week,date=date,month=month,time=time,hour=hour,address=address,district=district,x_cord=x_cord,

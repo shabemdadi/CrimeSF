@@ -1,18 +1,13 @@
 Do this week:
-2. style date input fields (calendar drop down, have min and max dates, etc.)
-4. how to make favicon
-5. checkbox not working
-7. add indices to model and make columns nullable
-7. read me
-8. snapshots
-9. demo routine (pre selected values, tabs, etc)origin and desintations on journey tab (keep tab open with the destination and route preloaded)
-10. research companies
-11. download recent stats (database nullables if re-seeding)
-12. clean up/comment/delete all the print and console log statements
-13. delete added markers
-14. make sure loading order is fixed
-15. restart computer
-16. leather folio
+4. read me
+5. snapshots
+6. demo routine (pre selected values, tabs, etc) origin and desintations on journey tab (keep tab open with the destination and route preloaded)
+7. research companies
+8. download recent stats (database nullables if re-seeding)
+9. delete added markers
+10. make sure loading order is fixed
+11. restart computer
+12. leather folio
 
 Ask Mapbox:
 1. be able to zoom into buffer zone
@@ -35,10 +30,13 @@ Things to do after career day pre-deployment:
 4. pathfinding
 5. migrate to PostgreSQL
 6. use PostGIS in mapbox studio
-7. add "did you mean?" on address on report page
+7. add "did you mean?" on address on report page and if no coordinates found
 8. more tests
 9. change how citizen reports show up in the db
 10. require.js if still loading order issues
 11. ETags
 12. make it look good on all screen sizes
 13. add report form field validation
+14. add favicon
+15. cannot enter more than 140 characters in report description (for tweet)
+16. reseed database (delete tables, run model (makes things nullable/add indices), seed, run test)

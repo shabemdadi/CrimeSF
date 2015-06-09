@@ -7,9 +7,10 @@ var options = {
     scaleShowGridLines : true,
     scaleLabel: "<%= addCommas(value) %>",
     // multiTooltipTemplate: "<%= addCommas(value) %>",
-    // tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= addCommas(value) %>",
+    tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= addCommas(value) %>",
     responsive: true,
 	datasetFill : false,
+    scaleShowLabels: false,
 	"lineAtIndex": 2};
 
 function addCommas(nStr)				//have y-axis be formatted with commas

@@ -13,34 +13,39 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-9">
-    			<canvas id="TimeChart" width="800" height="400" display="inline"></canvas>
-    			<canvas id="DayChart" width="800" height="400" display="inline-block"></canvas>
-    			<canvas id="MonthChart" width="800" height="400" display="inline-block"></canvas>
+            <h4 align="center">Crime Trends by Hour<br></h4>
+    		<canvas id="TimeChart"></canvas>
+            <h4 align="center"><br>Crime Trends by Day<br></h4>
+    		<canvas id="DayChart"></canvas>
+            <h4 align="center"><br>Crime Trends by Month<br></h4>
+    		<canvas id="MonthChart"></canvas>
 		</div>
         <div class="col-md-3">
-            <div>
-                <label>
-                    Crime Category
-                </label>
-            </div>
-            <div>
-                <input type="checkbox" name="map_category" value='Personal Theft/Larceny' checked>Personal Theft/Larceny
-            </div>
-            <div>
-                <input type="checkbox" name="map_category" value='Robbery' checked>Robbery
-            </div>
-            <div>
-                <input type="checkbox" name="map_category" value='Rape/Sexual Assault' checked>Rape/Sexual Assault
-            </div>
-            <div>
-                <input type="checkbox" name="map_category" value='Aggravated Assault' checked>Aggravated Assault
-            </div>
-            <div>
-                <input type="checkbox" name="map_category" value='Simple Assault' checked>Simple Assault
-            </div>
-            <div>
-                <input type="checkbox" name="map_category" value='Other' checked>Other
-            </div>
+            <nav id='filters' class='filter-ui_charts'>
+                <div>
+                    <label>
+                        Crime Category
+                    </label>
+                </div>
+                <div>
+                    <input type="checkbox" name="map_category" value='Personal Theft/Larceny' checked>Personal Theft/Larceny
+                </div>
+                <div>
+                    <input type="checkbox" name="map_category" value='Robbery' checked>Robbery
+                </div>
+                <div>
+                    <input type="checkbox" name="map_category" value='Rape/Sexual Assault' checked>Rape/Sexual Assault
+                </div>
+                <div>
+                    <input type="checkbox" name="map_category" value='Aggravated Assault' checked>Aggravated Assault
+                </div>
+                <div>
+                    <input type="checkbox" name="map_category" value='Simple Assault' checked>Simple Assault
+                </div>
+                <div>
+                    <input type="checkbox" name="map_category" value='Other' checked>Other
+                </div>
+            </nav>
         </div>
     </div>    
 </div>

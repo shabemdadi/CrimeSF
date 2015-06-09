@@ -1,28 +1,18 @@
 Do this week:
-1. style charts (fonts, axis labels, hoverover numbers, take out y-axisetc.)
-2. form controls (dates, address does not get any coordinates,all fields not completed)
-3. style date input fields (calendar drop down, have min and max dates, etc.)
-4. michael's suggestions
-
-Questions:
-1. how to make favicon
-2. fix span
-3. why start and end dates look different
-4. checkbox not working
-5. make charts horizontal
-6. ask about pages not showing up
-
-Career Day Prep:
-1. read me
-2. snapshots
-3. demo routine (pre selected values, tabs, etc)origin and desintations on journey tab (keep tab open with the destination and route preloaded)
-4. download recent stats (database nullables if re-seeding)
-5. clean up/comment/delete all the print and console log statements
-6. clean up laptop
-7. delete added markers
-8. research companies
-9. make sure loading order is fixed
-10. restart computer
+2. style date input fields (calendar drop down, have min and max dates, etc.)
+4. how to make favicon
+5. checkbox not working
+7. add indices to model and make columns nullable
+7. read me
+8. snapshots
+9. demo routine (pre selected values, tabs, etc)origin and desintations on journey tab (keep tab open with the destination and route preloaded)
+10. research companies
+11. download recent stats (database nullables if re-seeding)
+12. clean up/comment/delete all the print and console log statements
+13. delete added markers
+14. make sure loading order is fixed
+15. restart computer
+16. leather folio
 
 Ask Mapbox:
 1. be able to zoom into buffer zone
@@ -51,3 +41,4 @@ Things to do after career day pre-deployment:
 10. require.js if still loading order issues
 11. ETags
 12. make it look good on all screen sizes
+13. add report form field validation

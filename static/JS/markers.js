@@ -1,5 +1,7 @@
 $( document ).ready(function(){
 
+  console.log("markers.js is running");
+
   var feature_layer = L.mapbox.featureLayer(); //define the feature layer
 
   var filters = document.getElementById('filters'); //define the filters in the DOM
@@ -81,20 +83,22 @@ $( document ).ready(function(){
         addMarkerLayer(data);
         addFilters();
         if (feature_layer.getGeoJSON().features.length === 0){ //if there are no crime stats to add to the map
-            $("#error").addClass("alert alert-primary"); 
+            $("#error").addClass("alert alert-info"); 
             $("#error").html("No crime stats in range selected");
         };
         NProgress.done();
       });
   });
 
-
-  $.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data){ //this will load when the user goes to the points of interest page, it will show crimes in the default date range period
-      addMarkerLayer(data);
-      addFilters();
-      map.fitBounds(feature_layer.getBounds());   //position map using bounds of markers
-      $(".circle_box").hide();
-    });
+  map.on('ready',function(){
+    console.log("map is ready");
+    $.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data){ //this will load when the user goes to the points of interest page, it will show crimes in the default date range period
+        addMarkerLayer(data);
+        addFilters();
+        map.fitBounds(feature_layer.getBounds());   //position map using bounds of markers
+        $(".circle_box").remove();
+      });
+  });
 
   //this adds default values to the form
   $("input[name='start']").attr("value",moment().subtract(15, 'day').format("YYYY-MM-DD"));

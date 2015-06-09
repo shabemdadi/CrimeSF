@@ -52,7 +52,7 @@ $("#report_button").on("click", function(e){
         addMarkerLayer(data);
     }
     catch(err){
-        $("#error").addClass("alert alert-primary"); 
+        $("#error").addClass("alert alert-info"); 
         $("#error").html("This incident has already been reported.");
     };
     NProgress.done();

@@ -1,5 +1,7 @@
 $( document ).ready(function(){
 
+  console.log("journey.js is running");
+
   // create the initial directions object, from which the layer
   // and inputs will pull data.
   var directions = L.mapbox.directions();
@@ -93,9 +95,6 @@ $( document ).ready(function(){
   	var unit = 'miles';                                //define the unit for the buffer
   	var buffer_dist = $("#buffer_choice").val();       //get the form value for the buffer zone, which is defaulted to 0.1 miles
   	var buffered = turf.buffer(route_line, buffer_dist, unit); //create buffer zone
-    // var buffered_coords = buffered.features[0].geometry.coordinates;
-    // var buffered_layer = L.mapbox.featureLayer(buffered_coords).addTo(map);
-  	// var result = turf.featurecollection([buffered, route_line]);
   	var markers = feature_layer.getGeoJSON();            //get the feature on the feature_layer
   	var markersWithin = turf.within(markers, buffered);  //check whether any of the features are in the buffer zone and save to variable
   	feature_layer.setGeoJSON([]);                        //set feature layer to 0 features
@@ -103,18 +102,20 @@ $( document ).ready(function(){
     $("#error").removeClass("alert alert-danger"); 
     $("#error").empty();
     if (feature_layer.getGeoJSON().features.length === 0){ //if there are no crime stats to add to the map
-        console.log("in if");
-        $("#error").addClass("alert alert-primary"); 
+        $("#error").addClass("alert alert-info"); 
         $("#error").html("No crimes from previous two weeks in buffer zone selected");
     };
   };
 
-  $.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data){ //this will load when the user goes to the journey page, it will show crimes in the default date range period
-      addMarkerLayer(data);
-      addFilters();
-      map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
-      $(".circle_box").hide();
-    });
+  map.on('ready',function(){
+    console.log("map is ready");
+    $.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data){ //this will load when the user goes to the journey page, it will show crimes in the default date range period
+        addMarkerLayer(data);
+        addFilters();
+        map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
+        $(".circle_box").remove();
+      });
+  });
 
   directions.on("load",function(){  //this will start when a user selects a start and end destination to get directions for
     NProgress.start();
@@ -125,7 +126,6 @@ $( document ).ready(function(){
       $("#filters").empty(); //empty the filters element so that a new filter list can be created
       addFilters();
       map.fitBounds(directionsLayer.routeLayer.getBounds());
-      console.log(directionsLayer.routeLayer.getBounds());
       NProgress.done();
       });
   });

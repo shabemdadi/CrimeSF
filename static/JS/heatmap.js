@@ -1,5 +1,7 @@
 $( document ).ready(function(){
 
+    console.log("heatmap.js is running now");
+
     var heat = L.heatLayer([], {    //define heat layer options
         minOpacity: 0, 
         radius: 25,
@@ -102,18 +104,21 @@ $( document ).ready(function(){
             addFilters();                   // add filters
             if (feature_layer.getGeoJSON().features.length === 0){ //if there are no crime stats to add to the map
               console.log("in if");
-              $("#error").addClass("alert alert-primary"); 
+              $("#error").addClass("alert alert-info"); 
               $("#error").html("No crime stats in range selected");
             };
             NProgress.done();
         });
     });
 
-    $.getJSON('/get_heat', { start_date:[], end_date:[]} ).done(function(data){ //this will be called when the user goes on the heatmap page, it will get the GeoJSON feature objects from the server using our default date range
-        addHeat(data);
-        addFilters();
-        map.fitBounds(feature_layer.getBounds());  //zoom into the bounds of the features added
-        $(".circle_box").hide();
+    map.on('ready',function(){
+        console.log("map is ready");
+        $.getJSON('/get_heat', { start_date:[], end_date:[]} ).done(function(data){ //this will be called when the user goes on the heatmap page, it will get the GeoJSON feature objects from the server using our default date range
+            addHeat(data);
+            addFilters();
+            map.fitBounds(feature_layer.getBounds());  //zoom into the bounds of the features added
+            $(".circle_box").remove();
+        });
     });
 
     //this adds default values to the form

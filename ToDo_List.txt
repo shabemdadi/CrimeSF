@@ -1,41 +1,34 @@
 Do this week:
-1. zoom into buffer zone!
-2. download stats
-5. decide what to put on home map and home "about"
-6. style charts (fonts, axis labels, hoverover numbers,etc.)
-7. favicon/icons/logo
-8. delete added markers
-9. demo routine - origin and desintations on journey tab (keep tab open with the desintation and route preloaded)
-11. change heatmap dates if fixed heatmap colors
-12. fix span box
-13. checkbox not working
+1. style charts (fonts, axis labels, hoverover numbers, take out y-axisetc.)
+2. form controls (dates, address does not get any coordinates,all fields not completed)
+3. style date input fields (calendar drop down, have min and max dates, etc.)
+4. michael's suggestions
 
-flash message label
-form controls (dates, address does not get any coordinates,all fields not completed)
-style date input fields (calendar drop down, have min and max dates, etc.)
-make website look good at all sizes
-michael's speed suggestions
-make map full screen
-absolute position - make width 100% - not in margin body
-popup not showing up
-require.js
-document.ready
-mapbox map is done loading
-change default background
-make tables horizontal
+Questions:
+1. how to make favicon
+2. fix span
+3. why start and end dates look different
+4. checkbox not working
+5. make charts horizontal
+6. ask about pages not showing up
+
+Career Day Prep:
+1. read me
+2. snapshots
+3. demo routine (pre selected values, tabs, etc)origin and desintations on journey tab (keep tab open with the destination and route preloaded)
+4. download recent stats (database nullables if re-seeding)
+5. clean up/comment/delete all the print and console log statements
+6. clean up laptop
+7. delete added markers
+8. research companies
+9. make sure loading order is fixed
+10. restart computer
 
 Ask Mapbox:
 1. be able to zoom into buffer zone
 2. sometimes map does not show up, only markers or heat points, or map does not zoom in around markers (loading order)
 3. heatmap color, radius, blur options (make sure same options on heatmap for when selecting filters and re-initializing), make heatmap opaque
-
-Career Day Prep:
-1. read me
-2. snapshots
-3. demo routine (pre selected values, tabs, etc)
-4. download recent stats (database nullables if re-seeding)
-5. clean up/comment/delete all the print and console log statements
-6. clean up laptop
+4. loading color
 
 Career Stuff:
 1. interview prep
@@ -55,3 +48,6 @@ Things to do after career day pre-deployment:
 7. add "did you mean?" on address on report page
 8. more tests
 9. change how citizen reports show up in the db
+10. require.js if still loading order issues
+11. ETags
+12. make it look good on all screen sizes

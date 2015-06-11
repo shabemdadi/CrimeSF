@@ -195,9 +195,7 @@ def process_report():
     x_cord = coordinates[1]
     address = address_input
 
-    incident_num = "citizen_report"
-    category = "citizen_report"
-    district = "citizen_report"
+    data_source = "citizen"
     day_of_week = datetime.strftime(date,"%A")  #get a string with the day of the week
     month = datetime.strftime(date,"%B")        #get a string with the month
     hour = time.strftime("%H:00")               # get a string with the hour
@@ -213,8 +211,8 @@ def process_report():
     #if not, update the database with the citizen report and call the feature object method on the instance so there will be a marker passed to the map
     else:
 
-        incident = Crime_Stat(incident_num=incident_num, category=category, district=district,description=description,map_category=map_category,
-            day_of_week=day_of_week,date=date,month=month,time=time,hour=hour,address=address,x_cord=x_cord,y_cord=y_cord)
+        incident = Crime_Stat(data_source=data_source, description=description,map_category=map_category,day_of_week=day_of_week,date=date,
+            month=month,time=time,hour=hour,address=address,x_cord=x_cord,y_cord=y_cord)
         
         db.session.add(incident)
 
@@ -258,6 +256,7 @@ def get_recent_stats():
             except:
                 incident_num = row["incidntnum"]
                 category = row["category"]
+                data_source = "official"
                 description = row["descript"]
                 if category == "ASSAULT":
                     if "AGGRAVATED" in description:
@@ -281,7 +280,7 @@ def get_recent_stats():
                 x_cord = row["location"]["latitude"]
                 y_cord = row["location"]["longitude"]
                 
-                incident = Crime_Stat(incident_num=incident_num,category=category,description=description,map_category=map_category,
+                incident = Crime_Stat(incident_num=incident_num,data_source=data_source,category=category,description=description,map_category=map_category,
                     day_of_week=day_of_week,date=date,month=month,time=time,hour=hour,address=address,district=district,x_cord=x_cord,
                     y_cord=y_cord)
                 db.session.add(incident)
@@ -289,7 +288,7 @@ def get_recent_stats():
                 if i % 1000 == 0:
                     db.session.commit()
 
-    max_date = Crime_Stat.query.filter(Crime_Stat.incident_num != "citizen_report").order_by(desc(Crime_Stat.date)).first().date
+    max_date = Crime_Stat.query.filter(Crime_Stat.data_source != "citizen").order_by(desc(Crime_Stat.date)).first().date
     data_import = Data_Import(max_date=max_date)
     db.session.add(data_import)
 

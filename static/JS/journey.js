@@ -23,7 +23,7 @@ $( document ).ready(function(){
 
   var feature_layer = L.mapbox.featureLayer(); //define the feature layer
 
-  function addMarkerLayer(data) { //this will add markers to the map
+  function addMarkerLayer(data, callback) { //this will add markers to the map
     feature_layer = L.mapbox.featureLayer(data).addTo(map); //GeoJSON feature objects will be added to the feature_layer, which will be added to the map
     feature_layer.on('click', function(e) {                 //map will zoom into a marker if a user clicks on it
         map.panTo(e.layer.getLatLng());
@@ -39,6 +39,7 @@ $( document ).ready(function(){
             '<\/p>';
         layer.bindPopup(content);
       });
+    callback();
   };
 
   function addFilters() {     //this function will add the filter, and create an event listener that will update the marker points when a user checks or unchecks the filter checkboxes
@@ -84,17 +85,29 @@ $( document ).ready(function(){
         // a object.
         return (feature.properties['title'] in enabled);
       });
+      feature_layer.eachLayer(function(layer) {
+      // here you call `bindPopup` with a string of HTML you create - the feature
+      // properties declared above are available under `layer.feature.properties`
+        var content = '<h1 align="center"><b>' + layer.feature.properties["title"] + '</b><\/h1>' +
+            '<p align="center"><b>Description: </b>' + layer.feature.properties["description"] + '<br \/>' +
+            '<b>Time: </b>' + layer.feature.properties["time"] + '<br \/>' +
+            '<b>Date: </b>' + layer.feature.properties["date"] + '<br \/>' +
+            '<b>Address: </b>' + layer.feature.properties["address"] + 
+            '<\/p>';
+        layer.bindPopup(content);
+      });
       NProgress.done();
     };
   };
 
   function createBuffer (){
-  	// console.log(directions.directions.routes[0].geometry.coordinates);
-  	// var route_line = turf.linestring([directions.directions.routes[0].geometry.coordinates], { name: 'route_line' } );
   	var route_line = directions.directions.routes[0];  //define variable that defines the route given
   	var unit = 'miles';                                //define the unit for the buffer
   	var buffer_dist = $("#buffer_choice").val();       //get the form value for the buffer zone, which is defaulted to 0.1 miles
   	var buffered = turf.buffer(route_line, buffer_dist, unit); //create buffer zone
+    bufferLayer = L.mapbox.featureLayer(buffered);
+    // bufferLayer.addTo(map);
+    map.fitBounds(bufferLayer);
   	var markers = feature_layer.getGeoJSON();            //get the feature on the feature_layer
   	var markersWithin = turf.within(markers, buffered);  //check whether any of the features are in the buffer zone and save to variable
   	feature_layer.setGeoJSON([]);                        //set feature layer to 0 features
@@ -110,10 +123,11 @@ $( document ).ready(function(){
   map.on('ready',function(){
     console.log("map is ready");
     $.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data){ //this will load when the user goes to the journey page, it will show crimes in the default date range period
-        addMarkerLayer(data);
-        addFilters();
-        map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
-        $(".circle_box").remove();
+        addMarkerLayer(data, function() {
+          addFilters();
+          map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
+          $(".circle_box").remove();
+        });
       });
   });
 
@@ -121,25 +135,27 @@ $( document ).ready(function(){
     NProgress.start();
     feature_layer.setGeoJSON([]);      //set feature layer to 0 features
     $.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data){
-      addMarkerLayer(data); //re-add the markers
-      createBuffer();       //create buffer zone
-      $("#filters").empty(); //empty the filters element so that a new filter list can be created
-      addFilters();
-      map.fitBounds(directionsLayer.routeLayer.getBounds());
-      NProgress.done();
+      addMarkerLayer(data, function(){ //re-add the markers
+        createBuffer();       //create buffer zone
+        $("#filters").empty(); //empty the filters element so that a new filter list can be created
+        addFilters();
+        // map.fitBounds(directionsLayer.routeLayer.getBounds());
+        NProgress.done();
       });
+    });
   });
 
   $("#buffer_choice").change(function(){  //this will start when a buffer zone distance is chosen
     NProgress.start();
   	feature_layer.setGeoJSON([]);      //set feature layer to 0 features
   	$.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data){
-      addMarkerLayer(data);
-      createBuffer();
-      $("#filters").empty(); //empty the filters element so that a new filter list can be created
-      addFilters();
-      NProgress.done();
+      addMarkerLayer(data,function(){
+        createBuffer();
+        $("#filters").empty(); //empty the filters element so that a new filter list can be created
+        addFilters();
+        NProgress.done();
     	});
+    });
   });
 
   //this adds default values to the form

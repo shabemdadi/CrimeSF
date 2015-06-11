@@ -5,6 +5,7 @@ import decimal
 from datetime import datetime
 from flask import jsonify
 from time import time
+from sqlalchemy import Index
 
 # This is the connection to the SQLite database; we're getting this through
 # the Flask-SQLAlchemy helper library. On this, we can find the `session`
@@ -23,8 +24,9 @@ class Crime_Stat(db.Model):
     __tablename__ = "crime_stats"
     
     incident_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    incident_num = db.Column(db.String(60), nullable=False) #want this to be nullable for citizen report
-    category = db.Column(db.String(60), nullable=False)     #want this to be nullable for citizen report
+    incident_num = db.Column(db.String(60), nullable=True) #want this to be nullable for citizen report
+    data_source = db.Column(db.String(60), nullable=False) #distinguishes between citizen report and official report
+    category = db.Column(db.String(60), nullable=True)     #want this to be nullable for citizen report
     map_category = db.Column(db.String(60), nullable=False)
     description = db.Column(db.String(200), nullable=False)
     day_of_week = db.Column(db.String(10), nullable=False)
@@ -32,7 +34,7 @@ class Crime_Stat(db.Model):
     month = db.Column(db.String(10), nullable=False)
     time = db.Column(db.Time, nullable=False)
     hour = db.Column(db.String(10), nullable=False)
-    district = db.Column(db.String(60), nullable=False) #want this to be nullable for citizen report
+    district = db.Column(db.String(60), nullable=True) #want this to be nullable for citizen report
     address = db.Column(db.String(60), nullable=False)
     x_cord = db.Column(db.Numeric, nullable=False)
     y_cord = db.Column(db.Numeric, nullable=False)
@@ -241,6 +243,13 @@ class Crime_Stat(db.Model):
             }
 
         return jsonify(data)
+
+#Create indices
+Index('date', Crime_Stat.date)
+Index('incident_num_category', Crime_Stat.incident_num, Crime_Stat.category)
+Index('day_map_category', Crime_Stat.day_of_week, Crime_Stat.map_category)
+Index('hour_map_category', Crime_Stat.hour, Crime_Stat.map_category)
+Index('month_map_category', Crime_Stat.month, Crime_Stat.map_category)
 
 class Hour_Count(db.Model):
     """Table showing counts of crime by hour and crime category."""

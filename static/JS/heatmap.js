@@ -14,7 +14,7 @@ $( document ).ready(function(){
 
     var feature_layer = L.mapbox.featureLayer();    //define feature layer
 
-    function addHeat(data) {                        
+    function addHeat(data, callback) {                        
         // Add each marker point to the heatmap.
         feature_layer = L.mapbox.featureLayer(data);    //add features to the feature_layer
         heat.addTo(map);                            //add the heat layer
@@ -25,6 +25,7 @@ $( document ).ready(function(){
         feature_layer.eachLayer(function(l) {       //iterate through the features on the feature layer and add those points to the heat map
             heat.addLatLng(l.getLatLng());
         });
+        callback();
     };
 
     function addFilters() {     //this function will add the filter, and create an event listener that will update the marker points when a user checks or unchecks the filter checkboxes
@@ -114,10 +115,11 @@ $( document ).ready(function(){
     map.on('ready',function(){
         console.log("map is ready");
         $.getJSON('/get_heat', { start_date:[], end_date:[]} ).done(function(data){ //this will be called when the user goes on the heatmap page, it will get the GeoJSON feature objects from the server using our default date range
-            addHeat(data);
-            addFilters();
-            map.fitBounds(feature_layer.getBounds());  //zoom into the bounds of the features added
-            $(".circle_box").remove();
+            addHeat(data, function(){
+                addFilters();
+                map.fitBounds(feature_layer.getBounds());  //zoom into the bounds of the features added
+                $(".circle_box").remove();
+            });
         });
     });
 

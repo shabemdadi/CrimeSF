@@ -6,7 +6,7 @@ $( document ).ready(function(){
 
   var filters = document.getElementById('filters'); //define the filters in the DOM
 
-  function addMarkerLayer(data) { //this will add markers to the map
+  function addMarkerLayer(data, callback) { //this will add markers to the map
     feature_layer = L.mapbox.featureLayer(data).addTo(map); //GeoJSON feature objects will be added to the feature_layer, which will be added to the map
     feature_layer.on('click', function(e) {                 //map will zoom into a marker if a user clicks on it
         map.panTo(e.layer.getLatLng());
@@ -22,6 +22,7 @@ $( document ).ready(function(){
             '<\/p>';
         layer.bindPopup(content);
       });
+    callback();
   };
 
   function addFilters() {     //this function will add the filter, and create an event listener that will update the marker points when a user checks or unchecks the filter checkboxes
@@ -66,6 +67,17 @@ $( document ).ready(function(){
         // a object.
         return (feature.properties['title'] in enabled);
       });
+      feature_layer.eachLayer(function(layer) {
+      // here you call `bindPopup` with a string of HTML you create - the feature
+      // properties declared above are available under `layer.feature.properties`
+        var content = '<h1 align="center"><b>' + layer.feature.properties["title"] + '</b><\/h1>' +
+            '<p align="center"><b>Description: </b>' + layer.feature.properties["description"] + '<br \/>' +
+            '<b>Time: </b>' + layer.feature.properties["time"] + '<br \/>' +
+            '<b>Date: </b>' + layer.feature.properties["date"] + '<br \/>' +
+            '<b>Address: </b>' + layer.feature.properties["address"] + 
+            '<\/p>';
+        layer.bindPopup(content);
+      });
       NProgress.done();
     };
   };
@@ -93,10 +105,11 @@ $( document ).ready(function(){
   map.on('ready',function(){
     console.log("map is ready");
     $.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data){ //this will load when the user goes to the points of interest page, it will show crimes in the default date range period
-        addMarkerLayer(data);
-        addFilters();
-        map.fitBounds(feature_layer.getBounds());   //position map using bounds of markers
-        $(".circle_box").remove();
+        addMarkerLayer(data, function(){
+          addFilters();
+          map.fitBounds(feature_layer.getBounds());   //position map using bounds of markers
+          $(".circle_box").remove();
+        });
       });
   });
 

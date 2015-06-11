@@ -31,6 +31,7 @@ def load_crime_stats():
             if i > 0:                                             #first row is the column headers, so we skip it
                 incident_num = row[0]
                 category = row[1]
+                data_source = "official"
                 description = row[2]
                 if category == "ASSAULT":                          #use description field in CSV datafile to determine if aggravated or simple assault
                     if "AGGRAVATED" in description:
@@ -54,7 +55,7 @@ def load_crime_stats():
                 x_cord = row[10]
                 y_cord = row[9]
                 
-                incident = Crime_Stat(incident_num=incident_num,category=category,description=description,map_category=map_category,    #make an instance of the Crime_Stat class
+                incident = Crime_Stat(incident_num=incident_num,data_source=data_source,category=category,description=description,map_category=map_category,    #make an instance of the Crime_Stat class
                     day_of_week=day_of_week,date=date,month=month,time=time,hour=hour,address=address,district=district,x_cord=x_cord,
                     y_cord=y_cord)
                 db.session.add(incident)    # add the instance to the database
@@ -96,6 +97,7 @@ def load_recent_stats():
                 overlap = Crime_Stat.query.filter_by(incident_num=row["incidntnum"],category=row["category"]).one()
             except:
                 incident_num = row["incidntnum"]
+                data_source = "official"
                 category = row["category"]
                 description = row["descript"]
                 if category == "ASSAULT":           #use data description to define if crime is simple or aggravated
@@ -120,7 +122,7 @@ def load_recent_stats():
                 x_cord = row["location"]["latitude"]
                 y_cord = row["location"]["longitude"]
                 
-                incident = Crime_Stat(incident_num=incident_num,category=category,description=description,map_category=map_category,
+                incident = Crime_Stat(incident_num=incident_num,data_source=data_source,category=category,description=description,map_category=map_category,
                     day_of_week=day_of_week,date=date,month=month,time=time,hour=hour,address=address,district=district,x_cord=x_cord,
                     y_cord=y_cord)
                 db.session.add(incident)
@@ -137,7 +139,7 @@ def load_recent_stats():
 def load_all_stats_API():
     """Make a call to the API for all crime_stats, use this function if outside user insead of "load_crime_stats" above, and this will replace "load_recent_stats" as well"""
 
-        map_category_dict = {'LARCENY/THEFT':'Personal Theft/Larceny', #dictionary linking crime categories from data to categories I will show in my map
+    map_category_dict = {'LARCENY/THEFT':'Personal Theft/Larceny', #dictionary linking crime categories from data to categories I will show in my map
                  'BURGLARY':'Robbery',
                  'SEX OFFENSES, FORCIBLE':'Rape/Sexual Assault',
                  'VEHICLE THEFT':'Personal Theft/Larceny',
@@ -158,6 +160,7 @@ def load_all_stats_API():
                 overlap = Crime_Stat.query.filter_by(incident_num=row["incidntnum"],category=row["category"]).one()
             except:
                 incident_num = row["incidntnum"]
+                data_source = "official"
                 category = row["category"]
                 description = row["descript"]
                 if category == "ASSAULT":           #use data description to define if crime is simple or aggravated
@@ -182,7 +185,7 @@ def load_all_stats_API():
                 x_cord = row["location"]["latitude"]
                 y_cord = row["location"]["longitude"]
                 
-                incident = Crime_Stat(incident_num=incident_num,category=category,description=description,map_category=map_category,
+                incident = Crime_Stat(incident_num=incident_num,data_source=data_source,category=category,description=description,map_category=map_category,
                     day_of_week=day_of_week,date=date,month=month,time=time,hour=hour,address=address,district=district,x_cord=x_cord,
                     y_cord=y_cord)
                 db.session.add(incident)
@@ -190,7 +193,7 @@ def load_all_stats_API():
                 if i % 1000 == 0:
                     db.session.commit()
 
-    max_date = Crime_Stat.query.filter(Crime_Stat.incident_num != "citizen_report").order_by(desc(Crime_Stat.date)).first().date #find the max date in the crime_stats table
+    max_date = Crime_Stat.query.filter(Crime_Stat.data_source != "citizen").order_by(desc(Crime_Stat.date)).first().date #find the max date in the crime_stats table
     data_import = Data_Import(max_date=max_date)                             #add the max date to the data_import table
     db.session.add(data_import)
 
@@ -246,7 +249,7 @@ def load_crime_counts():
 if __name__ == "__main__":
     connect_to_db(app)
 
-    #load_crime_stats()
+    load_crime_stats()
     #load_recent_stats()
-    load_all_stats_API()
+    #load_all_stats_API()
     load_crime_counts()

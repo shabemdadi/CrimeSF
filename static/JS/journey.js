@@ -23,7 +23,7 @@ $( document ).ready(function(){
 
   var feature_layer = L.mapbox.featureLayer(); //define the feature layer
 
-  function addMarkerLayer(data, callback) { //this will add markers to the map
+  function addMarkerLayer(data) { //this will add markers to the map
     feature_layer = L.mapbox.featureLayer(data).addTo(map); //GeoJSON feature objects will be added to the feature_layer, which will be added to the map
     feature_layer.on('click', function(e) {                 //map will zoom into a marker if a user clicks on it
         map.panTo(e.layer.getLatLng());
@@ -39,7 +39,7 @@ $( document ).ready(function(){
             '<\/p>';
         layer.bindPopup(content);
       });
-    callback();
+    // callback();
   };
 
   function addFilters() {     //this function will add the filter, and create an event listener that will update the marker points when a user checks or unchecks the filter checkboxes
@@ -123,11 +123,10 @@ $( document ).ready(function(){
   map.on('ready',function(){
     console.log("map is ready");
     $.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data){ //this will load when the user goes to the journey page, it will show crimes in the default date range period
-        addMarkerLayer(data, function() {
+        addMarkerLayer(data)
           addFilters();
           map.fitBounds(feature_layer.getBounds());               //position map using bounds of markers
           $(".circle_box").remove();
-        });
       });
   });
 
@@ -135,13 +134,12 @@ $( document ).ready(function(){
     NProgress.start();
     feature_layer.setGeoJSON([]);      //set feature layer to 0 features
     $.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data){
-      addMarkerLayer(data, function(){ //re-add the markers
+      addMarkerLayer(data)  //re-add the markers
         createBuffer();       //create buffer zone
         $("#filters").empty(); //empty the filters element so that a new filter list can be created
         addFilters();
         // map.fitBounds(directionsLayer.routeLayer.getBounds());
         NProgress.done();
-      });
     });
   });
 
@@ -149,12 +147,11 @@ $( document ).ready(function(){
     NProgress.start();
   	feature_layer.setGeoJSON([]);      //set feature layer to 0 features
   	$.getJSON('/get_markers', { start_date: [], end_date: [] } ).done(function(data){
-      addMarkerLayer(data,function(){
+      addMarkerLayer(data)
         createBuffer();
         $("#filters").empty(); //empty the filters element so that a new filter list can be created
         addFilters();
         NProgress.done();
-    	});
     });
   });
 

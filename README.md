@@ -1,4 +1,4 @@
-> Learn more about the developer by visiting her [LinkedIn](www.linkedin.com/in/shabnamemdadi).
+> Learn more about the developer by visiting her [LinkedIn](https://www.linkedin.com/in/shabnamemdadi).
 
 #Crime SF
 
@@ -14,6 +14,7 @@ This app was built in 4.5 weeks during the Spring 2015 cohort of Hackbright Acad
 + Flask
 + SQLAlchemy 
 + SQLite
++ PostgreSQL
 
 **Frontend:** 
 

@@ -356,8 +356,12 @@ if __name__ == "__main__":
 
     connect_to_db(app)
 
+    PORT = int(os.environ.get("PORT", 5000))
+
+    app.run(debug=True, host="0.0.0.0", port=PORT)
+
     # Use the DebugToolbar
     # DebugToolbarExtension(app)
     # app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False #this is so the toolbar does not interrupt redirects
 
-    app.run()
+    # app.run()

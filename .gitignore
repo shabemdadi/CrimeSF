@@ -2,4 +2,3 @@ env
 *.pyc
 *.csv
 *.db
-*.md

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-heat/v0.1.3/leaflet-heat.js'></script>
+
+<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.42.0/L.Control.Locate.min.js'></script>
+
+<link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.42.0/L.Control.Locate.mapbox.css' rel='stylesheet' />
+
+<link rel="stylesheet" href="../static/css/stylesheet.css">
+
+    <div class="container-fluid">
+        <div id="title_box">
+            <div id="title_div">
+                <h1 id="title" align="center">CrimeSF</h1>
+                <br>
+                <h5 style="color:white" align="center">Don't be at the wrong place at the wrong time.<br><br>
+<!--                     <a href="/heat" class="btn btn-default">Explore</a> -->
+                </h5>
+            </div>
+        </div>
+        <img class="img-responsive" width="100%" src="../static/homepage_map.png">
+    </div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <h2 align="center">About CrimeSF</h2>
+            <p align="center">As a young woman moving solo cross country to a brand new city, I was in search of information regarding crime in the city. But what I found was a diluge of data, without any potential for user interaction or analysis of patterns in the data. This is what I set out to create.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    //this will have the tab in the navbar for this page be active
+    $('#heat_route').removeClass('active');
+    $('#markers_route').removeClass('active');
+    $('#trends_route').removeClass('active');
+    $('#report_route').removeClass('active');
+    $('#journey_route').removeClass('active');
+    $('#home_route').addClass('active');
+
+</script>
+
+{% endblock %}

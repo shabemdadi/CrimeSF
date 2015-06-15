@@ -1,0 +1,242 @@
+.filter-ui {
+  background:#151515;
+  position:absolute;
+  top:10px;
+  right:10px;
+  z-index:100;
+  padding:10px;
+  border-radius:3px;
+  }
+
+.filter-ui_charts {
+  background:#151515;
+  position:absolute;
+  top:10px;
+  z-index:100;
+  padding:10px;
+  border-radius:3px;
+  }
+
+.to_box {
+  background:#151515;
+/*  position:absolute;*/
+/*  top:10px;*/
+  width: 50%;
+  z-index:100;
+  padding:10px;
+  border-radius:3px;
+}
+
+.circle_box {
+  background: #000;
+  position:absolute; top:0; bottom:0; width:100%; min-height: 1000px;
+  display: inline-flex;
+}
+
+.circle_box_svg {
+     margin: auto auto; 
+}
+
+.svg {
+  display: block;
+  -webkit-animation: svg-rotate 8000ms linear infinite;
+          animation: svg-rotate 8000ms linear infinite;
+  margin: auto auto;
+}
+
+circle {
+  fill: transparent;
+  stroke: hotpink;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 0, 301.59289;
+  -webkit-animation: stroke-dash 2000ms linear infinite, stroke-width 2000ms linear infinite, stroke-color 8000ms steps(4) infinite;
+          animation: stroke-dash 2000ms linear infinite, stroke-width 2000ms linear infinite, stroke-color 8000ms steps(4) infinite;
+}
+
+@-webkit-keyframes svg-rotate {
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes svg-rotate {
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes stroke-width {
+  0%, 100% {
+    stroke-width: 0;
+  }
+  45%, 55% {
+    stroke-width: 2;
+  }
+  50% {
+    stroke-width: 4;
+  }
+}
+
+@keyframes stroke-width {
+  0%, 100% {
+    stroke-width: 0;
+  }
+  45%, 55% {
+    stroke-width: 2;
+  }
+  50% {
+    stroke-width: 4;
+  }
+}
+
+@-webkit-keyframes stroke-dash {
+  0% {
+    stroke-dasharray: 0, 301.59289;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 301.59289, 0;
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dasharray: 301.59289, 301.59289;
+    stroke-dashoffset: -301.59289;
+  }
+}
+
+@keyframes stroke-dash {
+  0% {
+    stroke-dasharray: 0, 301.59289;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 301.59289, 0;
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dasharray: 301.59289, 301.59289;
+    stroke-dashoffset: -301.59289;
+  }
+}
+
+@-webkit-keyframes stroke-color {
+  from {
+    stroke: hotpink;
+  }
+}
+
+@keyframes stroke-color {
+  from {
+    stroke: hotpink;
+  }
+}
+
+  #inputs,
+#errors,
+#directions {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    min-width: 200px;
+}
+
+#inputs {
+    z-index: 10;
+    top: 10px;
+    left: 10px;
+}
+
+#directions {
+    z-index: 99;
+    background: rgba(0,0,0,.8);
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
+}
+
+#errors {
+    z-index: 8;
+    opacity: 0;
+    padding: 10px;
+    border-radius: 0 0 3px 3px;
+    background: rgba(0,0,0,.25);
+    top: 90px;
+    left: 10px;
+}
+
+body,h1,h2,p,h5,h4,h6 { 
+    margin:0; 
+    padding:0;
+    font-family: 'PT Mono';}
+
+#map { 
+  position:relative; 
+  top:0; 
+  bottom:0; 
+  width:100%; 
+  min-height: 1000px;}
+
+.container-fluid {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.navbar-default {
+  padding: 0px 20px;
+}
+
+.navbar-right {
+  padding-top: 5px;
+}
+
+#title_box {
+  position:absolute; /*top:0; bottom:0;*/ width:100%;
+  display: inline-flex;
+}
+
+#title_div {
+    margin: 50px auto;
+    z-index: 100;
+}
+
+.my-legend .legend-title {
+  text-align: left;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 90%;
+}
+
+.my-legend .legend-scale ul {
+  margin: 0;
+  margin-bottom: 5px;
+  padding: 0;
+/*  float: left;*/
+  list-style: none;
+}
+
+.my-legend .legend-scale ul li {
+  font-size: 80%;
+  list-style: none;
+  margin-left: 0;
+  line-height: 18px;
+  margin-bottom: 2px;
+}
+
+.my-legend ul.legend-labels li span {
+  display: block;
+  float: left;
+  height: 16px;
+  width: 30px;
+  margin-right: 5px;
+  margin-left: 0;
+  border: 1px solid #999;
+}
+
+.my-legend a {
+  color: #777;
+}
+

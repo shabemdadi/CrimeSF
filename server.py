@@ -200,6 +200,7 @@ def process_report():
     day_of_week = datetime.strftime(date,"%A")  #get a string with the day of the week
     month = datetime.strftime(date,"%B")        #get a string with the month
     hour = time.strftime("%H:00")               # get a string with the hour
+    incident_id = Crime_Stat.query.order_by(desc(Crime_Stat.incident_id)).first().incident_id + 1
 
     #see if another user has submitted a report on the same date, at the dame location, at the same hour, and with the same category
     overlap = Crime_Stat.query.filter_by(date=date_string,x_cord=x_cord,y_cord=y_cord,hour=hour,map_category=map_category).all()
@@ -212,7 +213,7 @@ def process_report():
     #if not, update the database with the citizen report and call the feature object method on the instance so there will be a marker passed to the map
     else:
 
-        incident = Crime_Stat(data_source=data_source, description=description,map_category=map_category,day_of_week=day_of_week,date=date,
+        incident = Crime_Stat(incident_id=incident_id,data_source=data_source, description=description,map_category=map_category,day_of_week=day_of_week,date=date,
             month=month,time=time,hour=hour,address=address,x_cord=x_cord,y_cord=y_cord)
         
         db.session.add(incident)
@@ -280,8 +281,9 @@ def get_recent_stats():
                 address = row["address"]
                 x_cord = row["location"]["latitude"]
                 y_cord = row["location"]["longitude"]
+                incident_id = Crime_Stat.query.order_by(desc(Crime_Stat.incident_id)).first().incident_id + 1
                 
-                incident = Crime_Stat(incident_num=incident_num,data_source=data_source,category=category,description=description,map_category=map_category,
+                incident = Crime_Stat(incident_id=incident_id,incident_num=incident_num,data_source=data_source,category=category,description=description,map_category=map_category,
                     day_of_week=day_of_week,date=date,month=month,time=time,hour=hour,address=address,district=district,x_cord=x_cord,
                     y_cord=y_cord)
                 db.session.add(incident)
@@ -290,7 +292,8 @@ def get_recent_stats():
                     db.session.commit()
 
     max_date = Crime_Stat.query.filter(Crime_Stat.data_source != "citizen").order_by(desc(Crime_Stat.date)).first().date
-    data_import = Data_Import(max_date=max_date)
+    import_id = Data_Import.query.order_by(desc(Data_Import.import_id)).first().import_id + 1
+    data_import = Data_Import(import_id=import_id,max_date=max_date)
     db.session.add(data_import)
 
     db.session.commit()
@@ -353,13 +356,20 @@ def get_recent_stats():
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
     # that we invoke the DebugToolbarExtension
-    app.debug = True
+    # app.debug = True
 
     connect_to_db(app)
 
+    secret_key = os.environ.get("FLASK_SECRET_KEY", "ABC")
+
+    app.config['secret_key'] = secret_key
+
+    DEBUG = "NO_DEBUG" not in os.environ
+
     PORT = int(os.environ.get("PORT", 5000))
 
-    app.run(debug=True, host="0.0.0.0", port=PORT)
+    app.run(debug=DEBUG, host="0.0.0.0", port=PORT)
+
 
     # Use the DebugToolbar
     # DebugToolbarExtension(app)

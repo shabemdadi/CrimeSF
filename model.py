@@ -61,7 +61,7 @@ class Crime_Stat(db.Model):
                                 },
                                 "properties": {
                                   "title": self.map_category,
-                                  "description": str(self.description).title(), #put description in string and called title capitalization on it
+                                  "description": self.description, #put description in string and called title capitalization on it
                                   "date": date_formatted,
                                   "time":time_formatted,
                                   "address":self.address,
@@ -296,7 +296,7 @@ def connect_to_db(app):
     """Connect the database to our Flask app."""
 
     # Configure to use our SQLite database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///crimes.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/crimes_db'
     db.app = app
     db.init_app(app)
 

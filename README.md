@@ -1,4 +1,4 @@
-> Learn more about the developer by visiting her <a href="www.linkedin.com/in/shabnamemdadi">LinkedIn</a>.
+> Learn more about the developer by visiting her [LinkedIn](www.linkedin.com/in/shabnamemdadi).
 
 #Crime SF
 

@@ -20,8 +20,6 @@ def load_recent_stats():
                  'SEX OFFENSES, NON FORCIBLE':'Rape/Sexual Assault'
                  }
 
-    # recent_import_date_formatted = recent_import_date.strftime('%Y-%m-%dT%H:%M:%S') #format date to be put into API call
-    
     recent_import_date_formatted = '2015-05-31T00:00:00'
 
     data = requests.get("https://data.sfgov.org/resource/gxxq-x39z.json?$WHERE=date>='%s'&$$app_token=RvFtAMemRY6per3vRmUEutOfM" % recent_import_date_formatted)
